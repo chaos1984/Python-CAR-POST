@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 def statement(func):
 	def wrapped(*args,**kwargs):
-		print ('###########################################\n\
+		print ('        ###########################################\n\
 				#                                         #\n\
 				#        PYSTIFF 4 FEM POST V1.2          #\n\
 				#        Copyright @ YujinWang            #\n\
