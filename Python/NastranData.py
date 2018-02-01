@@ -13,7 +13,7 @@ from Copyright import *
 from funmodule import *
 from operator import itemgetter,attrgetter
 from Post import *
-from matplotlib.text import OffsetForm
+# from matplotlib.text import OffsetForm
 
 class basic():
 	"""docstring for basic"""
@@ -297,7 +297,6 @@ class extr(basic):
 			self.printerror("gridpos")
 
 class calc():
-	time = time.strftime('%y-%m-%d %H:%M:%S',time,localtime(time.time()))
 	def __init_(self,A,B,C,D):
 		if (type(A) != list):
 			self.A = float(A)
@@ -311,7 +310,8 @@ class calc():
 			self.D = D
 		else:
 			print "WARNNING:Input is empty!"
-
+                self.time = time.strftime('%y-%m-%d %H:%M:%S',time,localtime(time.time()))
+                # print self.time
 	def bendstiff(self):
 		try:
 			return self.A/(abs(self.B+self.C)/2.0)
@@ -368,15 +368,15 @@ class calc():
 			finalsort.append(','.join(([str(i),','.join([str(m) for m in j])])))
 			return finalsort
 
-			def gridsort(self):
-				sortnum = self.B
-				rawdata = sorted(self.A,key=lambda s:s[sortnum],reverse=True)
-				l = len(rawdata)
-				print ('该工况下数据大小为： %d' %l)
-				finalsort = []
-				for i in rawdata:
-					finalsort.append(i)
-				return finalsort
+	def gridsort(self):
+		sortnum = self.B
+		rawdata = sorted(self.A,key=lambda s:s[sortnum],reverse=True)
+		l = len(rawdata)
+		print ('该工况下数据大小为： %d' %l)
+		finalsort = []
+		for i in rawdata:
+			finalsort.append(i)
+		return finalsort
 
 class stiffreport(basic):
 	@statement
