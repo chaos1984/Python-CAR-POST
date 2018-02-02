@@ -29,6 +29,8 @@ FREQ3,100,5.0,100.
 TABLED1       12    LOG     LOG                             +
 +             5.    1.0     100.    1.0     ENDT
 EIGRL           1       0.     300.        0           MASS
+$ Max eigenmode to compute (chose ~~ 3x max frequency) 
+
 $$------
 $$ DLOAD AND RLOAD2 Cards
 $$------
