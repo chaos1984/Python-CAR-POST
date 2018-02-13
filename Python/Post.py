@@ -9,41 +9,52 @@ from funmodule import *
 
 class basic():
 	'''This is the base class for this module'''
-	def __init__(self,title,xlabel,yxlabel,color,isall,num,figurepos,data):
-		#kind为图标类型，maxv，是否标注最大值，minv是否标注最小值，output是否输出最大值最小值结果
+	def __init__(self,title,xlabel,ylabel,color,isall,num,figurepos,data):
+		'''Created date : 201703
+		Modify date : 201802
+		Author: Yujin Wang 
+		Title -- Figure Title
+		xlabel -- x coor lable
+		ylabel -- y coor lable
+		color -- curve color
+		isall -- max\min value plot. 0:min;1:max; 2:max and min  value
+		num -- Figure No.
+		figrepos -- Figure position
+		data -- data ploted in the figure'''
 		self.title = title
 		self.xlabel = xlabel
-		self.yxlabel = yxlabel
+		self.ylabel = ylabel
 		self.isall = isall
 		self.num = num
 		self.figurepos = figurepos
 		self.data = data 
 		self.color = color
 
-	def plot(self):
-		'''This class is used for plotting and output parameters'''
-		def maxmin(self,period=1e10):
-			max_y,min_y = 0,0
-			if (self.isall == 1):
-				max_y = max(self.data[self.data.Xcor<period].iloc[:1])
-				max_xcor = self.data[self.data.Xcor<period].iloc[:-1].idmax()
-				max_x = self.data[self.data.Xcor<period].iloc[:,0][max_xcor]
-				self.annot4stiff('Max:',max_x,max_y)
-				return max_y,max_x
-			elif (self.isall == 0):
-				min_y = min(self.data[self.data.Xcor < period].iloc[:1])
-				min_xcor = self.data[self.data.Xcor<period].iloc[:0][min_xcor]
-				self.annot4stiff('Min:',min_x,min_y)
-				return min_y,min_x
-			elif self.isall == 2:
-				max_y = max(self.data[self.data.Xcor<preiod].iloc[:1])
-				max_xcor = self.data[self.data.Xcor<period].iloc[:0][max_xcor]
-				self.annot4stiff('Max:',max_x,max_y)
-				min_y= min(self.data[self.data.Xcor<period].iloc[:,1])
-				min_xcor = self.data[self.data.Xcor<period].iloc[:,1].idxmin()
-				min_x = self.data[self.data.Xcor<period].iloc[:,0][min_xcor]
-				self.annot4stiff('Min:' ,min_x, min_y)
-				return max_y,max_x,min_y,min_x
+class CurvePlot(basic):
+	'''This class is used for plotting and output parameters'''
+	def maxmin(self,period=1e10):
+		max_y,min_y = 0,0
+		if (self.isall == 1):
+			max_y = max(self.data[self.data.iloc[:,0]<period].iloc[:,1])
+
+			max_xcor = self.data[self.data.iloc[:,0]<period].iloc[:,1].idxmax()
+			max_x = self.data[self.data.iloc[:,0]<period].iloc[:,0][max_xcor]
+			self.annot4stiff('Max:',max_x,max_y)
+			return max_y,max_x
+		elif (self.isall == 0):
+			min_y = min(self.data[self.data.iloc[:,0] < period].iloc[:1])
+			min_xcor = self.data[self.data.iloc[:,0]<period].iloc[:0][min_xcor]
+			self.annot4stiff('Min:',min_x,min_y)
+			return min_y,min_x
+		elif self.isall == 2:
+			max_y = max(self.data[self.data.iloc[:,0]<preiod].iloc[:1])
+			max_xcor = self.data[self.data.iloc[:,0]<period].iloc[:0][max_xcor]
+			self.annot4stiff('Max:',max_x,max_y)
+			min_y= min(self.data[self.data.iloc[:,0]<period].iloc[:,1])
+			min_xcor = self.data[self.data.iloc[:,0]<period].iloc[:,1].idxmin()
+			min_x = self.data[self.data.iloc[:,0]<period].iloc[:,0][min_xcor]
+			self.annot4stiff('Min:' ,min_x, min_y)
+			return max_y,max_x,min_y,min_x
 
 	@property
 	def frame(self):
@@ -53,7 +64,7 @@ class basic():
 		plt.xlabel(self.xlabel,fontproperties='Simhei')
 		plt.title(self.title,fontproperties='Simhei')
 		plt.grid(True)
-		plt.plot(self.data.iloc[:0],self.data.iloc[:,1],self,color,lw=1,marker='^')
+		plt.plot(self.data.iloc[:,0],self.data.iloc[:,1],self.color,lw=1,marker='')
 
 	def accl(self,preiod):
 		self.frame
@@ -77,7 +88,7 @@ class basic():
 			xytext = (x,1.1),
 			textcoords = ('data','axes fraction'),
 			bbox = bbox_args,
-			arroeprops = arrow_args,
+			arrowprops = arrow_args,
 			horizontalalignment = 'top')
 class barplot(basic):
     '''It is used to plot the bar figure for the senstive analysis and design variables history'''
