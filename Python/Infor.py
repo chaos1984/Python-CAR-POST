@@ -4,10 +4,11 @@ Created on %(date)
 @author:Yujin Wang
 '''
 import time
+import datetime
 import Copyright
+import sqlite3
 import numpy as np,pandas as pd
 from funmodule import *
-import datetime
 from Post import *
 
 
@@ -92,7 +93,11 @@ class OptistructInfo(basic):
 			else:
 				exec (keyword + '.extend(data[1:])')
 	@statement
-	def ParsPCH(self,keyword):
+	def ParsPCH(self,keyword,isdbfile=0):
+		'''
+		keyword: str, punch file keyword
+		sidbfile: 0 or 1,output .db file
+		'''
 		self.res = []
 		res_G = {}
 		isKeyword = 1
@@ -100,11 +105,12 @@ class OptistructInfo(basic):
 		grid_num = '99999999999'
 		keyword_num = 1
 		finp = open(self.src,'rb')
-		# for chunk in read_in_chunks(PATH+FILE):
-			# for line in chunk: #Loop file
 		c1 = 1. - 2.*0.05*0.05 
 		c2 = 4*0.05*0.05*(0.05*0.05 - 1)
-		# print "for line in open(self.src,'rb')"
+		if isdbfile == 1:
+			conn = sqlite3.connect(self.src+".db")
+			conn.execute("create table if not exists rst(id integer primary key not null, Node not null, x real,y real,z real)")
+		
 		for line in open(self.src,'rb'):
 			data = string_split(line[:-1],' ')
 		
@@ -141,58 +147,37 @@ class OptistructInfo(basic):
 				else:
 					AlloTestFreq_n  = 9999999
 				cmd = 'self.res.append([keyword_num,Freq,MaxVector,AlloTestFreq_n])'
-				# print res_G
-				# print max(res_G.values)
+
 				exec(cmd)
 				keyword_num += 1
-				# print res[res_title]
-				# print  pd.DataFrame(res)
-				# self.res = pd.concat([self.res,pd.DataFrame(res)],axis=0)
 
 			else:
 				isKeyword = 0 
 				if len(data) > 0:
 					if 'CONT' not in line :
 						grid_num = data[0]
-						# try:
-						res_G[grid_num]=disp_mag( [float(i) for i in data[2:] ])
-						# except:
-							# print res_G
-							# print data
-							
-							# break
-					# else:
-						# res_G[grid_num].extend([float(i) for i in data[1:] ])
-				# else:
-					# print [float(i) for i in data[2:] ]
-					# print line 
+						temp = [float(i) for i in data[2:] ]
+						res_G[grid_num]=disp_mag(temp)
+						if isdbfile == 1:
+							# Creat .db file with sqlite3
+							dbcommand = "INSERT INTO rst (Node,x,y,z) VALUES (%i,%f,%f,%f)" %(int(grid_num),temp[0],temp[1],temp[2])
+							conn.execute(dbcommand);
 		
+		if isdbfile == 1:
+			conn.commit()
+			conn.close()
 		cmd = 'self.res.append([keyword_num,Freq,MaxVector,AlloTestFreq_n])'
 		exec(cmd)
-		# self.res = pd.concat([self.res,pd.DataFrame(res)],axis=0)
-		# self.res.index = ['subcase'+str(i+1)+ '_'+str(j+1) for i in range(len(res.keys())) for j in range(len(res_G[grid_num]))]
-		
-
-
-##Test k file for dyna
-# if __name__ == '__main__':
-	# PATH = r'C:\github\Nastran-master\test/'
-	# FILE = 'test.key'
-	# TestFile = DynaInfo(PATH+FILE)
-	# TestFile.Pars
-	# # TestFile.InfoPrint(['PART','SECTION_SHELL_TITLE'])
-	# print 'ok'
-
-# # Test pch file for Optistruct   
+ 
 if __name__ == '__main__':   
 
 	starttime = datetime.datetime.now()
 	print starttime
 	PATH = r'C:\temp\bigdata'
-	FILE = '\ESR2.pch'
+	FILE = '\ESR.pch'
 	TestFile = OptistructInfo(PATH+FILE)
 
-	TestFile.ParsPCH('EIGENVALUE')
+	TestFile.ParsPCH('EIGENVALUE',0)
 	endtime = datetime.datetime.now()
 	print endtime
 
@@ -201,10 +186,8 @@ if __name__ == '__main__':
 	PltData = pd.DataFrame(TestFile.res,columns = ['Order','Frequence','maxVector','AllowableTestFrequence'])
 	res_plot = CurvePlot(' ','Order','maxVector','r',1,1,111,PltData[ ['Order','maxVector']])
 	res_plot.frame
-	# res_plot.maxmin()
+	res_plot.maxmin()
 	# pic = PATH+FILE
 	plt.show()
 	# plt.savefig(pic,dpi=100)
 	print 'The allowable test frequence: %f Hz.' %(min(PltData.AllowableTestFrequence))
-
-	
