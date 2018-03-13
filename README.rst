@@ -17,7 +17,6 @@ A **G**\ enetic **A**\ lgorithm **F**\ ramework in py\ **T**\ hon
 Introduction
 ------------
 
-**GAFT** is a general Python Framework for genetic algorithm computation. It provides built-in genetic operators for target optimization and plugin interfaces for users to define your own genetic operators and on-the-fly analysis for algorithm testing.
+**Pystiff** is 
 
-**GAFT** is now accelerated using MPI parallelization interfaces. You can run it on your cluster in parallel with MPI environment.
 
