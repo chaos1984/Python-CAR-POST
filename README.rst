@@ -1,5 +1,5 @@
 ====
-StiffPy
+PyStiff
 ====
 
 A **P**\ ystiff
