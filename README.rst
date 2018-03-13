@@ -2,7 +2,7 @@
 StiffPy
 ====
 
-A **G**\ enetic **A**\ lgorithm **F**\ ramework in py\ **T**\ hon
+A **P**\ ystiff
 
 .. image:: https://travis-ci.org/PytLab/gaft.svg?branch=master
     :target: https://travis-ci.org/PytLab/gaft
