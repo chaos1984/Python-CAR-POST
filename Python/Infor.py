@@ -105,6 +105,7 @@ class OptistructInfo(basic):
 		grid_num = '99999999999'
 		keyword_num = 1
 		finp = open(self.src,'rb')
+
 		c1 = 1. - 2.*0.05*0.05 
 		c2 = 4*0.05*0.05*(0.05*0.05 - 1)
 		if isdbfile == 1:
@@ -137,36 +138,38 @@ class OptistructInfo(basic):
 			if '$' in line and isKeyword==1:# check keyword
 				if keyword in line :
 					Freq = np.sqrt(float(data[2]))/2/np.pi
-				
+					listVector = []
 			elif '$' in line and isKeyword==0:
 				isKeyword = 1 
-				MaxVector = max(res_G.values())
+				MaxVector = max(listVector)
 				PHI = MaxVector /1.25
 				if PHI > 0.1248:
-					AlloTestFreq_n = Freq*(np.sqrt(c1 -  np.sqrt(c2+ PHI *PHI))) 
+					AllowableTestFreq_n = Freq*(np.sqrt(c1 -  np.sqrt(c2+ PHI *PHI))) 
 				else:
-					AlloTestFreq_n  = 9999999
-				cmd = 'self.res.append([keyword_num,Freq,MaxVector,AlloTestFreq_n])'
+					AllowableTestFreq_n  = 9999999
+				cmd = 'self.res.append([keyword_num,Freq,MaxVector,AllowableTestFreq_n])'
 
 				exec(cmd)
 				keyword_num += 1
-
+				
 			else:
 				isKeyword = 0 
 				if len(data) > 0:
 					if 'CONT' not in line :
 						grid_num = data[0]
 						temp = [float(i) for i in data[2:] ]
-						res_G[grid_num]=disp_mag(temp)
+						res_G[grid_num] = disp_mag(temp)
+						listVector.extend(temp)
 						if isdbfile == 1:
 							# Creat .db file with sqlite3
 							dbcommand = "INSERT INTO rst (Node,x,y,z) VALUES (%i,%f,%f,%f)" %(int(grid_num),temp[0],temp[1],temp[2])
 							conn.execute(dbcommand);
-		
+							
 		if isdbfile == 1:
 			conn.commit()
 			conn.close()
-		cmd = 'self.res.append([keyword_num,Freq,MaxVector,AlloTestFreq_n])'
+			
+		cmd = 'self.res.append([keyword_num,Freq,MaxVector,AllowableTestFreq_n])'
 		exec(cmd)
  
 if __name__ == '__main__':   
@@ -191,3 +194,5 @@ if __name__ == '__main__':
 	plt.show()
 	# plt.savefig(pic,dpi=100)
 	print 'The allowable test frequence: %f Hz.' %(min(PltData.AllowableTestFrequence))
+
+	
