@@ -7,9 +7,12 @@ import numpy as np,pandas as pd,matplotlib.pyplot as plt
 from matplotlib.text import OffsetFrom
 from funmodule import *
 
+global color 
+color = ['r','b','g','c','y','m']
+
 class basic():
 	'''This is the base class for this module'''
-	def __init__(self,title,xlabel,ylabel,color,isall,num,figurepos,data):
+	def __init__(self,title,xlabel,ylabel,color,isall,num,figurepos,delta,data):
 		'''Created date : 201703
 		Modify date : 201802
 		Author: Yujin Wang 
@@ -29,6 +32,7 @@ class basic():
 		self.figurepos = figurepos
 		self.data = data 
 		self.color = color
+		self.delta = delta
 
 class CurvePlot(basic):
 	'''This class is used for plotting and output parameters'''
@@ -49,7 +53,7 @@ class CurvePlot(basic):
 		elif self.isall == 2:
 			max_y = max(self.data[self.data.iloc[:,0]<preiod].iloc[:1])
 			max_xcor = self.data[self.data.iloc[:,0]<period].iloc[:0][max_xcor]
-			self.annot4stiff('Max:',max_x,max_y)
+			self.annot4stiff('Max:',self.max_x,max_y)
 			min_y= min(self.data[self.data.iloc[:,0]<period].iloc[:,1])
 			min_xcor = self.data[self.data.iloc[:,0]<period].iloc[:,1].idxmin()
 			min_x = self.data[self.data.iloc[:,0]<period].iloc[:,0][min_xcor]
@@ -58,13 +62,16 @@ class CurvePlot(basic):
 
 	@property
 	def frame(self):
+		
 		plt.figure(num = self.num)
 		plt.subplot(self.figurepos)
 		plt.ylabel(self.ylabel,fontproperties='Simhei')
 		plt.xlabel(self.xlabel,fontproperties='Simhei')
 		plt.title(self.title,fontproperties='Simhei')
 		plt.grid(True)
-		plt.plot(self.data.iloc[:,0],self.data.iloc[:,1],self.color,lw=1,marker='')
+		for i in range(len(self.data.columns)-1):
+			plt.plot(self.data.iloc[:,0],self.data.iloc[:,i+1],color[i],lw=1,marker='')
+		plt.legend(self.data.columns[1:])
 
 	def accl(self,preiod):
 		self.frame
@@ -83,9 +90,10 @@ class CurvePlot(basic):
 		bbox_args = dict(boxstyle = 'round', fc='0.8')
 		arrow_args = dict(arrowstyle = '->')
 		Label_arg = text + str(round(y,2))+'@' + str(round(x,3))
+		print x,y
 		plt.annotate(Label_arg,
 			xy=(x,y),
-			xytext = (x,1.1),
+			xytext = (2*x/3,1.1),
 			textcoords = ('data','axes fraction'),
 			bbox = bbox_args,
 			arrowprops = arrow_args,
