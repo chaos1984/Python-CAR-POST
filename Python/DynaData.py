@@ -274,6 +274,7 @@ class Deforce(basic):
 		zf = []
 		rf = []
 		lenchange = []
+		current_time   = 0
 		for line in open(self.src):
 			data = string_split(line[:-1],' ')
 			try:
@@ -281,9 +282,10 @@ class Deforce(basic):
 			except:
 				continue
 			if 'time'  in line :
-				time.append(value )
+				current_time = value 
 			elif 'spring' in line:
-				spr_dam.append(value )
+				time .append(current_time)
+				spr_dam.append(int(value))
 			elif 'x-force' in line:
 				xf.append(value )
 			elif 'y-force' in line:
@@ -296,14 +298,37 @@ class Deforce(basic):
 				lenchange .append(value )
 			else:
 				pass
+			
 		res = pd.DataFrame([time,spr_dam,xf,yf,zf,rf,lenchange],index=['Time','spr_dam','xf','yf','zf','rf','lenchange'])
 		return res
+		
+class Glstate(basic): 
+	@property
+	def  run(self):
+		time = []
+		total_data = []
+		time_data = []
+		index = []
+		index_flag = 0
+		for line in open(self.src):
+			if len(line) == 47:
+				line_data = string_split(line[:-1], ' ')
+				if 'time..' in line and len(time_data) > 1:
+					total_data.append(time_data)
+					index_flag = 1
+					time_data = []
+
+				if index_flag == 0:
+					par_name = string_split(line[:-1], '.')
+					index.append(par_name[0].strip())
+
+				time_data.append(eval(line_data[-1]))
+
+		return pd.DataFrame(total_data,columns=index)
 
 if __name__ == '__main__':
-	PATH = r'Y:\cal\01_Comp\04_SB\518_180209_ESR-035777_SB_R200_SB_OTH_PRE-SERIAL_Yujin\02_run\LH20180212\F'
-	FILE = '\deforc'
-	TestFile =Deforce(PATH+FILE,0,0,0,0)
-	
+	PATH = r'Y:\cal\01_Comp\04_SB\000_allen\test\f1'
+	FILE = '\glstat'
+	# TestFile =Deforce(PATH+FILE,0,0,0,0)
+	TestFile =Glstate(PATH+FILE,0,0,0,0)
 	res = TestFile.run
-
-	
