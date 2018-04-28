@@ -12,7 +12,7 @@ color = ['r','b','g','c','y','m']
 
 class basic():
 	'''This is the base class for this module'''
-	def __init__(self,title,xlabel,ylabel,color,isall,num,figurepos,delta,data):
+	def __init__(self,title,xlabel,ylabel,isall,num,figurepos,delta,data):
 		'''Created date : 201703
 		Modify date : 201802
 		Author: Yujin Wang 
@@ -31,7 +31,6 @@ class basic():
 		self.num = num
 		self.figurepos = figurepos
 		self.data = data 
-		self.color = color
 		self.delta = delta
 
 class CurvePlot(basic):
@@ -62,7 +61,6 @@ class CurvePlot(basic):
 
 	@property
 	def frame(self):
-		
 		plt.figure(num = self.num)
 		plt.subplot(self.figurepos)
 		plt.ylabel(self.ylabel,fontproperties='Simhei')
@@ -90,7 +88,6 @@ class CurvePlot(basic):
 		bbox_args = dict(boxstyle = 'round', fc='0.8')
 		arrow_args = dict(arrowstyle = '->')
 		Label_arg = text + str(round(y,2))+'@' + str(round(x,3))
-		print x,y
 		plt.annotate(Label_arg,
 			xy=(x,y),
 			xytext = (2*x/3,1.1),
