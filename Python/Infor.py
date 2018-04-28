@@ -2,7 +2,9 @@
 '''
 Created on %(date)
 @author:Yujin Wang
+This is used tp parse the info. of FEM
 '''
+import os
 import time
 import datetime
 import Copyright
@@ -11,6 +13,51 @@ import numpy as np,pandas as pd
 from funmodule import *
 from Post import *
 
+def ReadKeys(wkdir):
+	MainFile = FindFile(wkdir , '*.key')[0]
+	print '#'*20
+	print 'Key files:','\n'.join(MainFile)
+	print '#'*20
+	isMoreFiles = 0
+	for  i in MainFile:
+		temp = DynaInfo(i)
+		temp.Pars
+		if isMoreFiles >0:
+			KeyFile.__dict__.update(temp.__dict__)
+		else:
+			KeyFile = temp
+			isMoreFiles+=1
+	return KeyFile
+
+def FindFile(start, name):
+	#Find the files whose name string contains str(name), and the directory of files
+	isFlag = 0
+	if  '*' in name:
+		name = name.strip('*')
+		isFlag =1
+	relpath =[]
+	files_set = []
+	dirs = []
+	dirs_set = []
+
+	if isFlag == 0:
+		for relpath, dirs, files in os.walk(start):
+			for i in files:
+				if name in i:
+					full_path = os.path.join(start, relpath, i)
+					files_set.append(os.path.normpath(os.path.abspath(full_path)))
+					dirs_set.append(os.path.join(start, relpath))
+						
+	elif isFlag == 1:
+		for relpath, dirs, files in os.walk(start):
+			for i in files:
+				if os.path.splitext(i)[-1] == name:
+					full_path = os.path.join(start, relpath, i)
+					files_set.append(os.path.normpath(os.path.abspath(full_path)))
+					dirs_set.append(os.path.join(start, relpath))
+	
+	dirs_set = list(set(dirs_set))
+	return files_set,dirs_set
 
 class basic():
 	def __init__(self,*vars,**kwargs):
@@ -25,31 +72,43 @@ class DynaInfo(basic):
 
 	@property
 	def Pars(self):
-		isDuplicate = 0
+	
+		ParsFlag = 0
 		for line in open(self.src):
-			data = string_split(line[:-1],' ')
-			if '*' in line :
-				keyword = 'self.' + data[0][1:]
-				if data[0][1:] in dir(self):
-					# print 'Duplicate'
-					isDuplicate = 1
-				else:
-					isDuplicate = 0
-					cmd = keyword + '=[]'
-					exec(cmd)
-				# continue
-			elif('$' not in line and '*' not in line):
-				if isDuplicate == 1:
-					ent = '\n'
-					cmd = keyword + ".extend([ent])"
-					exec (cmd)
-					cmd = keyword + '.extend(line)'
-					exec (cmd)
-					isDuplicate = 0
-				else:
-					exec (keyword + '.extend(line)')
-			else:
-				pass
+			try:#
+				data = string_split(line[:-1],' ')
+				if '*' in line and line.strip()[0] != '$' :
+					if data[0][1:] not in dir(self):
+						keyword = 'self.' + data[0][1:]
+						cmd = keyword + '=[]'
+						exec(cmd)
+					else:
+						keyword = 'self.' + data[0][1:]
+					if  'ELEMENT_'  in line:
+						ParsFlag = 1
+						delta = 8
+						continue
+					elif 'MAT_'  in line:
+						ParsFlag = 1
+						delta = 10
+						continue
+					else:
+						ParsFlag = 0
+					
+				elif(line[0] != '$' and '*' not in line and ParsFlag == 0):
+						cmd = keyword + '.append(data)'
+						exec (cmd)	
+				elif (line[0] != '$' and '*' not in line and ParsFlag ==1):
+						try:
+							data = [int(line[0+delta*i:delta+delta*i]) for i in range(len(line[:-1])/delta)]
+						except:
+							# print 'WARNNING:',line
+							data = [line[0+delta*i:delta+delta*i].strip() for i in range(len(line[:-1])/delta)]
+						cmd = keyword + '.append(data)'
+						exec (cmd)	
+			
+			except:
+				print 'ERROR:',line
 				
 	@statement
 	def InfoPrint(self,keywords):
@@ -173,26 +232,27 @@ class OptistructInfo(basic):
 		exec(cmd)
  
 if __name__ == '__main__':   
+	# # test for frequency
+	# starttime = datetime.datetime.now()
+	# print starttime
+	# PATH = r'C:\temp\bigdata'
+	# FILE = '\ESR.pch'
+	# TestFile = OptistructInfo(PATH+FILE)
 
-	starttime = datetime.datetime.now()
-	print starttime
-	PATH = r'C:\temp\bigdata'
-	FILE = '\ESR.pch'
-	TestFile = OptistructInfo(PATH+FILE)
+	# TestFile.ParsPCH('EIGENVALUE',0)
+	# endtime = datetime.datetime.now()
+	# print endtime
 
-	TestFile.ParsPCH('EIGENVALUE',0)
-	endtime = datetime.datetime.now()
-	print endtime
-
-	print (endtime - starttime)
+	# print (endtime - starttime)
 	
-	PltData = pd.DataFrame(TestFile.res,columns = ['Order','Frequence','maxVector','AllowableTestFrequence'])
-	res_plot = CurvePlot(' ','Order','maxVector','r',1,1,111,PltData[ ['Order','maxVector']])
-	res_plot.frame
-	res_plot.maxmin()
-	# pic = PATH+FILE
-	plt.show()
-	# plt.savefig(pic,dpi=100)
-	print 'The allowable test frequence: %f Hz.' %(min(PltData.AllowableTestFrequence))
-
-	
+	# PltData = pd.DataFrame(TestFile.res,columns = ['Order','Frequence','maxVector','AllowableTestFrequence'])
+	# res_plot = CurvePlot(' ','Order','maxVector','r',1,1,111,PltData[ ['Order','maxVector']])
+	# res_plot.frame
+	# res_plot.maxmin()
+	# # pic = PATH+FILE
+	# plt.show()
+	# # plt.savefig(pic,dpi=100)
+	# print 'The allowable test frequence: %f Hz.' %(min(PltData.AllowableTestFrequence))
+	# # test for file find
+	GeomFile =  DynaInfo('Y:\\cal\\01_Comp\\04_SB\\000_allen\\test\\F1\\Geometry.key')
+	GeomFile.Pars
