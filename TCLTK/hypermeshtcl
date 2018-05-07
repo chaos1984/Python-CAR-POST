@@ -1,0 +1,142 @@
+set proc_name "contour_stress"
+
+# hwi GetSessionHandle sess
+
+ 
+ # sess ReleaseHandle
+ # proj ReleaseHandle
+ # win ReleaseHandle
+ # page ReleaseHandle
+ # post1 ReleaseHandle
+ # mod ReleaseHandle
+
+# if {[catch { 
+
+ hwi GetSessionHandle sess
+
+ sess GetProjectHandle proj
+
+ proj GetPageHandle page [proj GetActivePage]
+
+ proj ReleaseHandle
+
+ page GetWindowHandle win [page GetActiveWindow]
+
+ win SetClientType "Animation"
+
+ win GetClientHandle post1
+ 
+ win GetViewControlHandle view
+ 
+ view SetLookAt "-0.000000 0.000000 -1.000000 0.000000 -1.000000 -0.000000 0.000000 0.000000 -0.000000 1.000000 0.000000 0.000000 0.000000 0.000000 0.000000 1.000000"
+ 
+ post1 GetRenderOptionsHandle ren 
+ 
+ ren SetBackgroundColor white
+ 
+ ren SetForegroundColor black
+
+ 
+ # ############################
+ # # Load model by tcl
+ # ############################
+
+ # set myfile  "Y:\\cal\\01_Comp\\09_NVH\\000_Anne\\test\\02_run\\Z\\d3ftg"
+
+ # set model_id [post1 AddModel $myfile]
+
+ # post1 GetModelHandle mod $model_id
+ 
+ # mod SetResult $myfile
+
+ # # Advance to first frame.
+
+ # # p1 GetAnimatorHandle animator
+
+ # ani first
+ 
+ # mod GetResultCtrlHandle res
+
+ # res GetContourCtrlHandle contour_ctrl
+ 
+ # res ReleaseHandle
+
+ # post1 SetDisplayOptions contour true
+ 
+ # post1 SetDisplayOptions "legend" true
+ 
+ # contour_ctrl SetEnableState true
+ 
+ # contour_ctrl SetDataType "Effective plastic strain"
+ 
+ # contour_ctrl SetShellLayer "max"
+ 
+ # contour_ctrl SetDimensionEnabled shell true
+ 
+ # contour_ctrl SetAverageMode advanced
+ 
+ # contour_ctrl GetLegendHandle leg
+ 
+ # #Selected ploted part
+ # set part_set_id [mod AddSelectionSet part]
+ 
+ # mod GetSelectionSetHandle part_set_handle $part_set_id
+ 
+ # part_set_handle SetLabel "OurPartSelectionSet"
+ 
+ # part_set_handle Add "id 100"
+ 
+ # # puts [part_set_handle GetDrawStyleList]
+ 
+ # # puts “Current draw style: [part_set_handle GetDrawStyle]”
+ 
+ # # puts “Current draw size: [part_set_handle GetDrawSize]”
+ 
+ # # part_set_handle SetDrawSize 6
+ 
+ # # part_set_handle SetDrawStyle [lindex [part_set_handle GetDrawStyleList] 0]
+ 
+ # # part_set_handle SetVisibility true
+ 
+ # mod MaskAll
+ 
+ # mod UnMask $part_set_id
+ 
+ # # leg SetDiscreteColorMode false
+ 
+ # post1 Draw
+  
+ # contour_ctrl SetThresholdMax 1
+ 
+ # contour_ctrl SetThresholdMaxEnableState true
+
+ # post1 Draw
+  
+ # leg SetFilter log
+ 
+ # post1 Draw
+ 
+    
+    
+ # ############################
+ # # Load model by session file
+ # ############################
+ 
+ sess LoadSessionFile "Y:\\cal\\01_Comp\\09_NVH\\000_Anne\\test\\02_run\\session.mvw" false
+ 
+ 
+ # capture animation
+ sess CaptureAnimation JPEG "Y:\\cal\\01_Comp\\09_NVH\\000_Anne\\test\\02_run\\Z\\fun.jpg" percent 150 150
+         
+
+# } result]} 
+
+ # # Error handling
+
+ # puts $logfile "----- Error occured running $proc_name -----"
+
+ # puts $logfile "[sess GetError]"
+
+ # puts $logfile "--------------------------------------------"
+
+# } 
