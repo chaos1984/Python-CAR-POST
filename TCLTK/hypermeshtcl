@@ -1,41 +1,106 @@
-set proc_name "contour_stress"
-
-# hwi GetSessionHandle sess
-
+ set page_num 0
  
- # sess ReleaseHandle
- # proj ReleaseHandle
- # win ReleaseHandle
- # page ReleaseHandle
- # post1 ReleaseHandle
- # mod ReleaseHandle
-
-# if {[catch { 
+ set filedir "Y:\\cal\\01_Comp\\09_NVH\\000_Anne\\test\\02_run"
+  
+ set proc_name "PAB PSD"
 
  hwi GetSessionHandle sess
 
  sess GetProjectHandle proj
+  
+ # ############################
+ # # Load model by session file
+ # ############################
+ 
+ sess LoadSessionFile "Y:\\cal\\01_Comp\\09_NVH\\000_Anne\\test\\02_run\\session.mvw" false
+ 
+ set page_num [proj GetNumberOfPages]
+ 
+ for {set i 1} {$i<=$page_num} {incr i} {
 
- proj GetPageHandle page [proj GetActivePage]
-
- proj ReleaseHandle
-
- page GetWindowHandle win [page GetActiveWindow]
+ puts page:$i
+ 
+ proj GetPageHandle page $i
+  
+ page GetWindowHandle win 1
 
  win SetClientType "Animation"
 
  win GetClientHandle post1
  
  win GetViewControlHandle view
- 
- view SetLookAt "-0.000000 0.000000 -1.000000 0.000000 -1.000000 -0.000000 0.000000 0.000000 -0.000000 1.000000 0.000000 0.000000 0.000000 0.000000 0.000000 1.000000"
- 
+  
  post1 GetRenderOptionsHandle ren 
  
  ren SetBackgroundColor white
  
  ren SetForegroundColor black
+ 
+ post1 GetModelHandle mod 1
+ 
+ mod GetResultCtrlHandle res
+ 
+ res GetContourCtrlHandle contour_ctrl
+ 
+ contour_ctrl GetLegendHandle leg
+ 
+ post1 GetNoteHandle not 1
+ 
+ set id [mod AddSelectionSet component]
+ 
+ mod GetSelectionSetHandle sel $id
+ 
+ sel SetLabel "unplot"
+ 
+ sel Add "id <100"
+  
+ sel SetVisibility false
 
+ 
+ 
+ post1 Fit
+ 
+ post1 Draw
+
+ set result [leg GetMax]
+ 
+ puts MAX:$result
+ 
+ set note_string [not GetText]
+ 
+ puts Note:$note_string
+ 
+ if {$result < 1} {
+ mod Mask $id
+ not SetText [concat $note_string\n$result<1\nPass!]
+ } elseif {$result == "N/A"} {
+ continue
+ } else {
+ mod Mask $id
+ not SetText [concat $note_string\n$result>1\nNo Pass!]
+ }
+ post1 Draw
+ 
+ page ReleaseHandle
+ win ReleaseHandle
+ post1 ReleaseHandle
+ ren ReleaseHandle
+ mod ReleaseHandle
+ res ReleaseHandle
+ contour_ctrl ReleaseHandle
+ leg ReleaseHandle
+ view ReleaseHandle
+ not ReleaseHandle
+ sel ReleaseHandle
+ }
+ puts *****************
+ puts *****************
+ for {set i 1} {$i<=$page_num} {incr i} {
+ proj SetActivePage $i
+ set file [concat $filedir\\image\\$i.jpeg]
+ puts $file
+ sess CaptureActiveWindow  JPEG $file percent 75 50
+ }
  
  # ############################
  # # Load model by tcl
@@ -118,25 +183,47 @@ set proc_name "contour_stress"
  
     
     
- # ############################
- # # Load model by session file
- # ############################
- 
- sess LoadSessionFile "Y:\\cal\\01_Comp\\09_NVH\\000_Anne\\test\\02_run\\session.mvw" false
+
  
  
- # capture animation
- sess CaptureAnimation JPEG "Y:\\cal\\01_Comp\\09_NVH\\000_Anne\\test\\02_run\\Z\\fun.jpg" percent 150 150
-         
+ # # capture animation
+ 
+ # proj SetActivePage 1
+ # # view SetLookAt "-0.011750 0.914389 -0.404666 0.000000 -0.998315 0.012270 0.056713 0.000000 0.056823 0.404650 0.912704 0.000000 539.704041 86.988853 -680.386536 1.000000"
+ # view Fit
+ # # view Zoom 0.6
+ # post1 Draw
+ # sess CaptureActiveWindow  JPEG "Y:\\cal\\01_Comp\\09_NVH\\000_Anne\\test\\02_run\\X.jpg" percent 75 50
+ 
+ # proj SetActivePage 2
+ # # view SetLookAt "-0.011750 0.914389 -0.404666 0.000000 -0.998315 0.012270 0.056713 0.000000 0.056823 0.404650 0.912704 0.000000 539.704041 86.988853 -680.386536 1.000000"
+ # view Fit
+ # # view Zoom 0.6
+ # post1 Draw
+ # sess CaptureActiveWindow  JPEG "Y:\\cal\\01_Comp\\09_NVH\\000_Anne\\test\\02_run\\Y.jpg" percent 75 50
+ 
+ # proj SetActivePage 3
+ # # view SetLookAt "-0.011750 0.914389 -0.404666 0.000000 -0.998315 0.012270 0.056713 0.000000 0.056823 0.404650 0.912704 0.000000 539.704041 86.988853 -680.386536 1.000000"
+ # view Fit
+ # # view Zoom 0.6
+ # post1 Draw
+ # sess CaptureActiveWindow  JPEG "Y:\\cal\\01_Comp\\09_NVH\\000_Anne\\test\\02_run\\Z.jpg" percent 75 50
+ 
+ # proj SetActivePage 4
+ # # view SetLookAt "-0.011750 0.914389 -0.404666 0.000000 -0.998315 0.012270 0.056713 0.000000 0.056823 0.404650 0.912704 0.000000 539.704041 86.988853 -680.386536 1.000000"
+ # view Fit
+ # # view Zoom 0.8
+ # post1 Draw
+ # sess CaptureActiveWindow  JPEG "Y:\\cal\\01_Comp\\09_NVH\\000_Anne\\test\\02_run\\Total.jpg" percent 75 50
 
-# } result]} 
+# # } result]} 
 
- # # Error handling
+ # # # Error handling
 
- # puts $logfile "----- Error occured running $proc_name -----"
+ # # puts $logfile "----- Error occured running $proc_name -----"
 
- # puts $logfile "[sess GetError]"
+ # # puts $logfile "[sess GetError]"
 
- # puts $logfile "--------------------------------------------"
+ # # puts $logfile "--------------------------------------------"
 
-# } 
+# # } 
