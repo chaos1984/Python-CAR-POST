@@ -12,7 +12,6 @@ from pptx.enum.shapes import MSO_SHAPE
 from pptx.enum.dml import MSO_PATTERN
 
 
-			
 class StiffPPT():
 #Slid master
 	def __init__(self,muban_path,case_path):
@@ -28,6 +27,7 @@ class StiffPPT():
 		self.EndPage = self.prs.slide_layouts[2]
 		self.black = RGBColor(0x00,0x00,0x00)
 		self.white = RGBColor(0xFF,0xFF,0xFF)
+		self.red = RGBColor(0xCD,0x26,0x26)
 		self.pages = 0
 		self.RootDirFiles()
 	
@@ -90,25 +90,18 @@ class StiffPPT():
 
 
 #Description1
-	def BlankPageCreate(self,heading='',subheading='',Paragraphs = [],Pictures = [],Movies=[],Tables=[]):
+	def BlankPageCreate(self,heading='',Paragraphs = [],Pictures = [],Movies=[],Tables=[]):
 		self.pages += 1
 		print '#'*10+'PAGE %d' %(self.pages)+'#'*10 
 		slide = self.prs.slides.add_slide(self.BlankPage)
 		shapes = slide.shapes[0]
 		shapes.text = heading
-		shapes = slide.shapes[1]
-		shapes.text = subheading
+		# shapes = slide.shapes[1]
+		# shapes.text = subheading
 		tf = shapes.text_frame
 
-		try:
-			print 'No. Paragraphs:',len(Paragraphs)
-			for i in range(len(Paragraphs)):
-				p = tf.add_paragraph()
-				p.text = Paragraphs[i]
-				p.level = 1
-		except:
-			print (u'Warnning: paragraphs!')
 
+		self.addParagraphs(tf,Paragraphs)
 		self.addPictures(slide,Pictures)
 		self.addMovies(slide,Movies)
 		self.addTables(slide,Tables)
@@ -165,11 +158,35 @@ class StiffPPT():
 				slide.shapes.add_movie(Movies[i][0],Movies[i][1],Movies[i][2],Movies[i][4],Movies[i][3])
 		except:
 			print (u'Warnning: movies!',Movies[i][0])	
+			
+	def addParagraphs(self,tf,Paragraphs):
+		# print Paragraphs
+		# try:
+			print 'No. Paragraphs:',len(Paragraphs)
+			for i in range(len(Paragraphs)):
+				p = tf.add_paragraph()
+				p.text = Paragraphs[i][0]
+				p.font.size = Pt(int(Paragraphs[i][1]))
+				p.font.color.theme_color = MSO_THEME_COLOR.ACCENT_1
+				try :
+					if Paragraphs[i][2] == 'b':
+						p.font.bold = True	
+					if Paragraphs[i][3] == 'i':
+						p.font.italic = True					
+					if Paragraphs[i][4] == 'r':
+						p.font.color.rgb = self.red
+					elif Paragraphs[i][4] == 'b':
+						p.font.color.rgb = 	self.black
+				except:
+					pass
+		# except:
+			# print (u'Warnning: paragraphs!')
 
 	def PPTCreate(self,AnalysisType):
 		PPTXFile = self.case_path +'\\'+ AnalysisType+'.pptx'
 		print PPTXFile
 		self.prs.save(PPTXFile)
+
 	
 if __name__ == '__main__':
 	# AnalysisType ='Anchor'
