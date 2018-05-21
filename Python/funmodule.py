@@ -29,6 +29,7 @@ def read_in_chunks(filePath, chunk_size=1024*1024):
 def string_split(string,symbol):
 	return [i for i in string.split(symbol) if i != '']
 
+
 def norm_vector(*args):
 	'''	This function is used to calculate the norm of the given vector'''
 	try:

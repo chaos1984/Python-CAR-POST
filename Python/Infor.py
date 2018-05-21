@@ -256,3 +256,4 @@ if __name__ == '__main__':
 	# # test for file find
 	GeomFile =  DynaInfo('Y:\\cal\\01_Comp\\04_SB\\000_allen\\test\\F1\\Geometry.key')
 	GeomFile.Pars
+	
