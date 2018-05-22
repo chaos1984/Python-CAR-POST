@@ -12,7 +12,7 @@ color = ['r','b','g','c','y','m']
 
 class basic():
 	'''This is the base class for this module'''
-	def __init__(self,title,xlabel,ylabel,isall,num,figurepos,delta,data):
+	def __init__(self,title,xlabel,ylabel,isall,num,figurepos,delta,data,legend = False):
 		'''Created date : 201703
 		Modify date : 201802
 		Author: Yujin Wang 
@@ -30,8 +30,10 @@ class basic():
 		self.isall = isall
 		self.num = num
 		self.figurepos = figurepos
-		self.data = data 
 		self.delta = delta
+		self.data = data 
+		self.legend = legend
+		
 
 class CurvePlot(basic):
 	'''This class is used for plotting and output parameters'''
@@ -67,10 +69,14 @@ class CurvePlot(basic):
 		plt.xlabel(self.xlabel,fontproperties='Simhei')
 		plt.title(self.title,fontproperties='Simhei')
 		plt.grid(True)
+		plt.subplots_adjust(wspace=self.delta)
 		for i in range(len(self.data.columns)-1):
 			plt.plot(self.data.iloc[:,0],self.data.iloc[:,i+1],color[i],lw=1,marker='')
-		plt.legend(self.data.columns[1:])
-
+		if self.legend != False:
+			plt.legend(self.data.columns[1:])
+		else:
+			pass
+			
 	def accl(self,preiod):
 		self.frame
 		return self.maxmin(period)

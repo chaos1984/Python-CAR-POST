@@ -38,7 +38,7 @@ def GlstatPlot(wkdir):
 	TestFile =Glstate(wkdir+file,0,0,0,0)
 	res = TestFile.run
 	PltData = res[['time','kinetic energy','internal energy','total energy','external work']]
-	res_plot = Post.CurvePlot('1','time','kinetic energy',-1,1,111,10,PltData)
+	res_plot = Post.CurvePlot('1','time','kinetic energy',-1,1,111,0.3,PltData,legend=True)
 	res_plot.frame
 	res_plot.maxmin()
 	pic = wkdir+'\image'+file

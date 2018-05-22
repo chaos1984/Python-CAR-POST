@@ -351,21 +351,23 @@ def dynaMatCurvePlot(KeyFile,Pid,filepath):
 				CurveID.append(KeyFile.MAT_PIECEWISE_LINEAR_PLASTICITY_TITLE[i+1][2].strip())
 			
 	CurveStart = 0
-	Curve = []
-	for cur in CurveID:
+	print '#'*20
+	for k,l in enumerate(CurveID):
+		Curve = []
 		for i,j in enumerate(KeyFile.DEFINE_CURVE_TITLE):
-			if  j[0] == cur:
+			if  j[0] == l:
 				CurveStart = 1
 			elif CurveStart == 1 and len(j)==2:
-				Curve.append([ float(j[0]),float(j[1]) ])
+				Curve.append([ float(j[0]),float(j[1])])
 			elif len(j)!=2:
 				CurveStart = 0
-	curveplot = CurvePlot('Stress-Strain Curve','Effective plastic strain','Effective stress(MPa)',-1,1,111,0,pd.DataFrame(Curve))
-	curveplot.frame
+		figpos = int('1'+str(len(CurveID))+str(k+1))
+
+		curveplot = CurvePlot('Mat ID:%s' %(l),'Effective plastic strain','Effective stress(MPa)',-1,1,figpos ,0.3,pd.DataFrame(Curve))
+		curveplot.frame
+		print 'Material ID: %s is Ploted! Curve ID: %s' %(MatID[k],l)
 	pic = filepath +'\\stress_strain.png'
 	plt.savefig(pic,dpi=100)
-	print '#'*20
-	print 'Material ID: %s is Ploted! Curve ID: %s' %(mat,CurveID[-1])
 	print '#'*20	
 		
 		
