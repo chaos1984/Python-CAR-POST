@@ -17,6 +17,6 @@ A **P**\ ystiff
 Introduction
 ------------
 
-**Pystiff** is 
+**Pystiff** is used to pre/post report program!
 
 
