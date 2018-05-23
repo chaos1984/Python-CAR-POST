@@ -2,7 +2,7 @@
 '''
 Created on %(date)
 @author:Yujin Wang
-This is used tp parse the info. of FEM
+This is used to parse the info. of FEM
 '''
 import os
 import time
@@ -13,6 +13,7 @@ import numpy as np,pandas as pd
 from funmodule import *
 from Post import *
 
+@exeTime
 def ReadKeys(wkdir):
 	MainFile = FindFile(wkdir , '*.key')[0]
 	print '#'*20
@@ -28,6 +29,7 @@ def ReadKeys(wkdir):
 			KeyFile = temp
 			isMoreFiles+=1
 	return KeyFile
+
 
 def FindFile(start, name):
 	#Find the files whose name string contains str(name), and the directory of files
@@ -151,6 +153,7 @@ class OptistructInfo(basic):
 					isDuplicate = 0
 			else:
 				exec (keyword + '.extend(data[1:])')
+				
 	@statement
 	def ParsPCH(self,keyword,isdbfile=0):
 		'''

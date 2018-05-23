@@ -1,6 +1,7 @@
 #coding:utf-8
 import sys
 import os 
+
 try:
 	wkdir = sys.argv[1]
 	rundir = sys.argv[2]
@@ -12,28 +13,45 @@ except:
 	rundir  = "Y:\doc\08_Personal\Yujin\0508\YokingPy"
 	pydir = r'Y:\\doc\\11_Script\\Python27\\python.exe'
 	print "*"*40
-	
+
+
 sys.path.append(rundir+"\\lib")
 from Infor import *
 from DynaData import *
 from Main_Plot import *
-	
-	
-
+import Copyright
+os.chdir(wkdir)
+os.system("%s C:\\CAE\\scripts\\Python\ASG_HPC_DYN_l2a.py" %(pydir))
+statement1()	
 try:
 	#Extract binout files
-	os.chdir(wkdir)
-	os.system("%s C:\\CAE\\scripts\\Python\ASG_HPC_DYN_l2a.py" %(pydir))
 	KeyFile = ReadKeys(wkdir )#Read more .KEY files
-	#Get model information 
-	Node = pd.DataFrame(KeyFile.NODE,columns=['node','x','y','z','tc','rc'])
-	Elem = pd.DataFrame(KeyFile.ELEMENT_SOLID,columns=['elem','PartID','n1','n2','n3','n4','n5','n6','n7','n8'])
-	PartID = Elem.PartID.drop_duplicates()[Elem.PartID<=225].tolist()
-	filepath = wkdir +'\\image'
+except :
+	raw_input('.key files are not found!')
+	sys.exit()
+	
+#Get model information 
+Node = pd.DataFrame(KeyFile.NODE,columns=['node','x','y','z','tc','rc'])
+Elem = pd.DataFrame(KeyFile.ELEMENT_SOLID,columns=['elem','PartID','n1','n2','n3','n4','n5','n6','n7','n8'])
+PartID = Elem.PartID.drop_duplicates()[Elem.PartID<=225].tolist()
+filepath = wkdir +'\\image'
+
+try:
 	dynaMatCurvePlot(KeyFile,PartID,filepath)#plot mat stress-strain curve	
-	# Capture camera vector
+except:
+	raw_input('MatCurve are not found!')
+	sys.exit()
+	
+# Capture camera vector
+try:
 	Coord = KeyFile.DEFINE_COORDINATE_NODES
 	print "Current No. Coord is %d" %(len(Coord))
+except:
+	raw_input('Load coord are not found!')
+	sys.exit()
+	
+# Plot curve
+try:	
 	if len(Coord ) == 2:
 		LoadFlag = Coord[0][1] in Coord[1] and Coord[0][2] in Coord[1] and Coord[0][3] in Coord[1]
 		OriginNode1 = Node[Node['node']==Coord[0][1]].values.tolist()[0]
@@ -47,41 +65,40 @@ try:
 			DeforcPlot(wkdir,2)
 	else:
 		print 'ERROR: No. Pleasche the number of Coordinate(load) is 1 or 2!'
-		
 	GlstatPlot(wkdir) # plot Glstat
-
-	#Creat Session files
-	SessionFile = wkdir +'\Session.txt'
-	print "SessionFile:%s" %(SessionFile) 
-	fout = open(SessionFile,'w')
-	finp = open(r"%s\\SessionFiles\\session.txt" %(rundir),'r')
-	for line in finp.readlines():
-		if '$' not in line:
-			if 'crs pos' in line :
-				fout.write("crs pos nod %s no1 %s no2 %s\n" %(Coord[0][1],Coord[0][2],Coord[0][3]))
-			elif 'vie cam upv nod' in line:
-				fout.write("vie cam upv nod %s\n" %(Coord[0][1]))
-			elif  'rea' in line:
-				line = "s[0]:rea fil \"Automatic\" '%s\\d3plot' GEO=0:PartID:all DIS=0:all FUN=0:all:\"max. pl. strain (Shell/Solid)\" FUN=0:all:\"max. v. Mises (Shell/Solid)\" ADD=no " %(wkdir)
-				fout.write(line)
-			elif 'rec' in line or 'wri' in line:
-				line = line.replace('image',wkdir+'\image')
-				# if 'model.png' in line and LoadFlag is not True:
-					# line = line.replace('model','model2')
-				fout.write(line)
-			else:
-				fout.write(line)
+except:
+	raw_input('Please check Deforce and Glstat files!')	
+	sys.exit()
+	
+	
+#Creat Session files
+SessionFile = wkdir +'\Session.txt'
+print "SessionFile:%s" %(SessionFile) 
+fout = open(SessionFile,'w')
+finp = open(r"%s\\SessionFiles\\session.txt" %(rundir),'r')
+for line in finp.readlines():
+	if '$' not in line:
+		if 'crs pos' in line :
+			fout.write("crs pos nod %s no1 %s no2 %s\n" %(Coord[0][1],Coord[0][2],Coord[0][3]))
+		elif 'vie cam upv nod' in line:
+			fout.write("vie cam upv nod %s\n" %(Coord[0][1]))
+		elif  'rea' in line:
+			line = "s[0]:rea fil \"Automatic\" '%s\\d3plot' GEO=0:PartID:all DIS=0:all FUN=0:all:\"max. pl. strain (Shell/Solid)\" FUN=0:all:\"max. v. Mises (Shell/Solid)\" ADD=no " %(wkdir)
+			fout.write(line)
+		elif 'rec' in line or 'wri' in line:
+			line = line.replace('image',wkdir+'\image')
+			# if 'model.png' in line and LoadFlag is not True:
+				# line = line.replace('model','model2')
+			fout.write(line)
 		else:
 			fout.write(line)
-	fout.close()
+	else:
+		fout.write(line)
+fout.close()
 
-	#Pictures for post
-	try: 
-		os.system(r"C:\CAE\Animator4\2.3.0\StartA4_64_fbo.exe -b -s %s" %(SessionFile))
-	except:
-		print 'ERROR:lease check the Animator directory!'
+#Pictures for post
+try: 
+	os.system(r"C:\CAE\Animator4\2.3.0\StartA4_64_fbo.exe -b -s %s" %(SessionFile))
+except:
+	print 'ERROR:Please check the Animator directory!'
 
-except :
-	print '#'*20
-	print '.key files are no found!'
-	print '#'*20

@@ -14,10 +14,15 @@ from Infor import *
 try:
 	wkdir = sys.argv[1]
 except:
-	wkdir = r'Y:\cal\01_Comp\04_SB\000_allen\test'
+	wkdir = r'Y:\cal\01_Comp\04_SB\551_180507_ESR-038259_JCSB_Anchor_plate_strength_Zheng\06_Run_Anchor1_Anchor2_F1F2'
 	# wkdir = 'Y:\\cal\\01_Comp\\04_SB\\548-180423_ESR_038131_LH_BUK_Bracket_Strength_Yujin'
 	
 dirs = FindFile(wkdir, 'd3plot')[1]
+if len(dirs) == 0:
+	raw_input("Error:.d3plot files are not found!")
+	sys.exit()
+
+	
 print '#'*20
 print 'DYNA solution files directory:\n','\n'.join(dirs)
 print '#'*20

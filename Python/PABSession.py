@@ -1,6 +1,7 @@
 #coding:utf-8
 import sys
 import os 
+
 try:
 	rundir = sys.argv[1]
 	wkdir = sys.argv[2]
@@ -11,8 +12,11 @@ sys.path.append(rundir+"\\lib")
 from Infor import *
 from DynaData import *
 from Main_Plot import *
+import Copyright
+statement1()
 
 os.system( "copy %s\\SessionFiles\\session.mvw %s" %(rundir ,wkdir))
+
 
 #Creat Session file
 ScriptFile = wkdir +'\\script.tcl'
