@@ -47,13 +47,15 @@ class CurvePlot(basic):
 			self.annot4stiff('Max:',max_x,max_y)
 			return max_y,max_x
 		elif (self.isall == 0):
-			min_y = min(self.data[self.data.iloc[:,0] < period].iloc[:1])
-			min_xcor = self.data[self.data.iloc[:,0]<period].iloc[:0][min_xcor]
+			min_y = min(self.data[self.data.iloc[:,0] < period].iloc[:,1])
+			min_xcor = self.data[self.data.iloc[:,0]<period].iloc[:,1].idxmin()
+			min_x= self.data[self.data.iloc[:,0]<period].iloc[:,0][min_xcor]
 			self.annot4stiff('Min:',min_x,min_y)
 			return min_y,min_x
 		elif self.isall == 2:
-			max_y = max(self.data[self.data.iloc[:,0]<preiod].iloc[:1])
-			max_xcor = self.data[self.data.iloc[:,0]<period].iloc[:0][max_xcor]
+			max_y = max(self.data[self.data.iloc[:,0]<period].iloc[:,1])
+			max_xcor = self.data[self.data.iloc[:,0]<period].iloc[:,1].idxmax()
+			max_x = self.data[self.data.iloc[:,0]<period].iloc[:,0][max_xcor]
 			self.annot4stiff('Max:',self.max_x,max_y)
 			min_y= min(self.data[self.data.iloc[:,0]<period].iloc[:,1])
 			min_xcor = self.data[self.data.iloc[:,0]<period].iloc[:,1].idxmin()
@@ -81,7 +83,7 @@ class CurvePlot(basic):
 		self.frame
 		return self.maxmin(period)
 
-	def stiff(slef,name):
+	def stiff(self,name):
 		self.frame
 		self.maxmin()
 		plt.savefig(name,dpi=100)
