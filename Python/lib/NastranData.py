@@ -28,7 +28,7 @@ class basic():
 		except:
 			print ('WARNNING: Input parameters are not enough!')
 
-		self.time = time.strftime('%y-%m-%d %H:%M:%S',time,localtime(time.time()))
+		self.time = time.strftime('%y-%m-%d %H:%M:%S',time.localtime(time.time()))
 	
 	def printdone(self,funname):
 		print (self.time,('%s is done!' %funname))
