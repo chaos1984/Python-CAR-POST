@@ -20,7 +20,7 @@ def DeforcPlot(wkdir,figures):
 		# PltData = PltData[PltData.index<PltData['rf'].idxmax()+10]
 		fig_pos = '1' + str(figures) +  str(i+1)
 		Tittle = 'Spring:'+str(int(res['spr_dam'][i]))
-		res_plot = Post.CurvePlot(Tittle,'Time','Force(kN)',1,1,fig_pos,10,PltData)
+		res_plot = Post.CurvePlot(Tittle,'Time','Force(kN)',1,1,fig_pos,0.3,PltData)
 		res_plot.frame
 		res_plot.maxmin()
 		# break
