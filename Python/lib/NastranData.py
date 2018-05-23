@@ -1,4 +1,5 @@
 #coding:utf-8
+#coding:gb2312
 """本程序用于Nasatran 计算白车身相关的程序代码
 版本号：V1.0
 编写：王予津
@@ -276,9 +277,9 @@ class extr(basic):
 		fout.close()
 
 	def gridpos(self):
-		try:
+#		try:
 			node_cor = {}
-			node_list = {}
+			node_list = []
 			for i in self.flag3:
 				node_list.append(i[0])
 				node_list.append(i[1])
@@ -293,11 +294,11 @@ class extr(basic):
 							pos.append(float(line[(24+8*i):(32+8*i)]))
 							node_cor[int(line[8:16])] = pos
 			return node_cor
-		except:
-			self.printerror("gridpos")
+#		except:
+#			self.printerror("gridpos")
 
 class calc():
-	def __init_(self,A,B,C,D):
+	def __init__(self,A,B,C,D):
 		if (type(A) != list):
 			self.A = float(A)
 			self.B = float(B)
@@ -310,11 +311,11 @@ class calc():
 			self.D = D
 		else:
 			print "WARNNING:Input is empty!"
-                self.time = time.strftime('%y-%m-%d %H:%M:%S',time,localtime(time.time()))
-                # print self.time
+			self.time = time.strftime('%y-%m-%d %H:%M:%S',time,localtime(time.time()))
+			print self.time
 	def bendstiff(self):
 		try:
-			return self.A/(abs(self.B+self.C)/2.0)
+			return self.A/(abs(self.B+self.C)/2.0),(self.B+self.C)/2.0
 		except:
 			print ('Bendstiff is wrong!')
 
@@ -325,28 +326,28 @@ class calc():
 		except:
 			print ('ERROR:torqstiff')
 
-		def distance(self,direction='dist'):
-			try:
-				X1,Y1,Z1 = self.A
-				X2,Y2,Z2 = self.B
-				X1 = float(X1)
-				Y1 = float(Y1)
-				Z1 = float(Z1)
-				X2 = float(X2)
-				Y2 = float(Y2)
-				Z2 = float(Z2)
-				if direction == 'dist':
-					return math.sqrt((X1-X2)**2+(Y1-Y2)**2+(Z1-Z2)**2),X1
-				elif direction == 'X':
-					return np.abs(X1-X2),X1
-				elif direction == 'Y':
-					return np.abs(Y1-Y2),X1
-				elif direction == 'Z':
-					return np.abs(Z1-Z2),X1
-			except:
-				print ('ERROR:distance')
-				print self.A
-				print self.B
+	def distance(self,direction='dist'):
+		try:
+			X1,Y1,Z1 = self.A
+			X2,Y2,Z2 = self.B
+			X1 = float(X1)
+			Y1 = float(Y1)
+			Z1 = float(Z1)
+			X2 = float(X2)
+			Y2 = float(Y2)
+			Z2 = float(Z2)
+			if direction == 'dist':
+				return math.sqrt((X1-X2)**2+(Y1-Y2)**2+(Z1-Z2)**2),X1
+			elif direction == 'X':
+				return np.abs(X1-X2),X1
+			elif direction == 'Y':
+				return np.abs(Y1-Y2),X1
+			elif direction == 'Z':
+				return np.abs(Z1-Z2),X1
+		except:
+			print ('ERROR:distance')
+			print self.A
+			print self.B
 
 	def gridavesort(self):
 		sortnum = self.B
@@ -401,7 +402,7 @@ class stiffreport(basic):
 			dis1,X1 = dis.distance(direction='Y')
 			p1_z = node_disp[p1][1][2]
 			p2_z = node_disp[p2][1][2]
-			stif = calc(2000.,p1,p2,dis1)
+			stif = calc(2000.,p1_z,p2_z,dis1)
 			print p1_z,p2_z,dis1
 			res,angel = stif.torqstiff()
 			reslist.append(('Torque',p1,p2,X1,p1_z,p2_z,dis1,angel,res))
@@ -413,12 +414,13 @@ class stiffreport(basic):
 			dis1,X1 = dis.distance(direction='Y')
 			p1_z = node_disp[p1][2][2]
 			p2_z = node_disp[p2][2][2]
-			stif = calc(6000.,p1,p2,dis1)
+			stif = calc(6000.,p1_z,p2_z,dis1)
 			print p1_z,p2_z,dis1
 			res,angel = stif.bendstiff()
 			reslist.append(('Bend',p1,p2,X1,p1_z,p2_z,dis1,(p1_z+p2_z)/2,res))
 
 		restable = pd.DataFrame(reslist,columns=['Type','p1','p2','Xcor','p1_z','p2_z','distance','Ang & Dis','stiff'])
+		print self.des
 		restable.to_csv(self.des + '/report_Stiff.csv')
 		print ('\n**************DOORS AND WINDOWS FORMATION***********\n')
 		deformlist = []
@@ -429,8 +431,8 @@ class stiffreport(basic):
 			print ('P1 = %d\tP2 = %d') %(p1,p2)
 			dis = calc(node_cor[p1],node_cor[p2],0,0)
 			dis1,X1 = dis.distance(direction='dist')
-			p1_deform = [node_cor[p1][i] + node_disp[p1][1][i] for i in range[3]]
-			p2_deform = [node_cor[p2][i] + node_disp[p2][1][i] for i in range[3]]
+			p1_deform = [node_cor[p1][i] + node_disp[p1][1][i] for i in range(3)]
+			p2_deform = [node_cor[p2][i] + node_disp[p2][1][i] for i in range(3)]
 			dis = calc(p1_deform,p2_deform,0,0)
 			dis2,X2 = dis.distance(direction='dist')
 			deform_length = dis2-dis1
@@ -438,21 +440,7 @@ class stiffreport(basic):
 			temp = 'Deform:%10.2f\t Ratio:%10.2f' %(deform_length,ratio)
 			print temp
 
-			deformtable = pd.DataFrame(deformlist,columns=['p1','p2','Length','Deformed_length','deform_Value','Deform_Ratio'])
-			deformtable.to_csv(self.des+'/report_Deform.csv')
-
-			torq = restable[restable.Type == 'Torque'].loc[:,['Xcor','Ang & Dis']]
-			figure1 = plot(u'扭转变形',u'X向位置',u'转角(°)','k',0,1,'111',torq)
-			figure1.stiff(self.des+'/torq')
-
-			bend = restable[restable.Type == 'Bend'].loc[:,['Xcor','Ang & Dis']]
-			figure1 = plot(u'弯曲变形',u'X向位置',u'Z向位移(mm)','k',0,2,'111',bend)
-			figure1.stiff(self.des+'/bend')
-			torq_stiff = restable.stiff[torq_point]
-			bend_stiff = restable.stiff[restable.Type == 'Bend'].min()
-			print ('Bending Stiffness:%10.1f \tAverage Z-displacement:%10.4f\n ') %(bend_stiff,bend['Ang & Dis'].min())
-			print ('Torsinal Stiffness:%10.1f \tAverage Z-displacement:%10.4f\n ' %(torq_stiff,torq['Ang & Dis'].iloc[torq_point]))
-			return [torq_stiff,bend_stiff,torq["Ang & Dis"].iloc[torq_point],bend["Ang & Dis"].min()],deformtable
+			return restable
 
 class stressreport(basic):
 	def run(self):
