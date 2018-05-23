@@ -1,9 +1,6 @@
+#coding:utf-8
 import sys
 import os 
-from Infor import *
-from DynaData import *
-from Main_Plot import *
-
 try:
 	wkdir = sys.argv[1]
 	rundir = sys.argv[2]
@@ -15,6 +12,13 @@ except:
 	rundir  = "Y:\doc\08_Personal\Yujin\0508\YokingPy"
 	pydir = r'Y:\\doc\\11_Script\\Python27\\python.exe'
 	print "*"*40
+	
+sys.path.append(rundir+"\\lib")
+from Infor import *
+from DynaData import *
+from Main_Plot import *
+	
+	
 
 try:
 	#Extract binout files
@@ -29,17 +33,20 @@ try:
 	dynaMatCurvePlot(KeyFile,PartID,filepath)#plot mat stress-strain curve	
 	# Capture camera vector
 	Coord = KeyFile.DEFINE_COORDINATE_NODES
+	print "Current No. Coord is %d" %(len(Coord))
 	if len(Coord ) == 2:
 		LoadFlag = Coord[0][1] in Coord[1] and Coord[0][2] in Coord[1] and Coord[0][3] in Coord[1]
 		OriginNode1 = Node[Node['node']==Coord[0][1]].values.tolist()[0]
 		OriginNode2 = Node[Node['node']==Coord[1][1]].values.tolist()[0]
 		OriginNode  = [(float(OriginNode1[i+1]) + float(OriginNode2[i+1]))/2 for i in range(3)]
 		if LoadFlag == True:
+			print "Current analysis is single load."
 			DeforcPlot(wkdir,1)
 		else:
+			print "Current analysis is two load."
 			DeforcPlot(wkdir,2)
 	else:
-		print 'ERROR: No. Coordinate is not 2!'
+		print 'ERROR: No. Pleasche the number of Coordinate(load) is 1 or 2!'
 		
 	GlstatPlot(wkdir) # plot Glstat
 

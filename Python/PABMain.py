@@ -23,5 +23,5 @@ if not os.path.exists(imagedir):
 #Export pictures
 os.system("%s %s\\PABSession.py %s %s" %(pydir,rundir,rundir,wkdir))
 
-# Creat PPT
+# Create PPT
 os.system("%s %s\\PABPPT.py %s %s" %(pydir,rundir,rundir,wkdir))

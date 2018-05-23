@@ -1,16 +1,16 @@
+#coding:utf-8
 import sys
 import os 
-from Infor import *
-from DynaData import *
-from Main_Plot import *
-
 try:
 	rundir = sys.argv[1]
 	wkdir = sys.argv[2]
-
 except:
 	wkdir = "Y:\cal\01_Comp\09_NVH\000_Anne\test"
 	rundir="Y:\doc\08_Personal\Yujin\0508\YokingPy"
+sys.path.append(rundir+"\\lib")
+from Infor import *
+from DynaData import *
+from Main_Plot import *
 
 os.system( "copy %s\\SessionFiles\\session.mvw %s" %(rundir ,wkdir))
 

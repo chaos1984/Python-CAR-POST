@@ -1,25 +1,25 @@
 #coding:utf-8
 import sys
 import os
-from Infor import *
-from pptreport import *
 import getpass
-
-
 try:
 	rundir = sys.argv[1]
 	wkdir = sys.argv[2]
-
 except:
 	rundir = r"Y:\doc\11_Script\SBStrengthAndPABPSD"
 	wkdir = r'Y:\cal\01_Comp\09_NVH\395_180507_ESR-038350_GDP_IC_Inflator_Bracket_fatigue_Anne\02_run_Bracket_2\33_3Hz'
+	
+sys.path.append(rundir+"\\lib")
+from Infor import *
+from pptreport import *
+
 muban_path = r'%s\SlideMaster\ALV_General Presentation 2017.pptx' %(rundir)
 imagedir = wkdir + '\\image\\'
 A = StiffPPT(muban_path,wkdir)
 
 ###########################MODIFY############################################################
 PPTName = wkdir.split('\\')[-2]
-Title = wkdir.split('\\')[-2]
+Title = ' '.join(wkdir.split('\\')[-2].split('_'))
 Date =  time.strftime("%b %d %Y", time.localtime())
 Author = getpass.getuser()
 #############################################################################################
