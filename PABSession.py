@@ -13,10 +13,8 @@ from Infor import *
 from DynaData import *
 from Main_Plot import *
 import Copyright
-statement1()
-
 os.system( "copy %s\\SessionFiles\\session.mvw %s" %(rundir ,wkdir))
-
+statement1()
 
 #Creat Session file
 ScriptFile = wkdir +'\\script.tcl'
