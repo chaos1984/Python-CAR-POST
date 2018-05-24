@@ -53,11 +53,12 @@ except:
 # Plot curve
 try:	
 	if len(Coord ) == 2:
-		LoadFlag = Coord[0][1] in Coord[1] and Coord[0][2] in Coord[1] and Coord[0][3] in Coord[1]
+		# LoadFlag = Coord[0][1] in Coord[1] and Coord[0][2] in Coord[1] and Coord[0][3] in Coord[1]
+		LoadFlag =  len(set(Coord[0])&set(Coord[1]))== 0
 		OriginNode1 = Node[Node['node']==Coord[0][1]].values.tolist()[0]
 		OriginNode2 = Node[Node['node']==Coord[1][1]].values.tolist()[0]
 		OriginNode  = [(float(OriginNode1[i+1]) + float(OriginNode2[i+1]))/2 for i in range(3)]
-		if LoadFlag == True:
+		if LoadFlag :
 			print "Current analysis is single load."
 			DeforcPlot(wkdir,1)
 		else:
