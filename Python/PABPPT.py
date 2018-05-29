@@ -1,6 +1,5 @@
 #coding:utf-8
 import sys
-import os
 import getpass
 try:
 	rundir = sys.argv[1]
@@ -45,8 +44,8 @@ A.BlankPageCreate('Introduction',Paragraphs =paragraphs,Tables=Tables,Pictures=P
 
 
 #page4
-paragraphs = [["Fatigue Life with vibration in each of three main axes.",24],["Note:",20,'b','','',''],["       Calculate the Fatigue Life by using the following equation:",16],["                  Fatigue Life=1/( Damage Ratio per hour);\n            And, Min. Fatigue Life = 1/(Max. Damage Ratio per hour ).",16,'b'],["Test spec: ISO_12097\nEvaluation criterion:",20,'b'],["        After X(24 hours)+Y(24 hours)+Z(24 hours),",16] ,["      If Max. Damage Ratio < 1,the bracket passes Test spec.",16,'b']]
-A.BlankPageCreate('Introduction',Paragraphs =paragraphs)
+paragraphs = [["Fatigue Life with vibration in each of three main axes.",24],["Note:",20,'b','','',''],["       Calculate the Fatigue Life by using the following equation:",16],["                  Fatigue Life=1/( Damage Ratio per hour);\n            And, Min. Fatigue Life = 1/(Max. Damage Ratio per hour ).",16,'b'],["Test spec: ISO_12097\nEvaluation criterion:",20,'b'],["        After X(24 hours)+Y(24 hours)+Z(24 hours),",16] ,["      If Max. Damage Ratio < 1,the bracket passes Test spec.",16,'b']]
+A.BlankPageCreate('Introduction',Paragraphs = paragraphs)
 
 #page5
 paragraphs = [["Fatigue Life ",20,'b'] ,["   The estimated Damage Ratio is shown as below:",16,]]

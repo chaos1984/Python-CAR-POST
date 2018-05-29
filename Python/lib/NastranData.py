@@ -423,8 +423,9 @@ class stiffreport(basic):
 		print self.des
 		restable.to_csv(self.des + '/report_Stiff.csv')
 		print ('\n**************DOORS AND WINDOWS FORMATION***********\n')
-		deformlist = []
 				
+		deformlist = []
+		print len(self.flag4)
 		for i in range(len(self.flag4)):
 			p1,p2 = self.flag4[i]
 			print ('No. %d pair.') %(i+1)
@@ -439,8 +440,10 @@ class stiffreport(basic):
 			ratio = abs((dis2-dis1)/dis1*100)
 			temp = 'Deform:%10.2f\t Ratio:%10.2f' %(deform_length,ratio)
 			print temp
-
-			return restable
+			deformlist.append([p1,p2,dis1,dis2,deform_length,ratio])
+		deformtable = pd.DataFrame(deformlist,columns=['p1','p2','Length','Deformed_length','deform_Value','Deform_Ratio'])
+		deformtable.to_csv(self.des+'/report_Deform.csv')
+		return restable
 
 class stressreport(basic):
 	def run(self):

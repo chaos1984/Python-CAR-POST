@@ -9,7 +9,7 @@ from pptx.dml.color import RGBColor
 from pptx.enum.dml import MSO_THEME_COLOR
 from pptx.util import Cm,Pt,Inches
 from pptx.enum.shapes import MSO_SHAPE
-from pptx.enum.dml import MSO_PATTERN
+#from pptx.enum.dml import MSO_PATTERN
 
 
 class StiffPPT():
@@ -47,9 +47,11 @@ class StiffPPT():
 	def CoverPageCreate(self,Title,Date,Author):
 		#CoverPage
 		self.pages += 1
-		print '#' * 10 + 'PAGE %d' % (self.pages) + '#' * 10
 		slide = self.prs.slides.add_slide(self.CoverPage)
-		shapes = slide.shapes[3]
+		print '#' * 10 + 'PAGE %d' % (self.pages) + '#' * 10
+		print slide.shapes
+		print len(slide.shapes)
+		shapes = slide.shapes[0]
 		shapes.text = Title
 		shapes = slide.shapes[1]
 		shapes.text = Author
@@ -110,7 +112,7 @@ class StiffPPT():
 	def EndPageCreate(self):
 		self.pages += 1
 		print '#'*10+'PAGE %d' %(self.pages)+'#'*10 
-		slide = self.prs.slides.add_slide(self.EndPage)
+		self.prs.slides.add_slide(self.EndPage)
 		print '#'*20+'\n'
 
 	def addTables(self,slide,Tables):
