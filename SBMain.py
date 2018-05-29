@@ -37,8 +37,10 @@ def main():
 			imagedir =  subwkdir +'\\image'
 			if not os.path.exists(imagedir):
 				os.mkdir(imagedir)
-			#Create Session file
-			os.system("%s %s\\SBSession.py %s %s %s" %(pydir,rundir,subwkdir,rundir,pydir))
+				#Create Session file
+				os.system("%s %s\\SBSession.py %s %s %s" %(pydir,rundir,subwkdir,rundir,pydir))
+			else:
+				pass
 	# Create PPT
 	os.system("%s %s\\SBPPT.py %s %s" %(pydir,rundir,rundir,wkdir))
 if __name__ == "__main__":

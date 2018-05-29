@@ -19,18 +19,17 @@ def main():
 
 	except:
 		wkdir = r'Y:\cal\01_Comp\09_NVH\000_Anne\test\02_run'
-		
-	os.system( "copy %s\\SessionFiles\\session.mvw %s" %(rundir,wkdir))
+
 	#make image directory
 	imagedir = wkdir +'\\image'
 	if not os.path.exists(imagedir):
+		os.system( "copy %s\\SessionFiles\\session.mvw %s" %(rundir,wkdir))
 		os.mkdir(imagedir)
-
-	#Export pictures
-	os.system("%s %s\\PABSession.py %s %s" %(pydir,rundir,rundir,wkdir))
-
-	# Create PPT
-	os.system("%s %s\\PABPPT.py %s %s" %(pydir,rundir,rundir,wkdir))
+		#Export pictures
+		os.system("%s %s\\PABSession.py %s %s" %(pydir,rundir,rundir,wkdir))
+	else:
+		# Create PPT
+		os.system("%s %s\\PABPPT.py %s %s" %(pydir,rundir,rundir,wkdir))
 if __name__ == "__main__":
 	main()
 	# raw_input("PAUSE")
