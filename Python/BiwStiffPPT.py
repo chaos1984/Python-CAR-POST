@@ -45,7 +45,6 @@ A.BlankPageCreate('分析结果',Paragraphs =paragraphs,Pictures=Pictures)
 
 #page5
 result = sys.argv[3].split(',')
-
 paragraphs = [[u"图表",24,'b'],[u"分析结果表明：",18],[u"白车身刚度不满足设计要求！",18,"b","i","r"]]
 TableValue = [[' ',u"扭转刚度",u"弯曲刚度","轻量化系数"],["分析结果",result[0],result[1],result[2]]]
 Table = [[TableValue,Cm(8.2),Cm(7.5),Cm(3),Cm(12)]]
