@@ -12,10 +12,9 @@ sys.path.append(rundir+"\\lib")
 from Infor import *
 from DynaData import *
 from Main_Plot import *
-statement1()
-
+import Copyright
 os.system( "copy %s\\SessionFiles\\session.mvw %s" %(rundir ,wkdir))
-
+statement1()
 
 #Creat Session file
 ScriptFile = wkdir +'\\script.tcl'
