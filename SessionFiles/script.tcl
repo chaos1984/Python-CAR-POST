@@ -1,3 +1,19 @@
+ catch {sess ReleaseHandle}
+ 
+ catch {proj ReleaseHandle}
+ 
+catch { page ReleaseHandle         }
+catch { win ReleaseHandle          }
+catch { post1 ReleaseHandle        }
+catch { ren ReleaseHandle          }
+catch { mod ReleaseHandle          }
+catch { res ReleaseHandle          }
+catch { contour_ctrl ReleaseHandle }
+catch { leg ReleaseHandle          }
+catch { view ReleaseHandle         }
+catch { not ReleaseHandle          }
+catch { sel ReleaseHandle          }
+ 
  set page_num 0
  
  set filedir "Y:\\cal\\01_Comp\\09_NVH\\000_Anne\\test\\02_run"
@@ -77,6 +93,7 @@
  mod Mask $id
  not SetText [concat $note_string\n$result>1\nNo Pass!]
  }
+ post1 Fit
  post1 Draw
  
  page ReleaseHandle
