@@ -39,20 +39,21 @@ class CurvePlot(basic):
 	'''This class is used for plotting and output parameters'''
 	def maxmin(self,period=1e10):
 		max_y,min_y = 0,0
-		if (self.isall == 1):
+		
+		if (self.isall == 1): #max
 			max_y = max(self.data[self.data.iloc[:,0]<period].iloc[:,1])
 
 			max_xcor = self.data[self.data.iloc[:,0]<period].iloc[:,1].idxmax()
 			max_x = self.data[self.data.iloc[:,0]<period].iloc[:,0][max_xcor]
 			self.annot4stiff('Max:',max_x,max_y)
-			return max_y,max_x
-		elif (self.isall == 0):
+			return max_y,max_x,max_xcor
+		elif (self.isall == 0): #min
 			min_y = min(self.data[self.data.iloc[:,0] < period].iloc[:,1])
 			min_xcor = self.data[self.data.iloc[:,0]<period].iloc[:,1].idxmin()
 			min_x= self.data[self.data.iloc[:,0]<period].iloc[:,0][min_xcor]
 			self.annot4stiff('Min:',min_x,min_y)
-			return min_y,min_x
-		elif self.isall == 2:
+			return min_y,min_x,min_xcor
+		elif self.isall == 2: #maxmin
 			max_y = max(self.data[self.data.iloc[:,0]<period].iloc[:,1])
 			max_xcor = self.data[self.data.iloc[:,0]<period].iloc[:,1].idxmax()
 			max_x = self.data[self.data.iloc[:,0]<period].iloc[:,0][max_xcor]
@@ -61,7 +62,7 @@ class CurvePlot(basic):
 			min_xcor = self.data[self.data.iloc[:,0]<period].iloc[:,1].idxmin()
 			min_x = self.data[self.data.iloc[:,0]<period].iloc[:,0][min_xcor]
 			self.annot4stiff('Min:' ,min_x, min_y)
-			return max_y,max_x,min_y,min_x
+			return max_y,max_x,max_xcor,min_y,min_x,min_xcor
 
 	@property
 	def frame(self):

@@ -1,5 +1,6 @@
 #coding:utf-8
 import sys
+import os
 import getpass
 try:
 	rundir = sys.argv[1]
@@ -37,15 +38,15 @@ A.BlankPageCreate('Introduction',Paragraphs =paragraphs,Pictures=Pictures)
 
 #page4
 paragraphs = [["* Boundary Conditions are defined.",18],["* Connections between each part are also defined.",18],["* Density of each material can be adjusted to match the weight of each part.",18],["* Mass balance is used to simulate the weight of the module, located at its center of mass.",18]]
-TableValue =[[' Part','Material','E(MPa)','Dens(g/cm3)'],['Bracket','HC340','21000','7.85']]
+TableValue =[[' Part','Material','E(MPa)','Dens(g/cm3)'],['Bracket','HC340','210000','7.85']]
 Tables = [[TableValue,Cm(15),Cm(13.8),Cm(3),Cm(17)]]
 Pictures = [[r'%s\image\Picture1.png' %(rundir),Cm(1.5),Cm(10),Cm(7),Cm(13.31)],[imagedir +'5.jpeg',Cm(20),Cm(8),Cm(5.5),Cm(8.3)]]
 A.BlankPageCreate('Introduction',Paragraphs =paragraphs,Tables=Tables,Pictures=Pictures)
 
 
 #page4
-paragraphs = [["Fatigue Life with vibration in each of three main axes.",24],["Note:",20,'b','','',''],["       Calculate the Fatigue Life by using the following equation:",16],["                  Fatigue Life=1/( Damage Ratio per hour);\n            And, Min. Fatigue Life = 1/(Max. Damage Ratio per hour ).",16,'b'],["Test spec: ISO_12097\nEvaluation criterion:",20,'b'],["        After X(24 hours)+Y(24 hours)+Z(24 hours),",16] ,["      If Max. Damage Ratio < 1,the bracket passes Test spec.",16,'b']]
-A.BlankPageCreate('Introduction',Paragraphs = paragraphs)
+paragraphs = [["Fatigue Life with vibration in each of three main axes.",24],["Note:",20,'b','','',''],["       Calculate the Fatigue Life by using the following equation:",16],["                  Fatigue Life=1/( Damage Ratio per hour);\n            And, Min. Fatigue Life = 1/(Max. Damage Ratio per hour ).",16,'b'],["Test spec: ISO_12097\nEvaluation criterion:",20,'b'],["        After X(24 hours)+Y(24 hours)+Z(24 hours),",16] ,["      If Max. Damage Ratio < 1,the bracket passes Test spec.",16,'b']]
+A.BlankPageCreate('Introduction',Paragraphs =paragraphs)
 
 #page5
 paragraphs = [["Fatigue Life ",20,'b'] ,["   The estimated Damage Ratio is shown as below:",16,]]

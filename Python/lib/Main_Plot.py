@@ -22,13 +22,17 @@ def DeforcPlot(wkdir,figures):
 		Tittle = 'Spring:'+str(int(res['spr_dam'][i]))
 		res_plot = Post.CurvePlot(Tittle,'Time','Force(kN)',1,1,fig_pos,0.3,PltData)
 		res_plot.frame
-		res_plot.maxmin()
+		figure_res = res_plot.maxmin()
 		# break
 	pic = wkdir+'\image'+file
 	plt.savefig(pic,dpi=100)
 	print '#'*20
 	print  'DEFORC is plotted: %s'%(pic )
 	print '#'*20
+	print '\n'*5
+	print figure_res
+	print '\n'*5
+	return figure_res
 	
 def GlstatPlot(wkdir):
 	imagedir = wkdir+'\\image'

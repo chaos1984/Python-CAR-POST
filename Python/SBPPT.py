@@ -18,18 +18,17 @@ import getpass
 muban_path = r'%s\SlideMaster\ALV_General Presentation 2017.pptx' %(rundir)
 A = StiffPPT(muban_path,wkdir)
 ###########################MODIFY############################################################
-PPTName = wkdir.split('\\')[-1]
-Title = ' '.join(wkdir.split('\\')[-1].split('_'))
+PPTName = "Report"
+Title = "ESR-XXXX Anchor Plate Strength"
 Date =  time.strftime("%b %d %Y", time.localtime())
 Author = getpass.getuser()
-
 
 #############################################################################################
 dirs = FindFile(wkdir, 'd3plot')[1]
 print 'wkdir',wkdir
 print 'dirs:',dirs
 #page1
-A.CoverPageCreate(Title,Date,Author)
+A.CoverPageCreate(Title,Author,Date)
 
 #page2
 ReportContents = [['1.FE Model\n2.Material Specification\n3.Load & Boundary Condition\n4.Results\n5.Conclusion',24]]
@@ -51,7 +50,7 @@ A.BlankPageCreate('FE Model',Pictures=Pictures,Tables=Tables)
 
 file1 = FindFile(wkdir,'stress_strain.png')[0]
 Pictures = [[file1[0],Cm(8.9),Cm(10.5),Cm(8),Cm(16)]]
-A.BlankPageCreate("Material Specification",[["Material Type: S500MC",18],["Density 7.85e-09 t/mm3",18],["Young's modulus 210000 Mpa",18],["New failure model has been used for this material element will be removed if failure occur.\nCurrent material use the lowest break limit.",18]],Pictures=Pictures)
+A.BlankPageCreate("Material Specification",[["Material Type: S500MC",18],["Density 7.85e-09 ton/mm3",18],["Young's modulus 210 GPa",18],["New failure model has been used for this material element will be removed if failure occur.\nCurrent material use the lowest break limit.",18]],Pictures=Pictures)
 
 #page5
 A.BlankPageCreate("Load & Boundary Condition")

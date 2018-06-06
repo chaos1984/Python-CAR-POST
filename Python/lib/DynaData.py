@@ -325,7 +325,7 @@ class Glstate(basic):
 
 		return pd.DataFrame(total_data,columns=index)
 
-def dynaMatCurvePlot(KeyFile,Pid,filepath):
+def dynaMatCurvePlot(KeyFile,Pid,filepath,Scale):
 	#Index the mid
 	PartIDPar = []
 	for i in KeyFile.PART:
@@ -358,12 +358,12 @@ def dynaMatCurvePlot(KeyFile,Pid,filepath):
 			if  j[0] == l:
 				CurveStart = 1
 			elif CurveStart == 1 and len(j)==2:
-				Curve.append([ float(j[0]),float(j[1])])
+				Curve.append([ float(j[0]),float(j[1])/Scale])
 			elif len(j)!=2:
 				CurveStart = 0
 		figpos = int('1'+str(len(CurveID))+str(k+1))
 
-		curveplot = CurvePlot('Mat ID:%s' %(l),'Effective plastic strain','Effective stress(MPa)',-1,1,figpos ,0.3,pd.DataFrame(Curve))
+		curveplot = CurvePlot('Mat ID:%s' %(l),'Effective plastic strain','Effective stress(GPa)',-1,1,figpos ,0.3,pd.DataFrame(Curve))
 		curveplot.frame
 		print 'Material ID: %s is Ploted! Curve ID: %s' %(MatID[k],l)
 	pic = filepath +'\\stress_strain.png'

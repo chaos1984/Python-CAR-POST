@@ -27,6 +27,7 @@ def main():
 		os.mkdir(imagedir)
 		#Export pictures
 		os.system("%s %s\\PABSession.py %s %s" %(pydir,rundir,rundir,wkdir))
+		os.system("%s %s\\PABPPT.py %s %s" %(pydir,rundir,rundir,wkdir))
 	else:
 		# Create PPT
 		os.system("%s %s\\PABPPT.py %s %s" %(pydir,rundir,rundir,wkdir))
