@@ -18,7 +18,7 @@ def main():
 	try:
 		wkdir = sys.argv[1]
 	except:
-		wkdir = r'Y:\cal\01_Comp\04_SB\551_180507_ESR-038259_JCSB_Anchor_plate_strength_Zheng\06_Run_Anchor1_Anchor2_F1_mat550'
+		wkdir = r'Y:\cal\01_Comp\04_SB\000_allen\test\F1'
 		# wkdir = 'Y:\\cal\\01_Comp\\04_SB\\548-180423_ESR_038131_LH_BUK_Bracket_Strength_Yujin'
 		
 	dirs = FindFile(wkdir, 'd3plot')[1]
@@ -38,9 +38,8 @@ def main():
 			if not os.path.exists(imagedir):
 				os.mkdir(imagedir)
 				#Create Session file
-				os.system("%s %s\\SBSession.py %s %s %s" %(pydir,rundir,subwkdir,rundir,pydir))
-			else:
-				pass
+	os.system("%s %s\\SBSession.py %s %s %s" %(pydir,rundir,subwkdir,rundir,pydir))
+
 	# Create PPT
 	os.system("%s %s\\SBPPT.py %s %s" %(pydir,rundir,rundir,wkdir))
 if __name__ == "__main__":

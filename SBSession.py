@@ -9,9 +9,9 @@ try:
 except:
 	print "*"*40
 	print  "Default Debug Path"
-	wkdir = "Y:\\cal\\01_Comp\\04_SB\\548-180423_ESR_038128_CTR_BUK_Bracket_Strength_Yujin\\02_run"
-	rundir  = "Y:\doc\08_Personal\Yujin\0508\YokingPy"
-	pydir = r'Y:\\doc\\11_Script\\Python27\\python.exe'
+	wkdir = r"Y:\cal\01_Comp\04_SB\563_180604_ESR_039470_CN300M_Buckle_strap_strength_Allen\02_RUN"
+	rundir  = r"C:\Users\yujin.wang\Desktop\YokingPy"
+	pydir = r'python.exe'
 	print "*"*40
 
 
@@ -20,8 +20,8 @@ from Infor import *
 from DynaData import *
 from Main_Plot import *
 import Copyright
-os.chdir(wkdir)
-os.system("%s C:\\CAE\\scripts\\Python\ASG_HPC_DYN_l2a.py" %(pydir))
+# os.chdir(wkdir)
+# os.system("%s C:\\CAE\\scripts\\Python\ASG_HPC_DYN_l2a.py" %(pydir))
 statement1()	
 try:
 	#Extract binout files
@@ -37,38 +37,39 @@ PartID = Elem.PartID.drop_duplicates()[Elem.PartID<=225].tolist()
 filepath = wkdir +'\\image'
 
 try:
-	dynaMatCurvePlot(KeyFile,PartID,filepath)#plot mat stress-strain curve	
+	dynaMatCurvePlot(KeyFile,PartID,filepath,1000)#plot mat stress-strain curve	
 except:
-	raw_input('MatCurve are not found!')
+	raw_input('ERROR:dynaMatCurvePlot!')
 	sys.exit()
 	
 # Capture camera vector
 try:
+	Spring = KeyFile.ELEMENT_DISCRETE
 	Coord = KeyFile.DEFINE_COORDINATE_NODES
-	print "Current No. Coord is %d" %(len(Coord))
+	print "Current No. DISCRETE ELEMENT is %d" %(len(Spring))
 except:
-	raw_input('Load coord are not found!')
+	raw_input('ERROR:Load Spring are not found!')
 	sys.exit()
 	
 # Plot curve
 try:	
-	if len(Coord ) == 2:
-		# LoadFlag = Coord[0][1] in Coord[1] and Coord[0][2] in Coord[1] and Coord[0][3] in Coord[1]
-		LoadFlag =  len(set(Coord[0])&set(Coord[1]))== 0
+	if len(Spring ) == 2:
+		LoadFlag = Spring[0][2] in Spring[1] or Spring[0][3] in Spring[1]
+		# LoadFlag =  len(set(Spring[0])&set(Spring[1]))== 0
 		OriginNode1 = Node[Node['node']==Coord[0][1]].values.tolist()[0]
 		OriginNode2 = Node[Node['node']==Coord[1][1]].values.tolist()[0]
 		OriginNode  = [(float(OriginNode1[i+1]) + float(OriginNode2[i+1]))/2 for i in range(3)]
 		if LoadFlag :
 			print "Current analysis is single load."
-			DeforcPlot(wkdir,1)
+			figuremax = DeforcPlot(wkdir,1)
 		else:
 			print "Current analysis is two load."
-			DeforcPlot(wkdir,2)
+			figuremax = DeforcPlot(wkdir,2)
 	else:
-		print 'ERROR: No. Pleasche the number of Coordinate(load) is 1 or 2!'
+		print 'ERROR: No. Please check the number of Coordinate(load) is 1 or 2!'
 	GlstatPlot(wkdir) # plot Glstat
 except:
-	raw_input('Please check Deforce and Glstat files!')	
+	raw_input('ERROR:Please check Deforce and Glstat files!')	
 	sys.exit()
 	
 	
@@ -90,6 +91,9 @@ for line in finp.readlines():
 			line = line.replace('image',wkdir+'\image')
 			# if 'model.png' in line and LoadFlag is not True:
 				# line = line.replace('model','model2')
+			fout.write(line)
+		elif 'sta set tim' in line:
+			line = 'sta set tim %f\n' %(figuremax[0])
 			fout.write(line)
 		else:
 			fout.write(line)
