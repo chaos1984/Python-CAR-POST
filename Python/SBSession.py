@@ -20,8 +20,8 @@ from Infor import *
 from DynaData import *
 from Main_Plot import *
 import Copyright
-# os.chdir(wkdir)
-# os.system("%s C:\\CAE\\scripts\\Python\ASG_HPC_DYN_l2a.py" %(pydir))
+os.chdir(wkdir)
+os.system("%s C:\\CAE\\scripts\\Python\ASG_HPC_DYN_l2a.py" %(pydir))
 statement1()	
 try:
 	#Extract binout files
@@ -93,7 +93,7 @@ for line in finp.readlines():
 				# line = line.replace('model','model2')
 			fout.write(line)
 		elif 'sta set tim' in line:
-			line = 'sta set tim %f\n' %(figuremax[0])
+			line = 'sta set tim %f\n' %(figuremax[1])
 			fout.write(line)
 		else:
 			fout.write(line)

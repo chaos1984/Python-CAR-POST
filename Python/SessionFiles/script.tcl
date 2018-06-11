@@ -1,19 +1,21 @@
- catch {sess ReleaseHandle}
- 
- catch {proj ReleaseHandle}
- 
-catch { page ReleaseHandle         }
-catch { win ReleaseHandle          }
-catch { post1 ReleaseHandle        }
-catch { ren ReleaseHandle          }
-catch { mod ReleaseHandle          }
-catch { res ReleaseHandle          }
-catch { contour_ctrl ReleaseHandle }
-catch { leg ReleaseHandle          }
-catch { view ReleaseHandle         }
-catch { not ReleaseHandle          }
-catch { sel ReleaseHandle          }
- 
+ set mode_num 6
+ #####################################
+ #####################################
+ proc ReleaseHandleAll {} {
+    catch { page ReleaseHandle         }
+    catch { win ReleaseHandle          }
+    catch { post1 ReleaseHandle        }
+    catch { ren ReleaseHandle          }
+    catch { mod ReleaseHandle          }
+    catch { res ReleaseHandle          }
+    catch { contour_ctrl ReleaseHandle }
+    catch { leg ReleaseHandle          }
+    catch { view ReleaseHandle         }
+    catch { not ReleaseHandle          }
+    catch { sel ReleaseHandle          }
+ }
+
+ ReleaseHandleAll
  set page_num 0
  
  set filedir "Y:\\cal\\01_Comp\\09_NVH\\000_Anne\\test\\02_run"
@@ -30,9 +32,9 @@ catch { sel ReleaseHandle          }
  
  sess LoadSessionFile "Y:\\cal\\01_Comp\\09_NVH\\000_Anne\\test\\02_run\\session.mvw" false
  
- set page_num [proj GetNumberOfPages]
+ # set page_num [proj GetNumberOfPages]
  
- for {set i 1} {$i<=$page_num} {incr i} {
+ for {set i 1} {$i<=5} {incr i} {
 
  puts page:$i
  
@@ -96,28 +98,55 @@ catch { sel ReleaseHandle          }
  post1 Fit
  post1 Draw
  
- page ReleaseHandle
- win ReleaseHandle
- post1 ReleaseHandle
+ sel ReleaseHandle
+ not ReleaseHandle
+ view ReleaseHandle
+ leg ReleaseHandle 
+ contour_ctrl ReleaseHandle
+ res ReleaseHandle
  ren ReleaseHandle
  mod ReleaseHandle
- res ReleaseHandle
- contour_ctrl ReleaseHandle
- leg ReleaseHandle
- view ReleaseHandle
- not ReleaseHandle
- sel ReleaseHandle
+ post1 ReleaseHandle
+ win ReleaseHandle
+ page ReleaseHandle
  }
  puts *****************
  puts *****************
- for {set i 1} {$i<=$page_num} {incr i} {
+ for {set i 1} {$i<=5} {incr i} {
  proj SetActivePage $i
  set file [concat $filedir\\image\\$i.jpeg]
  puts $file
  sess CaptureActiveWindow  JPEG $file percent 75 50
  }
+ # page ReleaseHandle
+ ReleaseHandleAll
+ proj SetActivePage 6
  
-  sess LoadSessionFile "Y:\\cal\\01_Comp\\09_NVH\\000_Anne\\test\\02_run\\session.mvw" false
+ proj GetPageHandle page 6
+  
+ page GetWindowHandle win 1
+
+ win SetClientType "Animation"
+
+ win GetClientHandle post1
+ 
+ win GetViewControlHandle view
+  
+ post1 GetModelHandle mod 1
+ 
+ mod GetResultCtrlHandle res
+ 
+ puts *****************
+ 
+
+ for {set i 0} {$i<=$mode_num} {incr i} {
+ res SetCurrentSimulation $i
+ post1 Draw
+ set file [concat $filedir\\image\\mode$i.jpeg]
+ sess CaptureActiveWindow  JPEG $file percent 75 50
+ puts $file
+ }
+ 
  
  # ############################
  # # Load model by tcl

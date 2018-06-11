@@ -34,11 +34,11 @@ def main():
 
 	for subwkdir in dirs:#direct path
 		# Make image dir.
-			imagedir =  subwkdir +'\\image'
-			if not os.path.exists(imagedir):
-				os.mkdir(imagedir)
-				#Create Session file
-	os.system("%s %s\\SBSession.py %s %s %s" %(pydir,rundir,subwkdir,rundir,pydir))
+		imagedir =  subwkdir +'\\image'
+		if not os.path.exists(imagedir):
+			os.mkdir(imagedir)
+		#Create Session file
+		os.system("%s %s\\SBSession.py %s %s %s" %(pydir,rundir,subwkdir,rundir,pydir))
 
 	# Create PPT
 	os.system("%s %s\\SBPPT.py %s %s" %(pydir,rundir,rundir,wkdir))
