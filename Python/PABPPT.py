@@ -55,14 +55,13 @@ for line in open(wkdir +'\\X\\eigout'):
 		isFlag = 1
 		continue
 	elif (isFlag ==1 and 'MODE' not in line):
-		print line
 		freq = float( string_split(line[:-1],' ')[3])
 		if freq > 300:
-			mode = int( string_split(line[:-1],' ')[0])
+			mode = int( string_split(line[:-1],' ')[0])-1
 			break
 Pictures = []
 for i in range(mode-1):
-	FigureName = "mode%d" %(i+1)+'.jpeg'
+	FigureName = "mode%d" %(i)+'.jpeg'
 	Pictures.append([imagedir +FigureName,Cm(1+i*6.95),Cm(8),Cm(6.95),Cm(10.42)])
 A.BlankPageCreate('Simulation Result--Mode shape',Pictures=Pictures )
 

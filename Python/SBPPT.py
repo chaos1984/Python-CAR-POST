@@ -50,7 +50,7 @@ A.BlankPageCreate('FE Model',Pictures=Pictures,Tables=Tables)
 
 file1 = FindFile(wkdir,'stress_strain.png')[0]
 Pictures = [[file1[0],Cm(8.9),Cm(10.5),Cm(8),Cm(16)]]
-A.BlankPageCreate("Material Specification",[["Material Type: S500MC",18],["Density 7.85e-09 ton/mm3",18],["Young's modulus 210 GPa",18],["New failure model has been used for this material element will be removed if failure occur.\nCurrent material use the lowest break limit.",18]],Pictures=Pictures)
+A.BlankPageCreate("Material Specification",[["Material Type: S500MC",18],["Density 7.85e-06 kg/mm3",18],["Young's modulus 210 GPa",18],["New failure model has been used for this material element will be removed if failure occur.\nCurrent material use the lowest break limit.",18]],Pictures=Pictures)
 
 #page5
 A.BlankPageCreate("Load & Boundary Condition")
