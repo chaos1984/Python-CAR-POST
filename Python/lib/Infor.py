@@ -13,6 +13,7 @@ import numpy as np,pandas as pd
 from funmodule import *
 from Post import *
 
+@try_except
 @exeTime
 def ReadKeys(wkdir):
 	MainFile = FindFile(wkdir , '*.key')[0]
@@ -30,7 +31,7 @@ def ReadKeys(wkdir):
 			isMoreFiles+=1
 	return KeyFile
 
-
+@try_except
 def FindFile(start, name):
 	#Find the files whose name string contains str(name), and the directory of files
 	isFlag = 0
@@ -73,6 +74,7 @@ class basic():
 class DynaInfo(basic):
 
 	@property
+	@try_except
 	def Pars(self):
 	
 		ParsFlag = 0

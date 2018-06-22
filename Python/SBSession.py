@@ -9,38 +9,40 @@ try:
 except:
 	print "*"*40
 	print  "Default Debug Path"
-	wkdir = r"Y:\cal\01_Comp\04_SB\563_180604_ESR_039470_CN300M_Buckle_strap_strength_Allen\02_RUN"
-	rundir  = r"C:\Users\yujin.wang\Desktop\YokingPy"
+	wkdir = r'Y:\cal\01_Comp\04_SB\566_180611_ESR-039680_BKL_double_buckle_strength_Allen\02_run'
+	rundir  = r"C:\Users\yujin.wang\Desktop\LocalPy"
 	pydir = r'python.exe'
 	print "*"*40
-
 
 sys.path.append(rundir+"\\lib")
 from Infor import *
 from DynaData import *
 from Main_Plot import *
 import Copyright
-# os.chdir(wkdir)
-# os.system("%s C:\\CAE\\scripts\\Python\ASG_HPC_DYN_l2a.py" %(pydir))
+os.chdir(wkdir)
+os.system("%s C:\\CAE\\scripts\\Python\ASG_HPC_DYN_l2a.py" %(pydir))
 statement1()	
+rstfile = open(wkdir+'\\image'+'\\rst.txt','w')
+
+#Get the matdic
+MatDic = {}
 try:
-	#Extract binout files
-	KeyFile = ReadKeys(wkdir )#Read more .KEY files
+	for line in open(rundir+"\\SessionFiles\\MatDic.txt"):
+		data = string_split(line,' ')
+		MatDic[int(data[0])] = data[1] 
+	print 'MatDic has been read!'
 except :
-	raw_input('.key files are not found!')
+	raw_input('MatDic is not load!')
 	sys.exit()
-	
+
+#Extract binout files
+KeyFile = ReadKeys(wkdir )#Read more .KEY files
 #Get model information 
 Node = pd.DataFrame(KeyFile.NODE,columns=['node','x','y','z','tc','rc'])
 Elem = pd.DataFrame(KeyFile.ELEMENT_SOLID,columns=['elem','PartID','n1','n2','n3','n4','n5','n6','n7','n8'])
 PartID = Elem.PartID.drop_duplicates()[Elem.PartID<=225].tolist()
-filepath = wkdir +'\\image'
+MatID = dynaMatCurvePlot(KeyFile,PartID,wkdir +'\\image',1000)#plot mat stress-strain curve	
 
-try:
-	dynaMatCurvePlot(KeyFile,PartID,filepath,1000)#plot mat stress-strain curve	
-except:
-	raw_input('ERROR:dynaMatCurvePlot!')
-	sys.exit()
 	
 # Capture camera vector
 try:
@@ -67,12 +69,15 @@ try:
 			figuremax = DeforcPlot(wkdir,2)
 	else:
 		print 'ERROR: No. Please check the number of Coordinate(load) is 1 or 2!'
-	GlstatPlot(wkdir) # plot Glstat
+	
 except:
 	raw_input('ERROR:Please check Deforce and Glstat files!')	
 	sys.exit()
 	
-	
+rstfile.write('MaxForce %s\n' %(str(figuremax[0])))
+GlstatPlot(wkdir) # plot Glstat
+
+
 #Creat Session files
 SessionFile = wkdir +'\Session.txt'
 print "SessionFile:%s" %(SessionFile) 
@@ -85,6 +90,9 @@ for line in finp.readlines():
 		elif 'vie cam upv nod' in line:
 			fout.write("vie cam upv nod %s\n" %(Coord[0][1]))
 		elif  'rea' in line:
+			for i in MatID:
+				# print MatDic[int(i)],type(MatDic[int(i)])
+				rstfile.write("Mat " +MatDic[int(i)]+ "\n")
 			line = "s[0]:rea fil \"Automatic\" '%s\\d3plot' GEO=0:PartID:all DIS=0:all FUN=0:all:\"max. pl. strain (Shell/Solid)\" FUN=0:all:\"max. v. Mises (Shell/Solid)\" ADD=no " %(wkdir)
 			fout.write(line)
 		elif 'rec' in line or 'wri' in line:
@@ -93,7 +101,7 @@ for line in finp.readlines():
 				# line = line.replace('model','model2')
 			fout.write(line)
 		elif 'sta set tim' in line:
-			line = 'sta set tim %f\n' %(figuremax[0])
+			line = 'sta set tim %f\n' %(figuremax[1])
 			fout.write(line)
 		else:
 			fout.write(line)
@@ -103,7 +111,9 @@ fout.close()
 
 #Pictures for post
 try: 
-	os.system(r"C:\CAE\Animator4\2.3.0\StartA4_64_fbo.exe -b -s %s" %(SessionFile))
+ 	os.system(r"C:\CAE\Animator4\2.3.0\StartA4_64_fbo.exe -b -s %s" %(SessionFile))
+	pass
 except:
 	print 'ERROR:Please check the Animator directory!'
 
+rstfile.close()

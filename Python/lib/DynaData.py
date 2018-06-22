@@ -297,7 +297,6 @@ class Deforce(basic):
 				lenchange .append(value )
 			else:
 				pass
-			
 		res = pd.DataFrame([time,spr_dam,xf,yf,zf,rf,lenchange],index=['Time','spr_dam','xf','yf','zf','rf','lenchange'])
 		return res
 		
@@ -324,7 +323,8 @@ class Glstate(basic):
 				time_data.append(eval(line_data[-1]))
 
 		return pd.DataFrame(total_data,columns=index)
-
+		
+@try_except
 def dynaMatCurvePlot(KeyFile,Pid,filepath,Scale):
 	#Index the mid
 	PartIDPar = []
@@ -369,6 +369,7 @@ def dynaMatCurvePlot(KeyFile,Pid,filepath,Scale):
 	pic = filepath +'\\stress_strain.png'
 	plt.savefig(pic,dpi=100)
 	print '#'*20	
+	return CurveID
 		
 		
 if __name__ == '__main__':

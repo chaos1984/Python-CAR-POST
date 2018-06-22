@@ -6,19 +6,16 @@ pydir = r'Y:\doc\11_Script\Python27\python.exe'
 
 import sys
 import os
-import time
 sys.path.append(rundir+"\\lib")
 from Infor import *
 # import Copyright
-
-
 
 @ exeTime
 def main():
 	try:
 		wkdir = sys.argv[1]
 	except:
-		wkdir = r'Y:\cal\01_Comp\04_SB\000_allen\test\F1'
+		wkdir = r'Y:\cal\01_Comp\04_SB\566_180611_ESR-039680_BKL_double_buckle_strength_Allen\02_run'
 		# wkdir = 'Y:\\cal\\01_Comp\\04_SB\\548-180423_ESR_038131_LH_BUK_Bracket_Strength_Yujin'
 		
 	dirs = FindFile(wkdir, 'd3plot')[1]
@@ -34,11 +31,11 @@ def main():
 
 	for subwkdir in dirs:#direct path
 		# Make image dir.
-			imagedir =  subwkdir +'\\image'
-			if not os.path.exists(imagedir):
-				os.mkdir(imagedir)
-				#Create Session file
-	os.system("%s %s\\SBSession.py %s %s %s" %(pydir,rundir,subwkdir,rundir,pydir))
+		imagedir =  subwkdir +'\\image'
+		if not os.path.exists(imagedir):
+			os.mkdir(imagedir)
+		#Create Session file
+		os.system("%s %s\\SBSession.py %s %s %s" %(pydir,rundir,subwkdir,rundir,pydir))
 
 	# Create PPT
 	os.system("%s %s\\SBPPT.py %s %s" %(pydir,rundir,rundir,wkdir))

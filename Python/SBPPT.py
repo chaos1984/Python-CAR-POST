@@ -1,13 +1,13 @@
 #coding:utf-8
 import sys
-import os
 
 try:
 	rundir = sys.argv[1]
 	wkdir = sys.argv[2]
 except:
-	wkdir = r'Y:\cal\01_Comp\04_SB\551_180507_ESR-038259_JCSB_Anchor_plate_strength_Zheng\1233221'
-	rundir = r"Y:\doc\08_Personal\Yujin\0508\YokingPy"
+	print  "Default Debug Path"
+	wkdir = r'Y:\cal\01_Comp\04_SB\566_180611_ESR-039680_BKL_double_buckle_strength_Allen\02_run'
+	rundir = r"C:\Users\yujin.wang\Desktop\LocalPy"
 	
 sys.path.append(rundir+"\\lib")
 import time
@@ -15,6 +15,30 @@ from Infor import *
 from pptreport import *
 import getpass
 
+
+
+# Material collection in key file
+
+Files = FindFile(wkdir, 'rst.txt')[0]
+
+MatName =[]
+LoadForce = {}
+for i in Files:
+	print i
+	Load = i.split('\\')[-3]
+	for line in open(i):
+		data = string_split(line,' ')
+		if 'Mat' in line:
+			MatName.append(data[1][:-1])
+		elif 'MaxForce' in line:
+			cmd = "LoadForce['%s'] = %f" %(Load,round(float(data[1]),2))
+			exec(cmd)
+MatName = list(set(MatName))
+
+
+	
+
+#############################################################################################
 muban_path = r'%s\SlideMaster\ALV_General Presentation 2017.pptx' %(rundir)
 A = StiffPPT(muban_path,wkdir)
 ###########################MODIFY############################################################
@@ -25,8 +49,10 @@ Author = getpass.getuser()
 
 #############################################################################################
 dirs = FindFile(wkdir, 'd3plot')[1]
-print 'wkdir',wkdir
-print 'dirs:',dirs
+
+
+
+
 #page1
 A.CoverPageCreate(Title,Author,Date)
 
@@ -39,18 +65,19 @@ Pictures = []
 for i,j in enumerate(dirs):
 	file = FindFile(j,'model.jpg')[0]
 	Pictures.append([file[0],Cm(i*12+1),Cm(10),Cm(8),Cm(15)])
-# if file2 !=[]:
-	# Pictures.append([file2[0],Cm(1),Cm(10),Cm(8),Cm(15)])
-# print Pictures
-TableValue =[[' Part','Element Type','Material'],['Bracket','Hex','S550Y600T_low'],['Bolt','Hex','Elastro-steel'],['Fixture','Hex','Rigid']]
-Tables = [[TableValue,Cm(16),Cm(3),Cm(4),Cm(16)]]
+TableValue = [[' Part','Element Type','Material'],['Bolt','Tetra','Elasto-steel'],['Fixture','Hex','Rigid']]
+for mat in MatName:
+	
+	TableValue .append(['Bracket','Hex',mat])
+
+Tables = [[TableValue,Cm(14),Cm(3),Cm(4),Cm(18)]]
 A.BlankPageCreate('FE Model',Pictures=Pictures,Tables=Tables)
 
 #page4
 
 file1 = FindFile(wkdir,'stress_strain.png')[0]
 Pictures = [[file1[0],Cm(8.9),Cm(10.5),Cm(8),Cm(16)]]
-A.BlankPageCreate("Material Specification",[["Material Type: S500MC",18],["Density 7.85e-09 ton/mm3",18],["Young's modulus 210 GPa",18],["New failure model has been used for this material element will be removed if failure occur.\nCurrent material use the lowest break limit.",18]],Pictures=Pictures)
+A.BlankPageCreate("Material Specification",[["Material Type: "+','.join(MatName),18],["Density: 7.85e-06 kg/mm3",18],["Young's modulus: 210 GPa",18],["New failure model has been used for this material element will be removed if failure occur.\nCurrent material use the lowest break limit.",18]],Pictures=Pictures)
 
 #page5
 A.BlankPageCreate("Load & Boundary Condition")
@@ -61,7 +88,8 @@ for dirname in dirs:#direct path
 		image_dir =  dirname  +'\\image\\'
 		Pictures = [[image_dir +'deforc.png',Cm(15),Cm(5),Cm(6),Cm(13)]]
 		Movies = [[image_dir  +'anim.avi',Cm(3),Cm(8),Cm(10),Cm(9)]]
-		Title = 'Simulation Results'+'('+dirname.split('\\')[-1]+') '
+		Load = dirname.split('\\')[-1]
+		Title = 'Simulation Results'+' ('+Load+') '
 		A.BlankPageCreate(Title,Pictures=Pictures,Movies=Movies)
 		
 		Pictures=[]
@@ -83,7 +111,19 @@ for dirname in dirs:#direct path
 		# break
 
 #page7
-A.BlankPageCreate('Conclusion',[['Current maximum displacement occurs on the anchor plate is 16.7mm, and no breakage occurs on the anchor plate during a tensile force of 22KN.\nIn general, current design meets the analysis requirement.\nCurrent material use the lowest break limit.',18]])
+row1 = ['Load Cases'];row2 =['Target tensile force(kN)'];row3=['Maximal tensile force(kN)'];row4=['Result']
+
+for i in LoadForce:
+	row1.append(i)
+	row2.append(' ')
+	row3.append(str(LoadForce[i]))
+	row4.append(' ')
+	
+TableValue = [row1,row2,row3,row4]
+
+Tables = [[TableValue,Cm(2.8),Cm(5.0),Cm(6),Cm(28)]]
+
+A.BlankPageCreate('Conclusion',[['',200],['Current maximum displacement occurs on the anchor plate is 16.7mm, and no breakage occurs on the anchor plate during a tensile force of 22KN.\n\nIn general, current design meets the analysis requirement.\n\nNote: Current material use the lowest break limit.',18]],Tables=Tables)
 	
 #page8
 A.EndPageCreate()

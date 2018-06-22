@@ -6,8 +6,8 @@ try:
 	rundir = sys.argv[1]
 	wkdir = sys.argv[2]
 except:
-	rundir = r"Y:\doc\11_Script\SBStrengthAndPABPSD"
-	wkdir = r'Y:\cal\01_Comp\09_NVH\395_180507_ESR-038350_GDP_IC_Inflator_Bracket_fatigue_Anne\02_run_Bracket_2\33_3Hz'
+	rundir = r"Y:\doc\08_Personal\Yujin\0508\YokingPy"
+	wkdir = r'Y:\cal\01_Comp\09_NVH\000_Anne\test\02_run'
 	
 sys.path.append(rundir+"\\lib")
 from Infor import *
@@ -47,6 +47,24 @@ A.BlankPageCreate('Introduction',Paragraphs =paragraphs,Tables=Tables,Pictures=P
 #page4
 paragraphs = [["Fatigue Life with vibration in each of three main axes.",24],["Note:",20,'b','','',''],["       Calculate the Fatigue Life by using the following equation:",16],["                  Fatigue Life=1/( Damage Ratio per hour);\n            And, Min. Fatigue Life = 1/(Max. Damage Ratio per hour ).",16,'b'],["Test spec: ISO_12097\nEvaluation criterion:",20,'b'],["        After X(24 hours)+Y(24 hours)+Z(24 hours),",16] ,["      If Max. Damage Ratio < 1,the bracket passes Test spec.",16,'b']]
 A.BlankPageCreate('Introduction',Paragraphs =paragraphs)
+
+#page#page5#Creat Session file
+isFlag = 0
+for line in open(wkdir +'\\X\\eigout'):
+	if 'EIGENVALUE' in line:
+		isFlag = 1
+		continue
+	elif (isFlag ==1 and 'MODE' not in line):
+		print line
+		freq = float( string_split(line[:-1],' ')[3])
+		if freq > 300:
+			mode = int( string_split(line[:-1],' ')[0])
+			break
+Pictures = []
+for i in range(mode):
+	FigureName = "mode%d" %(i+1)+'.jpeg'
+	Pictures.append([imagedir +FigureName,Cm(1+i*6.95),Cm(8),Cm(6.95),Cm(10.42)])
+A.BlankPageCreate('Simulation Result--Mode shape',Pictures=Pictures )
 
 #page5
 paragraphs = [["Fatigue Life ",20,'b'] ,["   The estimated Damage Ratio is shown as below:",16,]]
