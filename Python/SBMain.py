@@ -1,21 +1,19 @@
+#coding:utf-8
+from lib import *
 
 rundir = r"Y:\doc\08_Personal\Yujin\0508\YokingPy"
 #Define the python path
 pydir = r'Y:\doc\11_Script\Python27\python.exe'
 # pydir = "python"
 
-import sys
-import os
-sys.path.append(rundir+"\\lib")
-from Infor import *
-# import Copyright
 
 @ exeTime
 def main():
 	try:
 		wkdir = sys.argv[1]
+		print wkdir
 	except:
-		wkdir = r'Y:\cal\01_Comp\04_SB\566_180611_ESR-039680_BKL_double_buckle_strength_Allen\02_run'
+		wkdir = r'Y:\cal\01_Comp\04_SB\566_180611_ESR-039680_BKL_double_buckle_strength_Allen\02_run\double'
 		# wkdir = 'Y:\\cal\\01_Comp\\04_SB\\548-180423_ESR_038131_LH_BUK_Bracket_Strength_Yujin'
 		
 	dirs = FindFile(wkdir, 'd3plot')[1]

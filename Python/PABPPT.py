@@ -1,17 +1,15 @@
 #coding:utf-8
-import sys
-import os
-import getpass
+from lib import *
 try:
 	rundir = sys.argv[1]
 	wkdir = sys.argv[2]
 except:
 	rundir = r"Y:\doc\08_Personal\Yujin\0508\YokingPy"
-	wkdir = r'Y:\cal\01_Comp\09_NVH\000_Anne\test\02_run'
+	wkdir = r'Y:\cal\01_Comp\09_NVH\000_Anne\test\02_run_R10'
 	
-sys.path.append(rundir+"\\lib")
-from Infor import *
-from pptreport import *
+# sys.path.append(rundir+"\\lib")
+# from Infor import *
+
 
 muban_path = r'%s\SlideMaster\ALV_General Presentation 2017.pptx' %(rundir)
 imagedir = wkdir + '\\image\\'

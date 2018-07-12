@@ -1,6 +1,5 @@
 #coding:utf-8
-import sys
-import os 
+from lib import *
 
 try:
 	wkdir = sys.argv[1]
@@ -14,14 +13,8 @@ except:
 	pydir = r'python.exe'
 	print "*"*40
 
-sys.path.append(rundir+"\\lib")
-from Infor import *
-from DynaData import *
-from Main_Plot import *
-import Copyright
 os.chdir(wkdir)
-os.system("%s C:\\CAE\\scripts\\Python\ASG_HPC_DYN_l2a.py" %(pydir))
-statement1()	
+os.system("%s C:\\CAE\\scripts\\Python\\ASG_HPC_DYN_l2a.py" %(pydir))	
 rstfile = open(wkdir+'\\image'+'\\rst.txt','w')
 
 #Get the matdic
@@ -111,8 +104,7 @@ fout.close()
 
 #Pictures for post
 try: 
- 	os.system(r"C:\CAE\Animator4\2.3.0\StartA4_64_fbo.exe -b -s %s" %(SessionFile))
-	pass
+ 	os.system(r"StartA4_64_fbo.exe -b -s %s" %(SessionFile))
 except:
 	print 'ERROR:Please check the Animator directory!'
 

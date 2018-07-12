@@ -1,6 +1,7 @@
 #coding:utf-8
-import sys
-import os 
+from lib import *
+# from lib.DynaData import *
+# from lib.Main_Plot import *
 
 try:
 	rundir = sys.argv[1]
@@ -8,11 +9,8 @@ try:
 except:
 	wkdir = "Y:\cal\01_Comp\09_NVH\000_Anne\test"
 	rundir="Y:\doc\08_Personal\Yujin\0508\YokingPy"
-sys.path.append(rundir+"\\lib")
-from Infor import *
-from DynaData import *
-from Main_Plot import *
-import Copyright
+
+
 os.system( "copy %s\\SessionFiles\\session.mvw %s" %(rundir ,wkdir))
 statement1()
 
@@ -31,6 +29,6 @@ for line in finp.readlines():
 		fout.write(line)
 fout.close()
 try:
-	os.system("C:\\CAE\\HyperWorks\\14.0\\hw\\bin\\win64\\hw.exe -b -tcl %s" %(ScriptFile))
+	os.system("C:\\CAE\\HYPERWORKS\\2017.2\\hw\\bin\\win64\\hw.exe -b -tcl %s" %(ScriptFile))
 except:
-	print 'ERROR:lease check the HW directory!'
+	print 'ERROR:Please check the HW directory!'

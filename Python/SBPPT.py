@@ -1,5 +1,5 @@
 #coding:utf-8
-import sys
+from lib import *
 
 try:
 	rundir = sys.argv[1]
@@ -8,14 +8,6 @@ except:
 	print  "Default Debug Path"
 	wkdir = r'Y:\cal\01_Comp\04_SB\566_180611_ESR-039680_BKL_double_buckle_strength_Allen\02_run'
 	rundir = r"C:\Users\yujin.wang\Desktop\LocalPy"
-	
-sys.path.append(rundir+"\\lib")
-import time
-from Infor import *
-from pptreport import *
-import getpass
-
-
 
 # Material collection in key file
 
@@ -49,9 +41,6 @@ Author = getpass.getuser()
 
 #############################################################################################
 dirs = FindFile(wkdir, 'd3plot')[1]
-
-
-
 
 #page1
 A.CoverPageCreate(Title,Author,Date)
