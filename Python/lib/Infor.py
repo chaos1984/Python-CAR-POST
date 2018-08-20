@@ -5,31 +5,11 @@ Created on %(date)
 This is used to parse the info. of FEM
 '''
 import os
-import time
-import datetime
-import Copyright
 import sqlite3
 import numpy as np,pandas as pd
 from funmodule import *
 from Post import *
 
-@try_except
-@exeTime
-def ReadKeys(wkdir):
-	MainFile = FindFile(wkdir , '*.key')[0]
-	print '#'*20
-	print 'Key files:','\n'.join(MainFile)
-	print '#'*20
-	isMoreFiles = 0
-	for  i in MainFile:
-		temp = DynaInfo(i)
-		temp.Pars
-		if isMoreFiles >0:
-			KeyFile.__dict__.update(temp.__dict__)
-		else:
-			KeyFile = temp
-			isMoreFiles+=1
-	return KeyFile
 
 @try_except
 def FindFile(start, name):
@@ -66,63 +46,72 @@ class basic():
 	def __init__(self,*vars,**kwargs):
 		try:
 			self.src = vars[0]
+			self.checkresult = vars[1]
+			self.files = FindFile(self.src , vars[2])
+			
 		except:
 			pass
 
-		# self.time = time.strftime('%y-%m-%d %H:%M:%S',time,localtime(time.time()))
-
 class DynaInfo(basic):
-
-	@property
 	@try_except
-	def Pars(self):
-	
-		ParsFlag = 0
-		for line in open(self.src):
-			try:#
-				data = string_split(line[:-1],' ')
-				if '*' in line and line.strip()[0] != '$' :
-					if data[0][1:] not in dir(self):
-						keyword = 'self.' + data[0][1:]
-						cmd = keyword + '=[]'
-						exec(cmd)
-					else:
-						keyword = 'self.' + data[0][1:]
-					if  'ELEMENT_'  in line:
-						ParsFlag = 1
-						delta = 8
-						continue
-					elif 'MAT_'  in line:
-						ParsFlag = 1
-						delta = 10
-						continue
-					else:
-						ParsFlag = 0
-					
-				elif(line[0] != '$' and '*' not in line and ParsFlag == 0):
-						cmd = keyword + '.append(data)'
-						exec (cmd)	
-				elif (line[0] != '$' and '*' not in line and ParsFlag ==1):
-						try:
-							data = [int(line[0+delta*i:delta+delta*i]) for i in range(len(line[:-1])/delta)]
-						except:
-							# print 'WARNNING:',line
-							data = [line[0+delta*i:delta+delta*i].strip() for i in range(len(line[:-1])/delta)]
-						cmd = keyword + '.append(data)'
-						exec (cmd)	
-			
-			except:
-				print 'ERROR:',line
+	@exeTime
+	def Pars(self,keyfiles):
+		'''
+		parse the key files
+		keyfiles -- dyna files list
+		'''
+		for keyfile in keyfiles:
+			ParsFlag = 0
+			print '##################'
+			print 'Key file:',keyfile
+			print '##################'
+			for line in open(keyfile):
+				try:#
+					data = string_split(line[:-1],' ')
+					if '*' in line and line.strip()[0] != '$' :
+						if data[0][1:] not in dir(self):
+							keyword = 'self.' + data[0][1:]
+							cmd = keyword + '=[]'
+							exec(cmd)
+						else:
+							keyword = 'self.' + data[0][1:]
+						if  'ELEMENT_'  in line:
+							ParsFlag = 1
+							delta = 8
+							continue
+						elif 'MAT_'  in line:
+							ParsFlag = 1
+							delta = 10
+							continue
+						else:
+							ParsFlag = 0
+					elif (line[0] != '$' and '*' not in line and ParsFlag == 0):
+							cmd = keyword + '.append(data)'
+							exec (cmd)	
+					elif (line[0] != '$' and '*' not in line and ParsFlag ==1):
+							try:
+								data = [int(line[0+delta*i:delta+delta*i]) for i in range(len(line[:-1])/delta)]
+							except:
+								# print 'WARNNING:',line
+								data = [line[0+delta*i:delta+delta*i].strip() for i in range(len(line[:-1])/delta)]
+							cmd = keyword + '.append(data)'
+							exec (cmd)	
+				except:
+							print 'ERROR:',line
+		return self
+
 				
 	@statement
-	def InfoPrint(self,keywords):
+	def CheckWrite(self,keywords):
+		fout = open(self.checkresult,'w')
 		for kw in keywords:
-			# strName = 'TestFile.' + kw
-			print kw
-			cmd =  'print " ".join(' + 'self.' + kw+ ')'
-			exec (cmd)
-			print "*"*80+'\n'
-		 
+			fout.write('*'+kw+'\n')
+#			cmd =  "fout.write(' '.join(" + 'self.' + kw+ "))"
+			cmd = "fout.write(repr(self." + kw + "))"+'\n'
+			print cmd
+			exec(cmd)
+			fout.write("$"*80+'\n')
+		fout.close()
 class OptistructInfo(basic):
 
 	@property
