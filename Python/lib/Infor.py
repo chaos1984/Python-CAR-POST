@@ -102,15 +102,25 @@ class DynaInfo(basic):
 
 				
 	@statement
-	def CheckWrite(self,keywords):
+	def CheckWrite(self,keywords,parts):
 		fout = open(self.checkresult,'w')
-		for kw in keywords:
-			fout.write('*'+kw+'\n')
 #			cmd =  "fout.write(' '.join(" + 'self.' + kw+ "))"
-			cmd = "fout.write(repr(self." + kw + "))"+'\n'
-			print cmd
-			exec(cmd)
-			fout.write("$"*80+'\n')
+		for i in dir(self):
+			if i in keywords:
+				fout.write('*'+i+'\n')
+				Count = 0
+				for j in self.__dict__[i]:
+					string = ''
+					for data in j:
+						if '&' in data:
+							data1 = string_split(data,'&')
+							string += '%10s%10s' %(data1[0],'&'+data1[1]) 
+						else:
+							string += '%10s' %(data)
+					fout.write(string+"\n")
+				fout.write("$"*80+'\n')
+			else:
+				pass
 		fout.close()
 class OptistructInfo(basic):
 
