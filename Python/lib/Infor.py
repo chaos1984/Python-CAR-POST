@@ -100,28 +100,55 @@ class DynaInfo(basic):
 							print 'ERROR:',line
 		return self
 
-				
-	@statement
+	def DynaFormat1(self,listRow):
+		'''
+		Dyna format:%10s per word
+		data -- list
+		'''
+		string = ''
+		for data in listRow:
+			if '&' in data:
+				data1 = string_split(data,'&')
+				string += '%10s%10s' %(data1[0],'&'+data1[1]) 
+			else:
+				string += '%10s' %(data)
+		return string
+	
+	def PartInfo(self,part):
+		string = '$'
+		isCount = 0
+		for i in self.SECTION_SHELL:
+			if part[1] == i[0]:
+				string += self.DynaFormat1(i)+'\n$'
+				isCount = 1
+			elif isCount == 1:
+				string += self.DynaFormat1(i)
+				isCount = 0
+		for i in self.SECTION_SOLID:
+			if part[1] == i[0]:
+				string += self.DynaFormat1(i)
+		return string
+	
 	def CheckWrite(self,keywords,parts):
 		fout = open(self.checkresult,'w')
 #			cmd =  "fout.write(' '.join(" + 'self.' + kw+ "))"
 		for i in dir(self):
 			if i in keywords:
 				fout.write('*'+i+'\n')
-				Count = 0
+				string = ''
 				for j in self.__dict__[i]:
-					string = ''
-					for data in j:
-						if '&' in data:
-							data1 = string_split(data,'&')
-							string += '%10s%10s' %(data1[0],'&'+data1[1]) 
-						else:
-							string += '%10s' %(data)
+					string = self.DynaFormat1(j)
 					fout.write(string+"\n")
+					if len(j)>2:
+						string = self.PartInfo(j)
+						fout.write(string+"\n")
 				fout.write("$"*80+'\n')
 			else:
 				pass
 		fout.close()
+		
+		
+		
 class OptistructInfo(basic):
 
 	@property
