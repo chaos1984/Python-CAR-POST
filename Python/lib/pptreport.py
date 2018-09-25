@@ -51,7 +51,7 @@ class StiffPPT():
 		print '#' * 10 + 'PAGE %d' % (self.pages) + '#' * 10
 		print slide.shapes
 		print len(slide.shapes)
-		shapes = slide.shapes[0]
+		shapes = slide.shapes[3]
 		shapes.text = Title
 		shapes = slide.shapes[1]
 		shapes.text = Author

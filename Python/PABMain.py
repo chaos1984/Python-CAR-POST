@@ -1,15 +1,11 @@
-from lib import *
-# from lib.Infor import *
-
+#coding:utf-8
+from Autolivlib import *
 #Define the post program path
 rundir = r"Y:\doc\08_Personal\Yujin\0508\YokingPy"
 # rundir = r"C:\Users\yujin.wang\Desktop\LocalPy"
 #Define the python path
-pydir = r'Y:\doc\11_Script\Python27\python.exe'
-# pydir = 'python'
-
-
-
+# pydir = r'Y:\doc\11_Script\Python27\python.exe'
+pydir = 'python'
 
 @ exeTime
 def main():

@@ -1,13 +1,13 @@
 #coding:utf-8
-from lib import *
+from Autolivlib import *
 
 try:
 	rundir = sys.argv[1]
 	wkdir = sys.argv[2]
 except:
 	print  "Default Debug Path"
-	wkdir = r'Y:\cal\01_Comp\04_SB\566_180611_ESR-039680_BKL_double_buckle_strength_Allen\02_run'
-	rundir = r"C:\Users\yujin.wang\Desktop\LocalPy"
+	wkdir = r'Y:\cal\01_Comp\04_SB\578_180727_ESR-041592_FS11_bracket_tensile_strength_Allen\02_run\F1'
+	rundir = r"Y:\doc\08_Personal\Yujin\0508\YokingPy"
 
 # Material collection in key file
 
@@ -43,7 +43,7 @@ Author = getpass.getuser()
 dirs = FindFile(wkdir, 'd3plot')[1]
 
 #page1
-A.CoverPageCreate(Title,Author,Date)
+A.CoverPageCreate("ESR-XXXX Anchor Plate Strength",Author,Date)
 
 #page2
 ReportContents = [['1.FE Model\n2.Material Specification\n3.Load & Boundary Condition\n4.Results\n5.Conclusion',24]]

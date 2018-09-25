@@ -1,5 +1,5 @@
 #coding:utf-8
-from lib import *
+from Autolivlib import *
 
 try:
 	wkdir = sys.argv[1]
@@ -43,6 +43,8 @@ try:
 	Coord = KeyFile.DEFINE_COORDINATE_NODES
 	print "Current No. DISCRETE ELEMENT is %d" %(len(Spring))
 except:
+	print KeyFile.ELEMENT_DISCRETE
+	print KeyFile.DEFINE_COORDINATE_NODES
 	raw_input('ERROR:Load Spring are not found!')
 	sys.exit()
 	

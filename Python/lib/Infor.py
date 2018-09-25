@@ -9,7 +9,6 @@ import sqlite3
 import numpy as np,pandas as pd
 from funmodule import *
 from Post import *
-from graphviz import Digraph
 
 
 @try_except
@@ -69,11 +68,9 @@ class DynaInfo(basic):
 			for line in open(keyfile):
 				try:#
 					data = string_split(line[:-1],' ')
-					#extract keyworsd
-					strFirstC =line.strip()[0]
-					if strFirstC == '*' and strFirstC != '$' :
+					if '*' in line and line.strip()[0] != '$' :
 						if data[0][1:] not in dir(self):
-							keyword = 'self.' + line[1:-1]
+							keyword = 'self.' + data[0][1:]
 							cmd = keyword + '=[]'
 							exec(cmd)
 						else:
@@ -86,18 +83,12 @@ class DynaInfo(basic):
 							ParsFlag = 1
 							delta = 10
 							continue
-						elif 'NODE ' in line:
-							ParsFlag = 2
 						else:
 							ParsFlag = 0
-					#extra data
-					elif (strFirstC != '$' and '*' not in line and ParsFlag == 0):
-							if line[:10].strip().isdigit():
-								data = [line[0+10*i:10+10*i] for i in range(len(line[:-1])/10)]
+					elif (line[0] != '$' and '*' not in line and ParsFlag == 0):
 							cmd = keyword + '.append(data)'
 							exec (cmd)	
-							
-					elif (strFirstC != '$' and '*' not in line and ParsFlag ==1):
+					elif (line[0] != '$' and '*' not in line and ParsFlag ==1):
 							try:
 								data = [int(line[0+delta*i:delta+delta*i]) for i in range(len(line[:-1])/delta)]
 							except:
@@ -105,20 +96,8 @@ class DynaInfo(basic):
 								data = [line[0+delta*i:delta+delta*i].strip() for i in range(len(line[:-1])/delta)]
 							cmd = keyword + '.append(data)'
 							exec (cmd)	
-					elif (strFirstC != '$' and '*' not in line and ParsFlag ==2):
-						data= [0 for i in range(6)]
-						data[0] =line[:8]
-						data[1] =line[8:24]
-						data[2] =line[24:40]
-						data[3] =line[40:56]
-						data[4] =line[56:64]
-						data[5] =line[64:72]
-						cmd = keyword + '.append(data)'
-						exec (cmd)	
-						
 				except:
-					print 'ERROR:',line
-					break
+							print 'ERROR:',line
 		return self
 
 	def DynaFormat1(self,listRow):
@@ -135,37 +114,40 @@ class DynaInfo(basic):
 				string += '%10s' %(data)
 		return string
 	
-	def PartInfo(self):
-		'''
-		return string to write
-		part
-		'''
-		listPartInfo = []
-		listPart = []
-		for data in self.PART:
-			if len(data)==1:
-				listPart = data
-				continue
-			else:
-				listPart.extend(data)
-				listPartInfo.append(listPart)
-		return listPartInfo
+	def PartInfo(self,part):
+		string = '$'
+		isCount = 0
+		for i in self.SECTION_SHELL:
+			if part[1] == i[0]:
+				string += self.DynaFormat1(i)+'\n$'
+				isCount = 1
+			elif isCount == 1:
+				string += self.DynaFormat1(i)
+				isCount = 0
+		for i in self.SECTION_SOLID:
+			if part[1] == i[0]:
+				string += self.DynaFormat1(i)
+		return string
 	
-	def GraphStru(self,listpart):
-		g = Digraph('Struct', format='png')
-		g.attr(rankdir='LR')
-		for i in listpart:
-			Part = 'Part'+i[1].strip()
-			Sec = 'Sec'+i[2].strip()
-			Mat = 'Mat'+i[3].strip()
-			print Part,Sec,Mat
-			g.node(Part,shape='rectangle',label=i[0])
-			g.node(Sec,shape='diamond')
-			g.node(Mat)
-			g.edge( Part,Sec)
-			g.edge( Part,Mat)
-		g.view()
-
+	def CheckWrite(self,keywords,parts):
+		fout = open(self.checkresult,'w')
+#			cmd =  "fout.write(' '.join(" + 'self.' + kw+ "))"
+		for i in dir(self):
+			if i in keywords:
+				fout.write('*'+i+'\n')
+				string = ''
+				for j in self.__dict__[i]:
+					string = self.DynaFormat1(j)
+					fout.write(string+"\n")
+					if len(j)>2:
+						string = self.PartInfo(j)
+						fout.write(string+"\n")
+				fout.write("$"*80+'\n')
+			else:
+				pass
+		fout.close()
+		
+		
 		
 class OptistructInfo(basic):
 

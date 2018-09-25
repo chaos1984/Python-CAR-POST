@@ -1,16 +1,13 @@
 #coding:utf-8
-from lib import *
+from Autolivlib import *
+
 try:
 	rundir = sys.argv[1]
 	wkdir = sys.argv[2]
 except:
 	rundir = r"Y:\doc\08_Personal\Yujin\0508\YokingPy"
-	wkdir = r'Y:\cal\01_Comp\09_NVH\000_Anne\test\02_run_R10'
+	wkdir = r'Y:\cal\01_Comp\09_NVH\427_180806_ESR-041867_ZT_B21_PAB_Bracket_fatigue_Anne\02_run'
 	
-# sys.path.append(rundir+"\\lib")
-# from Infor import *
-
-
 muban_path = r'%s\SlideMaster\ALV_General Presentation 2017.pptx' %(rundir)
 imagedir = wkdir + '\\image\\'
 A = StiffPPT(muban_path,wkdir)
@@ -46,21 +43,11 @@ A.BlankPageCreate('Introduction',Paragraphs =paragraphs,Tables=Tables,Pictures=P
 paragraphs = [["Fatigue Life with vibration in each of three main axes.",24],["Note:",20,'b','','',''],["       Calculate the Fatigue Life by using the following equation:",16],["                  Fatigue Life=1/( Damage Ratio per hour);\n            And, Min. Fatigue Life = 1/(Max. Damage Ratio per hour ).",16,'b'],["Test spec: ISO_12097\nEvaluation criterion:",20,'b'],["        After X(24 hours)+Y(24 hours)+Z(24 hours),",16] ,["      If Max. Damage Ratio < 1,the bracket passes Test spec.",16,'b']]
 A.BlankPageCreate('Introduction',Paragraphs =paragraphs)
 
-#page#page5#Creat Session file
-isFlag = 0
-for line in open(wkdir +'\\X\\eigout'):
-	if 'EIGENVALUE' in line:
-		isFlag = 1
-		continue
-	elif (isFlag ==1 and 'MODE' not in line):
-		print line
-		freq = float( string_split(line[:-1],' ')[3])
-		if freq > 300:
-			mode = int( string_split(line[:-1],' ')[0])
-			break
+#page5#Creat Session file
+mode = len(FindFile(wkdir + "\\image\\","mode" )[0])
 Pictures = []
-for i in range(mode):
-	FigureName = "mode%d" %(i+1)+'.jpeg'
+for i in range(mode-1):
+	FigureName = "mode%d" %(i)+'.jpeg'
 	Pictures.append([imagedir +FigureName,Cm(1+i*6.95),Cm(8),Cm(6.95),Cm(10.42)])
 A.BlankPageCreate('Simulation Result--Mode shape',Pictures=Pictures )
 
