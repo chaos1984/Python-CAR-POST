@@ -15,9 +15,11 @@ from Post import *
 def FindFile(start, name):
 	#Find the files whose name string contains str(name), and the directory of files
 	isFlag = 0
+	lenname = len(name)
 	if  '*' in name:
 		name = name.strip('*')
 		isFlag =1
+		lenname = len(name)-1
 	relpath =[]
 	files_set = []
 	dirs = []
@@ -26,7 +28,7 @@ def FindFile(start, name):
 	if isFlag == 0:
 		for relpath, dirs, files in os.walk(start):
 			for i in files:
-				if name in i:
+				if name == i[-lenname:]:
 					full_path = os.path.join(start, relpath, i)
 					files_set.append(os.path.normpath(os.path.abspath(full_path)))
 					dirs_set.append(os.path.join(start, relpath))
@@ -48,7 +50,6 @@ class basic():
 			self.src = vars[0]
 			self.checkresult = vars[1]
 			self.files = FindFile(self.src , vars[2])
-			
 		except:
 			pass
 
@@ -117,20 +118,22 @@ class DynaInfo(basic):
 	def PartInfo(self,part):
 		string = '$'
 		isCount = 0
-		for i in self.SECTION_SHELL:
-			if part[1] == i[0]:
-				string += self.DynaFormat1(i)+'\n$'
-				isCount = 1
-			elif isCount == 1:
-				string += self.DynaFormat1(i)
-				isCount = 0
-		for i in self.SECTION_SOLID:
-			if part[1] == i[0]:
-				string += self.DynaFormat1(i)
+		if hasattr(self,'SECTION_SHELL'):
+			for i in self.SECTION_SHELL:
+				if part[1] == i[0]:
+					string += self.DynaFormat1(i)+'\n$'
+					isCount = 1
+				elif isCount == 1:
+					string += self.DynaFormat1(i)
+					isCount = 0
+		if hasattr(self,'SECTION_SOLID'):
+			for i in self.SECTION_SOLID:
+				if part[1] == i[0]:
+					string += self.DynaFormat1(i)
 		return string
 	
-	def CheckWrite(self,keywords,parts):
-		fout = open(self.checkresult,'w')
+	def CheckWrite(self,keywords):
+		fout = open(self.src + '\\' + self.checkresult,'w')
 #			cmd =  "fout.write(' '.join(" + 'self.' + kw+ "))"
 		for i in dir(self):
 			if i in keywords:
