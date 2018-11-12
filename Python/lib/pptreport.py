@@ -9,6 +9,7 @@ from pptx.dml.color import RGBColor
 from pptx.enum.dml import MSO_THEME_COLOR
 from pptx.util import Cm,Pt,Inches
 from pptx.enum.shapes import MSO_SHAPE
+from pptx.enum.text import MSO_AUTO_SIZE
 #from pptx.enum.dml import MSO_PATTERN
 
 
@@ -115,8 +116,8 @@ class StiffPPT():
 		self.prs.slides.add_slide(self.EndPage)
 		print '#'*20+'\n'
 
-	def addTables(self,slide,Tables):
-		try:
+	def addTables(self,slide,Tables,FontSize= 18):
+		# try:
 			print 'No. Tables:',len(Tables)
 			for i in range(len(Tables)):
 				rows = len(Tables[i][0]);cols = len(Tables[i][0][0])
@@ -127,9 +128,13 @@ class StiffPPT():
 					for k in range(cols):
 						MatTable.cell(j,k).fill.background()
 						# MatTable.fore_color.rgb = RGBColor(0x01, 0x23, 0x45)
-						MatTable.cell(j,k).text = Tables[i][0][j][k]
-						elem_cell = MatTable.cell(j,k)
+						elem_cell = MatTable.cell(j,kqa)
 						elem_cell.fill.solid()
+						elem_cell.text_frame.paragraphs[0].text = Tables[i][0][j][k]
+						# item.space_before = Pt(1)
+						elem_cell.text_frame.paragraphs[0].font.size = Pt(FontSize)
+						elem_cell.text_frame.auto_size = MSO_AUTO_SIZE.SHAPE_TO_FIT_TEXT
+
 						if j == 0:
 							elem_cell.fill.fore_color.theme_color = MSO_THEME_COLOR.ACCENT_2
 						else:
@@ -139,7 +144,7 @@ class StiffPPT():
 						# fill.patterned()
 						# fill.pattern= MSO_PATTERN.PERCENT_90
 						# elem_cell.fill.fore_color.rgb = RGBColor(0x01, 0x23, 0x45)
-		except:
+		# except:
 			print (u'Warnning: Tables!')
 	
 	def addPictures(self,slide,Pictures):
