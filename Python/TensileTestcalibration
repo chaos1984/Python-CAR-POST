@@ -1,0 +1,109 @@
+# -*- coding: utf-8 -*-
+"""
+Spyder Editor
+This is a temporary script file.
+"""
+import time
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import scipy as sp
+from scipy.optimize import curve_fit
+
+#def fun(eps,a0,a1,a2,a3):
+#	return a0*(pow(eps,a1)+eps*a2+pow(eps,a3))
+#def fun(eps,a0,a1,a2,a3,a4):
+#	return a0*np.arctan(a1*eps) + pow(eps,a2) 
+def fun(eps,a0,a1,a2,a3,a4):
+	return a0 + a1*pow(eps,1) + a2*pow(eps,2)+a3*pow(eps,3)+a4*pow(eps,4)
+def fun1(eps,a0,a1,a2,a3,a4):
+	return a0 + a1*pow(eps,1) + a2*pow(eps,2)+a3*pow(eps,3)+a4*pow(eps,4)
+
+def MAT89LCSS(fdfile,A,l0):
+    data = pd.read_csv(fdfile)
+    x = data.Disp
+    y = data.Force
+    EngStrain = x/l0
+    EngStress = y/A
+    TrueStrain = np.log(1+EngStrain)
+    TrueStress = EngStress*(1+EngStrain)
+    plt.figure(1)
+#    plt.plot(EngStrain,EngStress,'b')
+    plt.plot(TrueStrain,TrueStress,'p')
+    return TrueStrain,TrueStress
+
+def MAT24LCSS(x,y,p,length=2.0,yieldfpoint=0.02,Ymould_user=0,scale=[1,1,1,1,1],strainturn=0,scaleturn=1):
+    popt,pcov = sp.optimize.curve_fit(fun, x, y, p0)
+    a0,a1,a2,a3,a4 = popt
+    SigmaY = fun(yieldfpoint,a0,a1,a2,a3,a4)
+
+    if Ymould_user != 0:
+        Ymould = Ymould_user
+        print " User defined Ymould:",Ymould
+    else:
+        Ymould = SigmaY/yieldfpoint
+        print "Yield stress:",SigmaY,"Ymould:",Ymould
+    x_fit = np.linspace(0,length,500)
+    y_fit = fun(x_fit,a0,a1,a2,a3,a4)
+    plt.plot(x_fit,y_fit,'r')#fitting cuve for test
+    y_fit_eps = []
+    x_fit_eps = []
+    for i in x_fit:
+        if i >= 0.2:
+            y_eps = fun(i,a0,a1,a2,a3,a4)
+            x_eps = i - y_eps/Ymould
+            x_fit_eps.append(x_eps)
+            y_fit_eps.append(y_eps)
+    popt,pcov = sp.optimize.curve_fit(fun1,x_fit_eps,y_fit_eps, p0)
+    a0,a1,a2,a3,a4 = popt
+    print ("a0:%8.5f,a1:%5.3f,a2:%5.3f,a3:%5.3f,a4:%5.3f" %(a0,a1,a2,a3,a4))
+    x_fit = np.linspace(0,length,50)
+    y_fit = fun1(x_fit,a0,a1,a2,a3,a4)
+    y_fit_modified = fun1(x_fit,a0*scale[0],a1*scale[1],a2*scale[2],a3*scale[3],a4*scale[4])
+    for index,value in enumerate(x_fit):
+        if value > strainturn:
+            y_fit_modified [index]= y_fit_modified[index]*scaleturn
+        else:
+            continue
+    plt.figure(2)
+    plt.plot(x_fit_eps,y_fit_eps,'b')#MAT24
+    plt.figure(3)
+    plt.plot(x_fit,y_fit,"--")
+    plt.plot(x_fit,y_fit_modified)# Fitting cuver for dyna MAT24
+    return x_fit,y_fit_modified,popt
+
+
+
+if __name__ == '__main__':
+    Ymould_user = 0.0
+    yieldfpoint= 0.02
+    scale = [1,1,1,1,1]
+    strainturnlist=[0.6,0.6,0.6,0.6];scaleturnlist=[1.04,1.03,1.03,1.01]
+    A = 30; l0 = 10
+    FDfile = ["test10.txt","test100.txt","test1000.txt","test10000.txt"]
+    strainrange = 1.45
+    ratio = 1
+    fout = open("Curve.key",'w')
+    strain_rate = [-6.907,-4.605,-2.302,0]
+    curvenum = 2350
+    p0 = 1,1,1,1,1 
+    fout.write('*KEYWORD\n')
+    fout.write('$ Created: ' + time.strftime("%d.%m.%Y %H:%M:%S") + '\n')
+    fout.write("*DEFINE_TABLE\n%d\n" %(curvenum))
+    for i in strain_rate:
+        fout.write("%f\n" %(i))    
+    for index,File in enumerate(FDfile):
+        curvenum += 1
+        strainturn = strainturnlist[index];scaleturn = scaleturnlist[index]
+        x,y = MAT89LCSS(File,A,l0) 
+        x_fit,y_fit,a = MAT24LCSS(x,y,p0,strainrange,yieldfpoint=yieldfpoint,Ymould_user=Ymould_user,scale=scale,strainturn=strainturn,scaleturn=scaleturn)    
+        fout.write('*DEFINE_CURVE_TITLE\n%s\n' %(File))
+        fout.write('$     LCID      SIDR       SFA       SFO      OFFA      OFFO    DATTYP\n')
+        fout.write('      %d         0    1.0000&scale        0.0000    0.0000\n' %(curvenum))
+        for i in range(len(x_fit)):
+            fout.write("%f,%f\n" %(x_fit[i],y_fit[i]))
+    fout.write("*END\n")
+    fout.close()
+#    plt.plot(x_fit,y_fit-a3,'y')# Fitting cuver for dyna MAT24    
+    plt.grid('on')
+    plt.show()
