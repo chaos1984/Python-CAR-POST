@@ -32,7 +32,7 @@ def MAT89LCSS(fdfile,A,l0):
     plt.plot(TrueStrain,TrueStress,'p')
     return TrueStrain,TrueStress
 
-def MAT24LCSS(x,y,p,length=2.0,yieldfpoint=0.02,Ymould_user=0,scale=[1,1,1,1,1],strainturn=0,scaleturn=1):
+def MAT24LCSS(x,y,p,length=2.0,yieldfpoint=0.02,Ymould_user=0,scale=[1,1,1,1,1],strainturn=0,scaleturn=1,curvescale=1,ratio=1):
     popt,pcov = sp.optimize.curve_fit(fun, x, y, p0)
     a0,a1,a2,a3,a4 = popt
     SigmaY = fun(yieldfpoint,a0,a1,a2,a3,a4)
@@ -60,16 +60,23 @@ def MAT24LCSS(x,y,p,length=2.0,yieldfpoint=0.02,Ymould_user=0,scale=[1,1,1,1,1],
     x_fit = np.linspace(0,length,50)
     y_fit = fun1(x_fit,a0,a1,a2,a3,a4)
     y_fit_modified = fun1(x_fit,a0*scale[0],a1*scale[1],a2*scale[2],a3*scale[3],a4*scale[4])
+    print curvescale
     for index,value in enumerate(x_fit):
         if value > strainturn:
-            y_fit_modified [index]= y_fit_modified[index]*scaleturn
+            y_fit_modified [index]= y_fit_modified[index-1]+scaleturn*(x_fit[index]-x_fit[index-1])
         else:
             continue
+    for index,value in enumerate(x_fit):
+        y_fit_modified [index] = y_fit_modified [index]*curvescale
     plt.figure(2)
     plt.plot(x_fit_eps,y_fit_eps,'b')#MAT24
     plt.figure(3)
-    plt.plot(x_fit,y_fit,"--")
-    plt.plot(x_fit,y_fit_modified)# Fitting cuver for dyna MAT24
+    displayratio = int(len(x_fit)*ratio)
+    plt.title("Modified Effective Plastic Strain VS. Stress Curve")
+    plt.xlabel("Effective Plastic Strain[-]")
+    plt.ylabel("Stress[GPa]")
+    plt.plot(x_fit[:displayratio],y_fit[:displayratio],"--")
+    plt.plot(x_fit[:displayratio],y_fit_modified[:displayratio])# Fitting cuver for dyna MAT24
     return x_fit,y_fit_modified,popt
 
 
@@ -78,7 +85,7 @@ if __name__ == '__main__':
     Ymould_user = 0.0
     yieldfpoint= 0.02
     scale = [1,1,1,1,1]
-    strainturnlist=[0.6,0.6,0.6,0.6];scaleturnlist=[1.04,1.03,1.03,1.01]
+    strainturnlist=[1.2,1.2,1.2,0.75];scaleturnlist=[0.11,0.11,0.11,0.068];curvescalelist = [1.,1.,1.01,1.]
     A = 30; l0 = 10
     FDfile = ["test10.txt","test100.txt","test1000.txt","test10000.txt"]
     strainrange = 1.45
@@ -89,14 +96,16 @@ if __name__ == '__main__':
     p0 = 1,1,1,1,1 
     fout.write('*KEYWORD\n')
     fout.write('$ Created: ' + time.strftime("%d.%m.%Y %H:%M:%S") + '\n')
+    fout.write('$ Parameters:\n$ A:%f\n$ l0:%f\n$ yieldfpoint:%f\n' %(A,l0,yieldfpoint))
+    fout.write("$ Control List:\n$ strain turning:%s\n$ strain scaleturn:%s\n$ fitting function coefficents scale:%s\n$ curvescale:%s\n" %(str(strainturnlist),str(scaleturnlist),str(scale),str(curvescalelist)))
     fout.write("*DEFINE_TABLE\n%d\n" %(curvenum))
     for i in strain_rate:
         fout.write("%f\n" %(i))    
     for index,File in enumerate(FDfile):
         curvenum += 1
-        strainturn = strainturnlist[index];scaleturn = scaleturnlist[index]
+        strainturn = strainturnlist[index];scaleturn = scaleturnlist[index];curvescale = curvescalelist[index]
         x,y = MAT89LCSS(File,A,l0) 
-        x_fit,y_fit,a = MAT24LCSS(x,y,p0,strainrange,yieldfpoint=yieldfpoint,Ymould_user=Ymould_user,scale=scale,strainturn=strainturn,scaleturn=scaleturn)    
+        x_fit,y_fit,a = MAT24LCSS(x,y,p0,strainrange,yieldfpoint=yieldfpoint,Ymould_user=Ymould_user,scale=scale,strainturn=strainturn,scaleturn=scaleturn,curvescale=curvescale,ratio=ratio)    
         fout.write('*DEFINE_CURVE_TITLE\n%s\n' %(File))
         fout.write('$     LCID      SIDR       SFA       SFO      OFFA      OFFO    DATTYP\n')
         fout.write('      %d         0    1.0000&scale        0.0000    0.0000\n' %(curvenum))
