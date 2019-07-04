@@ -73,7 +73,7 @@ def MAT24LCSS(x,y,yieldpoint=0.02,Ymould_user=0,Peak=[0,0],strainturn=0,scaletur
     y_eps = []
     x_eps = []
     for index,value in enumerate(x):
-        if value >= yieldpoint:
+        if value >= yieldpoint and (value > x[index-1] or y[index]>y[index-1]):
             x_eps.append(value - y[index]/Ymould_user)
             y_eps.append(y[index])
     plt.figure(3)
@@ -93,15 +93,6 @@ def MAT24LCSS(x,y,yieldpoint=0.02,Ymould_user=0,Peak=[0,0],strainturn=0,scaletur
         y_eps_mod.append(y_eps_mod[-1]+scaleturn*(x_eps_mod[-1]-x_eps_mod[-2]))
     for index,value in enumerate(x_eps_mod):
         y_eps_mod[index] = y_eps_mod[index]*curvescale
-    for index in range(len(y_eps_mod)):
-        try:
-            value = y_eps_mod[index]
-            if value > y_eps_mod[index+1]:
-               y_eps_mod.pop(index)
-               x_eps_mod.pop(index)
-               index -= 1
-        except:
-            pass
     if extend != 0:
         x_eps_mod.append(x_eps_mod[-1]+extend)
         y_eps_mod.append(y_eps_mod[-1]+extend*(scaleextend))
