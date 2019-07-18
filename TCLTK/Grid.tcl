@@ -13,27 +13,27 @@ button $w.b1 -text "OK" -command {
 	$w.t1 insert end "The number of denting analysis is:"
 	$w.t1 insert end [format "%d\n" $i]
 	set id [open "$dir/grid.txt" w]
-	while {$i > 0} 0{
-		*creatlistbypathpane nodes 1 "Select sys nodes";
+	while {$i > 0} {
+		*createlistbypathpanel nodes 1 "Select sys nodes";
+		# *createmark nodes 1 "Select sys nodes";
 		set nodelist [hm_getlist nodes 1]
 		if {[llength $nodelist] == 3} {
-			puts $id $nodelist
-			set i [expr $i-1]
-			}
-		else{
-			$w.t1 inset end "ERROR:Please pick three nodes.\n"
-			}
-		$w.t1 inset end [format "$d\n" $i]
-		$w.t1 inset end $nodelist
-		$w.t1 inset end "\n"
-		*clearmaek nodes i;
+			puts $id $nodelist;
+			set i [expr $i-1];
+			} else {
+			$w.t1 insert end "ERROR:Please pick three nodes.\n"
+			 }
+		$w.t1 insert end [format "%d\n" $i];
+		$w.t1 insert end $nodelist;
+		$w.t1 insert end "\n";
+		*clearmark nodes i;
 		}
 		close $id
 }
 
 text $w.t1
 button  $w.b2 -text "Browse" -command {
-	set dir [tk_choseDirectory \
+	set dir [tk_chooseDirectory \
 			-initialdir ~ -title "Choose a directory"]
 	$w.file configure -text "$dir/grid.txt"
 	$w.t1 insert end "\n"
