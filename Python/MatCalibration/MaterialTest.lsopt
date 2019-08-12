@@ -1,0 +1,108 @@
+<?xml version="1.0"?>
+<!DOCTYPE lsoptproject SYSTEM "http://www.lstc.com/dtd/lsopt/6_0_0">
+<lsoptproject version="6.0.0">
+  <head>
+    <title/>
+    <meta name="author" content=""/>
+    <meta name="save_date" content="2019-07-08 15:44:04"/>
+    <meta name="save_exe" content="lsoptui"/>
+    <meta name="save_version" content="6.0.0 revision 110054"/>
+    <meta name="save_os" content="win"/>
+  <meta name="dpi" content="96"/></head><filehistories><filehistory name="x_test100"><file>test100.txt</file></filehistory><filehistory name="x_Test1000"><file>test1000.txt</file></filehistory><filehistory name="x_test10"><file>test10.txt</file></filehistory><filehistory name="x_test10000"><file>test10000.txt</file></filehistory></filehistories><multifilehistories/>
+  <variables>
+    
+    
+    
+  <variable name="x_e" value="1.5" min="0.55" max="5" sampling="discrete" type="constant"/><variable name="x_f4" value="5" min="1.2" max="1.4" type="constant"/><variable name="x_scale" value="1" min="0.95" max="1.1"/><variable name="x_f1" value="5" min="2.1" max="2.8" type="constant"/><variable name="x_f2" value="5" min="1.8" max="2.6" type="constant"/><variable name="x_f3" value="5" min="1.4" max="1.8" type="constant"/><variable name="x_fa1" type="constant" value="0.2"/><variable name="x_fa2" type="constant" value="0.05"/><variable name="x_fa3" type="constant" value="0.1"/></variables>
+  <samplings>
+    <sampling name="e_Sampling1">
+      <design type="maximin_distance" ppv="2" filename="Experiments_point.csv">
+        <basis/><levels/>
+      </design>
+      <metamodel type="rbf" update="on">
+        <ffnnopts><scheduling><resourceref resource="FFBUILDER" units="1"/></scheduling></ffnnopts>
+        <rbfopts/>
+        <krigingopts/>
+        <svropts/>
+        <usermmopts/>
+      </metamodel><histmetamodel type="linear"/>
+      <myvars>
+        
+        
+      <varref src="x_e"/><varref src="x_f4"/><varref src="x_scale"/><varref src="x_f1"/><varref src="x_f2"/><varref src="x_f3"/><varref src="x_fa1"/><varref src="x_fa2"/><varref src="x_fa3"/></myvars>
+      <stages>
+        
+        
+        
+      <stage name="s_100mmps" type="dyna960">
+          <guidata>
+            <position y="185" x="401"/>
+          </guidata>
+          <command addinputarg="on">C:\CAE\LSDYNA\program\ls-dyna_smp_d_R11_0_129958_winx64_ifort131.exe </command>
+          <inputfile>main_100.key</inputfile>
+          <dynaoptions/>
+          <scheduling>
+            <resourceref resource="LSDYNA" units="2"/>
+          </scheduling>
+          <myvars>
+            
+            
+          <varref src="x_e"/><varref src="x_f4"/><varref src="x_scale"/><varref src="x_f1"/><varref src="x_f2"/><varref src="x_f3"/><varref src="x_fa1"/><varref src="x_fa2"/><varref src="x_fa3"/></myvars>
+          <histories><history name="x_F_100">BinoutHistory -res_type bndout -cmp y_force -id 300  -sub velocity/rigidbodies </history><history name="x_D100_1">BinoutHistory -res_type nodout  -cmp y_displacement -id 1000</history><history name="x_D100_2">BinoutHistory -res_type nodout  -cmp y_displacement -id 1001</history><history name="x_Rel_dis_100" type="expression">D100_1-D100_2</history><history name="x_f_d_100" type="expression">Crossplot("Rel_dis_100","F_100",,0.05)</history><history name="x_NODOUT1">BinoutHistory -res_type nodout  -cmp y_displacement -id 34827</history></histories><multihistories/>
+          <responses><response name="x_CurveMatching1" type="multidynamictimewarping" computed="f_d_100" target="test10000"/></responses><multiresponses/>
+        </stage><stage name="s_1000ppms" type="dyna960">
+          <guidata>
+            <position y="186" x="598"/>
+          </guidata>
+          <command>C:\CAE\LSDYNA\program\ls-dyna_smp_d_R11_0_129958_winx64_ifort131.exe </command>
+          <inputfile>main_1000.key</inputfile>
+          <dynaoptions/>
+          <scheduling>
+            <resourceref resource="LSDYNA" units="1"/>
+          </scheduling>
+          <myvars>
+            
+            
+          <varref src="x_e"/><varref src="x_f4"/><varref src="x_scale"/><varref src="x_f1"/><varref src="x_f2"/><varref src="x_f3"/><varref src="x_fa1"/><varref src="x_fa2"/><varref src="x_fa3"/></myvars>
+          <histories><history name="x__1000ppms_F_100">BinoutHistory -res_type bndout -cmp y_force -id 300  -sub velocity/rigidbodies </history><history name="x__1000ppms_D100_1">BinoutHistory -res_type nodout  -cmp y_displacement -id 1000</history><history name="x__1000ppms_D100_2">BinoutHistory -res_type nodout  -cmp y_displacement -id 1001</history><history name="x__1000ppms_Rel_dis_100" type="expression">_1000ppms_D100_1-_1000ppms_D100_2</history><history name="x__1000ppms_f_d_100" type="expression">Crossplot("_1000ppms_Rel_dis_100","_1000ppms_F_100",,0.05)</history><history name="x__1000ppms_NODOUT1">BinoutHistory -res_type nodout  -cmp y_displacement -id 34827</history></histories><multihistories/>
+          <responses><response name="x_Curvematching1000" type="multidynamictimewarping" computed="_1000ppms_f_d_100" target="Test1000"/></responses><multiresponses/>
+        </stage><stage name="s_10000ppms" type="dyna960">
+          <guidata>
+            <position y="187" x="796"/>
+          </guidata>
+          <command>C:\CAE\LSDYNA\program\ls-dyna_smp_d_R11_0_129958_winx64_ifort131.exe </command>
+          <inputfile>main_10000.key</inputfile>
+          <dynaoptions/>
+          <scheduling>
+            <resourceref resource="LSDYNA" units="1"/>
+          </scheduling>
+          <myvars>
+            
+            
+          <varref src="x_e"/><varref src="x_f4"/><varref src="x_scale"/><varref src="x_f1"/><varref src="x_f2"/><varref src="x_f3"/><varref src="x_fa1"/><varref src="x_fa2"/><varref src="x_fa3"/></myvars>
+          <histories><history name="x__10000ppms_F_100">BinoutHistory -res_type bndout -cmp y_force -id 300  -sub velocity/rigidbodies </history><history name="x__10000ppms_D100_1">BinoutHistory -res_type nodout  -cmp y_displacement -id 1000</history><history name="x__10000ppms_D100_2">BinoutHistory -res_type nodout  -cmp y_displacement -id 1001</history><history name="x__10000ppms_Rel_dis_100" type="expression">_10000ppms_D100_1-_10000ppms_D100_2</history><history name="x__10000ppms_f_d_100" type="expression">Crossplot("_10000ppms_Rel_dis_100","_10000ppms_F_100",,0.05)</history><history name="x__10000ppms_NODOUT1">BinoutHistory -res_type nodout  -cmp y_displacement -id 34827</history></histories><multihistories/>
+          <responses><response name="x__10000ppms_Curvematching1000" type="multidynamictimewarping" computed="_10000ppms_f_d_100" target="test10000"/></responses><multiresponses/>
+        </stage></stages>
+      <cmp_metamodels/>
+    </sampling>
+  </samplings>
+  <composites><cresponse name="x_StandardComposite1" type="weighted"><component entity="x_CurveMatching1"/><component entity="x_Curvematching1000"/><component entity="x__10000ppms_Curvematching1000"/></cresponse></composites>
+  <objectives goal="minimize"><objective src="x_StandardComposite1"/></objectives>
+  <constraints/>
+  <resources><resource name="FFBUILDER" limit="4"/><resource name="LSO_EXTRACTOR" limit="8" global="true"/>
+    <resource name="LSDYNA" limit="4"/>
+  </resources>
+  <task method="metamodel_opt">
+    <optopts strategy="domainreduction">
+      <seqopts iterations="8"/>
+    <srsmopts/></optopts>
+    <optalg>
+      <gaopts/>
+      <asaopts/>
+      <psoopts/>
+      <lfopopts/>
+      <paretoopts/>
+    </optalg>
+    <mcopts/><assignment><gatheropts/></assignment>
+  </task>
+</lsoptproject>
