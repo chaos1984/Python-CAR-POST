@@ -1,0 +1,309 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SnippetPlus>
+  <MySnippets>
+    <!--This is a comment-->
+    <Lang langName="OPTISTRUCT" ignoreCase="true" enabled="true">
+      <Snippet>
+        <Name>class</Name>
+        <Desc>class definition in visual basic</Desc>
+      </Snippet>
+    </Lang>
+    <Lang langName="DYNA" ignoreCase="true" enabled="true">
+      <Snippet>
+        <Name>DefaultSnippet1</Name>
+        <Desc>Modify me</Desc>
+      </Snippet>
+    </Lang>
+    <Lang langName="GENERAL" ignoreCase="true" enabled="true">
+      <Snippet>
+        <Name>DefaultSnippet1</Name>
+        <Desc>Modify me</Desc>
+      </Snippet>
+    </Lang>
+  </MySnippets>
+  <!--- - SurroundsWith starts here - - -->
+  <SurroundsWith>
+    <Lang langName="DYNA" enabled="true">
+      <Snippet surroundWith="CONTROL_DAB" indent="">
+        <Start>*KEYWORD
+$VERSION 1.0 DAB OPENING HEAD$
+$DATE : SEP. 20 2018
+$Author: Yujin.WANG 
+$ =============
+$ CONTROL cards
+$ =============
+$
+*CONTROL_ACCURACY
+$$     OSU       INN    PIDOSU
+$#     osu       inn    pidosu
+         1         2         0         1
+*CONTROL_BULK_VISCOSITY
+$$      Q1        Q2        IBQ
+$#      q1        q2      type     btype
+       0.0       0.0        -2         0
+*CONTROL_CONTACT
+$$  SLSFAC    RWPNAL    ISLCHK    SHLTHK    PENOPT    THKCHG     ORIEN    ENMASS
+$#  slsfac    rwpnal    islchk    shlthk    penopt    thkchg     orien    enmass
+       0.1       0.0         2         2         1         0         1         0
+$$  USRSTR    USRFRC     NSBCS    INTERM     XPENE     SSTHK      ECDT   TIEDPRJ
+$#  usrstr    usrfrc     nsbcs    interm     xpene     ssthk      ecdt   tiedprj
+         0         0         0         0       0.0         0         0         0
+$$   SFRIC     DFRIC       EDC    INTVFC        TH     TH_SF    PEN_SF
+$#   sfric     dfric       edc       vfc        th     th_sf    pen_sf
+       0.0       0.0       0.0       0.0       0.0       0.0       0.0       0.0
+$$  IGNORE    FRCENG   SKIPRWG    OUTSEG   SPOTSTP   SPOTDEL   SPOTHIN
+$#  ignore    frceng   skiprwg    outseg   spotstp   spotdel   spothin
+         1         0         0         0         0         0       0.5
+$#    isym    nserod    rwgaps    rwgdth     rwksf      icov    swradf    ithoff
+         0         0         1       0.0       1.0         0       0.0         0
+$#  shledg    pstiff    ithcnt    tdcnof     ftall    unused    shltrw
+         1         0         0         0         0                 0.0         0
+*CONTROL_ENERGY
+$$    HGEN      RWEN    SLNTEN     RYLEN
+$#    hgen      rwen    slnten     rylen
+         2         2         2         2
+*CONTROL_HOURGLASS
+$$     IHQ        QH
+$#     ihq        qh
+         5    5.0E-2
+*CONTROL_MPP_IO_NODUMP
+*CONTROL_OUTPUT
+$$   NPOPT    NEECHO    NREFUP    IACCOP     OPIFS    IPNINT    IKEDIT
+$#   npopt    neecho    nrefup    iaccop     opifs    ipnint    ikedit    iflush
+         1         3         0         0       0.0         0       100         0
+$#   iprtf    ierode     tet10    msgmax    ipcurv      gmdt   ip1dblt      eocs
+         0         0         2        50         0       0.0         0         0
+$#   tolev    newleg    frfreq     minfo
+         2         0         1         0         0         0       0.0
+*CONTROL_SHELL
+$$  WRPANG     ESORT     IRNXX    ISTUPD    THEORY       BWC     MITER      PROJ
+$#  wrpang     esort     irnxx    istupd    theory       bwc     miter      proj
+      20.0         1        -1         1         1         1         1         1
+$# rotascl    intgrd    lamsht    cstyp6    tshell
+       1.0         0         0         1         0
+$# psstupd   sidt4tu     cntco    itsflg    irquad
+         0         0         0         0         2       0.0       0.0         0
+$#  nfail1    nfail4   psnfail    keepcs     delfr   drcpsid    drcprm
+         0         0         0         0         0         0       1.0         0
+*CONTROL_SOLID
+$#   esort   fmatrix   niptets    swlocl    psfail   t10jtol
+         1         0         0         2         0       0.0         0
+*CONTROL_TERMINATION
+      15.0         0       0.0       0.0       0.0         0
+*CONTROL_TIMESTEP
+       0.0       0.9         0       0.0     -2e-5         0         0         0
+$
+$
+$ ==============
+$ DATABASE cards
+$ ==============
+$
+*DATABASE_ABSTAT
+$#      dt    binary      lcur     ioopt
+       0.1         3         0         1
+*DATABASE_BNDOUT
+$#      dt    binary      lcur     ioopt
+       0.1         3         0         1
+*DATABASE_GLSTAT
+$#      dt    binary      lcur     ioopt
+       0.1         3         0         1
+*DATABASE_MATSUM
+$#      dt    binary      lcur     ioopt
+       0.1         3         0         1
+*DATABASE_SECFORC
+       0.1         3         0         0
+*DATABASE_SLEOUT
+       0.1         3         0         0
+*DATABASE_BINARY_D3PLOT
+$$ DT/CYCL      LCDT      BEAM     NPLTC
+$#      dt      lcdt      beam     npltc    psetid
+       0.5         0         0         0         0
+*DATABASE_EXTENT_BINARY
+$$   NEIPH     NEIPS    MAXINT    STRFLG    SIGFLG    EPSFLG    RLTFLG    ENGFLG
+$#   neiph     neips    maxint    strflg    sigflg    epsflg    rltflg    engflg
+         0         0         0         1         1         1         1         1
+$$  CMPFLG    IEVERP    BEAMIP     DCOMP      SHGE     STSSZ    N3THDT    IALEMAT
+$#  cmpflg    ieverp    beamip     dcomp      shge     stssz    n3thdt   ialemat
+         0         0         0         1         1         1         2         0
+$$ NINTSLD   PKP_SEN      SCLP               MSSCL     THERM
+$# nintsld   pkp_sen      sclp     hydro     msscl     therm    intout    nodout
+         0         0       0.0         0         0         0    STRESS          
+$#    dtdt    resplt
+         0         0         0
+$
+*END
+$
+</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="NODESET" indent="">
+        <Start>*SET_NODE_LIST
+$HMSET
+$HMNAME SETS       2set1
+$#     sid       da1       da2       da3       da4    solver      
+       165       0.0       0.0       0.0       0.0MECH
+$#    nid1      nid2      nid3      nid4      nid5      nid6      nid7      nid8
+        10        14      2028         0         0         0         0         0\n$</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="CONTACT_SOFT=2" indent="">
+        <Start>*CONTACT_AUTOMATIC_SURFACE_TO_SURFACE_ID
+$HWCOLOR GROUPS       3       4
+$#     cid                                                                 title
+        ID     TTILE
+$#    ssid      msid     sstyp     mstyp    sboxid    mboxid       spr       mpr
+   %Airbag    %Other         2         3         0         0         0         1
+$#      fs        fd        dc        vc       vdc    penchk        bt        dt
+       0.1       0.1       0.0       0.0      30.0         0       0.01.0000E+20
+$#     sfs       sfm       sst       mst      sfst      sfmt       fsf       vsf
+       1.0       1.0       0.0       0.0       1.0       1.0       1.0       1.0
+$#    soft    sofscl    lcidab    maxpar     sbopt     depth     bsort    frcfrq
+         2       0.0         0       0.0       3.0         5         0         0
+$#  penmax    thkopt    shlthk     snlog      isym     i2d3d    sldthk    sldstf
+       0.0         0         0         0         0         0       0.0       0.0
+$#    igap    ignodprfac/mpadtstif/mpar2   unused     unused    flangl   cid_rcf
+         1         0       0.0       0.0                           0.0         0
+	  \n$</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="CONTACT_AIRBAG_SINGLE_SURFACE" indent="">
+        <Start>*CONTACT_AIRBAG_SINGLE_SURFACE_ID
+$HWCOLOR GROUPS       1       8
+$#     cid                                                                 title
+        ID     TTILE
+$#    ssid      msid     sstyp     mstyp    sboxid    mboxid       spr       mpr
+   %Airbag         0         2         0         0         0         0         0
+$#      fs        fd        dc        vc       vdc    penchk        bt        dt
+       0.1       0.1       0.0       0.0      30.0         0       0.01.0000E+20
+$#     sfs       sfm       sst       mst      sfst      sfmt       fsf       vsf
+       1.0       1.0       0.0       0.0       1.0       1.0       1.0       1.0
+$#    soft    sofscl    lcidab    maxpar     sbopt     depth     bsort    frcfrq
+         2       0.0         0       0.0       3.0         5         0         0
+$#  penmax    thkopt    shlthk     snlog      isym     i2d3d    sldthk    sldstf
+       0.0         0         0         0         0         0       0.0       0.0
+$#    igap    ignodprfac/mpadtstif/mpar2   unused     unused    flangl   cid_rcf
+         0         1       0.0       0.0                           0.0         0
+$#   q2tri    dtpchk     sfnbr    fnlscl   dnlscl       tcso    tiedid    shledg
+         3       0.0       0.0       0.0       0.0         0         0         0
+	 \n$</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="CONTACT_TIED_NODES_TO_SURFACE" indent="">
+        <Start>*CONTACT_TIED_NODES_TO_SURFACE_ID\n$HWCOLOR GROUPS     100       3\n       100hornplate_housing                                                     \n       100       303         4         3         0         0         0         0\n                                                                                \n                                                                              \n$</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="MAT_RIGID(FREE)" indent="">
+        <Start>*MAT_RIGID_TITLE\nrigid                                                                         \n  731300297.8000E-06     210.0       0.3       0.0       0.0       0.0          \n       0.0\n       0.0       0.0       0.0       0.0       0.0       0.0\n$</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="MAT_RIGID(FIX)" indent="">
+        <Start>*MAT_RIGID_TITLE\nfixed                                                                           \n  731300287.8000E-06     210.0       0.3       0.0       0.0       0.0          \n       1.0         7         7\n       0.0       0.0       0.0       0.0       0.0       0.0\n$</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="CONSTRAINED_RIGID_BODIES" indent="">
+        <Start>*CONSTRAINED_RIGID_BODIES
+$#    pidm      pids     iflag
+       100        12         0\n$</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="MAT_NULL" indent="">
+        <Start>*MAT_NULL\n$HMNAME MATERIALS       302NUSHELL                                                                         \n       2028.9000E-07                                               0.2      0.34\n*SECTION_SHELL\n$HMNAME PROPERTIES       200cover_tet                                                                       \n       202                             0                                        \n         1         1         1         1        1         1         1</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="Cover_Part" indent="">
+        <Start>*PART\n$HWCOLOR COMPS     201      36\nsplitLine_solid                                                                 \n       201       201&amp;MIDTEA            0         3         0         0         0\n$HWCOLOR COMPS     200      56\ncover_solid                                                                     \n       200       200&amp;MIDCOV            0         3         0         0         0                                                \n*SECTION_SOLID\n$HMNAME PROPERTIES       200cover_tet                                                                   \n       200        -1\n$HMNAME PROPERTIES       201tear_tet                                                                       \n       201        -1   </Start>
+        <End>$</End>
+      </Snippet>
+      <Snippet surroundWith="Housing_Part" indent="">
+        <Start>*PART\n$HWCOLOR COMPS     300      29\nhousing_tet                                                                     \n       300       300&amp;MIDhou           0         3         0         0         0\n$HWCOLOR COMPS     301       4\nhorntrack_tet                                                                   \n       301       301       301         0         3         0         0         0\n$HWCOLOR COMPS     302      36\nnull_shell                                                                      \n       302       302       302                                                  \n$HWCOLOR COMPS     303      45\nnull_shell_spring                                                               \n       303       302       303 \n *MAT_ELASTIC_TITLE\nCOPPER                                                                          \n       3018.9000E-06     110.0      0.34       0.0       0.0       0.0\n*MAT_NULL\n$HMNAME MATERIALS       302NUSHELL                                                                         \n       3027.8500E-06                                             210.0       0.3\n*MAT_NULL\n$HMNAME MATERIALS       303nushell_spring                                                                  \n       3037.8500E-06                                             210.0       0.3                                                 \n*SECTION_SHELL\n$HMNAME PROPERTIES       302NUSHELL                                                                         \n       302                             0                                        \n      0.01      0.01      0.01      0.01                                        \n*SECTION_SOLID\n$HMNAME PROPERTIES       300housing_tet                                                                     \n       300        13\n$HMNAME PROPERTIES       301horntrack_tet                                                                   \n       301        13\n*CONTACT_TIED_NODES_TO_SURFACE_ID\n$HWCOLOR GROUPS     300       5\n       300HORNPLATE_HOUSING                                                     \n       300       302         4         3                                        \n                                                                                \n                                                                             </Start>
+        <End>$</End>
+      </Snippet>
+      <Snippet surroundWith="CONSTRAINED_NODAL_RIGID_BODY_SPC" indent="">
+        <Start>*CONSTRAINED_NODAL_RIGID_BODY_SPC
+$#     pid       cid      nsid     pnode      iprt    drflag    rrflag      
+         2         0         2         0         0         0         0
+$#     cmo      con1      con2    
+       1.0         7         7\n$</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="hourglass" indent="">
+        <Start>*HOURGLASS
+         3         5    5.0E-2         0       1.5    6.0E-2       0.0       0.0 </Start>
+        <End>$</End>
+      </Snippet>
+      <Snippet surroundWith="CONTACT_SOFT=1" indent="">
+        <Start>*CONTACT_AUTOMATIC_SURFACE_TO_SURFACE_ID
+$#     cid                                                                 title
+        26SW_COV_HOU                                                                
+$#    ssid      msid     sstyp     mstyp    sboxid    mboxid       spr       mpr
+       114       113         2         2         0         0         1         1
+$#      fs        fd        dc        vc       vdc    penchk        bt        dt
+       0.3       0.3       0.0       0.0      20.0         0       0.01.0000E+20
+$#     sfs       sfm       sst       mst      sfst      sfmt       fsf       vsf
+       1.0       1.0       0.0       0.0       0.0       0.0       0.0       0.0
+$$#    soft    sofscl    lcidab    maxpar     sbopt     depth     bsort    frcfrq
+         1       0.1         0       1.2       0.0         5         0         1</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="MAT_ELASTIC" indent="">
+        <Start>*MAT_ELASTIC\n$HMNAME MATERIALS       101steel                                                                           \n       1017.8500E-06     210.0       0.3                              </Start>
+        <End>$</End>
+      </Snippet>
+      <Snippet surroundWith="*CONTROL_TIMESTEP" indent="">
+        <Start>*CONTROL_TIMESTEP
+       0.0       0.9         0       0.0-0.7000E-4         0         0         0\n$</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="Eigenvalue.key" indent="">
+        <Start>*KEYWORD\n$&gt; Include file: Y:\cal\01_Comp\09_NVH\217_20161213_ESR-024292_CHB027_IC_Bracket_Fatigue_YSH\20_run\X_100\INCL_2\control_eigenvalue.key\n$&gt; (Used by master file: Y:\cal\01_Comp\09_NVH\217_20161213_ESR-024292_CHB027_IC_Bracket_Fatigue_YSH\20_run\X_100\ESR_024292.key)\n$&gt; \n$&gt; Primer11 created on: Fri Dec 16 11:10:15 2016\n$&gt; \n$&gt; end_saved_comments\n$ =============\n$ CONTROL cards\n$ =============\n*CONTROL_TERMINATION\n$$  ENDTIM    ENDCYC     DTMIN    ENDENG    ENDMAS     NOSOL\n       1.0         0       0.0       0.0       0.0         0\n*CONTROL_SHELL\n$$  WRPANG     ESORT     IRNXX    ISTUPD    THEORY       BWC     MITER      PROJ\n       0.0         1         0         0         0         0         0         0\n$$ ROTASCL    INTGRD    LAMSHT    CSTYP6    THSHEL\n       0.0         1         0         0         0\n*CONTROL_IMPLICIT_EIGENVALUE\n$$    NEIG    CENTER     LFLAG    LFTEND     RFLAG    RHTEND    EIGMTH    SHFSCL\n        20       0.0         0                   1    5000.0         2       0.0\n$$  ISOLID     IBEAM    ISHELL   ITSHELL    MSTRES    EVDUMP\n        18        13        20         0         1         0\n*CONTROL_IMPLICIT_GENERAL\n$$  IMFLAG       DT0    IMFLAG      NSBS       IGS     CNSTN      FORM    ZERO_V\n         1       1.0         0         0         0         0         0         0\n*END</Start>
+        <End>$</End>
+      </Snippet>
+      <Snippet surroundWith="*CONTACT_AUTOMATIC_SINGLE_SURFACE_ID" indent="">
+        <Start>*CONTACT_AUTOMATIC_SINGLE_SURFACE_ID\n$HWCOLOR GROUPS       3       5\n         3Housing_SINGLE_SURFACE                                                \n   5000000                   2                   0         0         0         0\n      0.01      0.01       0.0       0.0      20.0         0       0.01.0000E+20\n       0.0       0.0       0.0       0.0       1.0       1.0       1.0       1.0\n         2       0.0         0       0.0       3.0         5         0         0\n       0.0         0         0         0         0         0       0.0       0.0\n         1         1       0.0       0.0                           0.0   \n$</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="*SET_PART_LIST_GENERATE_TITLE" indent="">
+        <Start>*SET_PART_LIST_GENERATE_TITLE\nDAB_other\n$#     sid       da1       da2       da3       da4    solver\n       100       0.0       0.0       0.0       0.0MECH      \n$#    pid1      pid2      pid3      pid4      pid5      pid6      pid7      pid8\n       200       799\n$</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="*KEYWORD" indent="">
+        <Start>*KEYWORD\n$Author:\n$Date:\n$Project:\n$ESR:\n$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n\n*END\n$</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="*DEFINE_CURVE" indent="">
+        <Start>*DEFINE_CURVE_TITLE\nRate 10000/s\n$#    lcid      sidr       sfa       sfo      offa      offo    dattyp\n     20006         0  1.000000  1.000000     0.000     0.000         0</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="*CONTROL_TERMINATION" indent="">
+        <Start>*CONTROL_TERMINATION
+$$  ENDTIM    ENDCYC     DTMIN    ENDENG    ENDMAS     NOSOL
+$#  endtim    endcyc     dtmin    endeng    endmas      
+       100         0       0.0       0.0       0.0\n$</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="*SECTION_SOLID_TITLE" indent="">
+        <Start>*SECTION_SOLID_TITLE
+HEXA_ELEF2
+$#   secid    elform       aet   
+       201         1         0\n$</Start>
+        <End></End>
+      </Snippet>
+    </Lang>
+    <Lang langName="GENERAL" enabled="true">
+      <Snippet surroundWith="DefaultSurroundWith1" indent="">
+        <Start>StartPart</Start>
+        <End>EndPart</End>
+      </Snippet>
+    </Lang>
+    <Lang langName="OPTISTRUCT" enabled="true">
+      <Snippet surroundWith="IF" indent="">
+        <Start>If</Start>
+        <End>End If</End>
+      </Snippet>
+    </Lang>
+  </SurroundsWith>
+  <!--- - SnippetPlus Options Starts Here - - -->
+  <SnippetPlusOptions>
+    <Option UseSurroundWithOnLoadForEditor="false" UseSurroundWithOnLoadForDockable="false" MaxItemsInAutoComplete="5" />
+  </SnippetPlusOptions>
+</SnippetPlus>
