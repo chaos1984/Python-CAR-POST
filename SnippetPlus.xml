@@ -288,6 +288,24 @@ $#   secid    elform       aet
        201         1         0\n$</Start>
         <End></End>
       </Snippet>
+      <Snippet surroundWith="*DEFINE_VECTOR_NODES_TITLE" indent="">
+        <Start>*DEFINE_VECTOR_NODES_TITLE
+Spring_assem
+       800   8006634   8006622</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="*BOUNDARY_SPC_NODE_ID" indent="">
+        <Start>*BOUNDARY_SPC_NODE_ID
+$#      id                                                               heading
+         1                                                                      
+$#     nid       cid      dofx      dofy      dofz     dofrx     dofry     dofrz
+   1000000         0         0         0         0         0         0         0</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="*BOUNDARY_PRESCRIBED_FINAL_GEOMETRY" indent="">
+        <Start>*BOUNDARY_PRESCRIBED_FINAL_GEOMETRY\n         1         1       0.0</Start>
+        <End></End>
+      </Snippet>
     </Lang>
     <Lang langName="GENERAL" enabled="true">
       <Snippet surroundWith="DefaultSurroundWith1" indent="">
@@ -299,6 +317,48 @@ $#   secid    elform       aet
       <Snippet surroundWith="IF" indent="">
         <Start>If</Start>
         <End>End If</End>
+      </Snippet>
+    </Lang>
+    <Lang langName="PYQT5" enabled="true">
+      <Snippet surroundWith="QLabel" indent="">
+        <Start>#QLabel\nself.l1 = QtWidgets.QLabel('Yoking')\nself.l1.setObjectName('l1')\nself.verticallayout.addWidget(self.l1)\n#</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="QLineEdit" indent="">
+        <Start>#lLineEdit\nself.e1 = QtWidgets.QLineEdit()\nself.e1.setValidator(QtGui.QIntValidator())\nself.e1.setMaxLength(6)\nself.e1.setAlignment(QtCore.Qt.AlignRight)\nself.e1.setObjectName('e1')\nself.e1.setFont(QtGui.QFont("Arial",10))\n#\nself.verticallayout.addWidget(self.e1)\n#</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="QPushButton" indent="">
+        <Start>#QPushButton\nself.bt1 = QtWidgets.QPushButton("确认")\nself.bt1.setObjectName("bt1")\nself.horizontalLayout.addWidget(self.bt1)	\n#\nself.bt1.clicked.connect(lambda : dc.update_figure(stock_id=self.e1.text()))\n#</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="QVBoxLayout" indent="">
+        <Start>#QVBoxLayout\nself.verticallayout = QtWidgets.QVBoxLayout()\n# self.verticallayout.setContentsMargins(11, 11, 11, 11)\nself.verticallayout.setSpacing(6)\nself.verticallayout.setObjectName("verticallayout")\nself.gridLayout.addLayout(self.verticallayout, 0, 1)\n#</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="QHBoxLayout" indent="">
+        <Start>#QHBoxLayout\nself.horizontalLayout = QtWidgets.QHBoxLayout()\nself.horizontalLayout.setSpacing(6)\nself.horizontalLayout.setObjectName("horizontalLayout")\nself.gridLayout.addLayout(self.horizontalLayout,0,0)\n#</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="QGridLayout" indent="">
+        <Start>#QGridLayout\nself.gridLayout = QtWidgets.QGridLayout(self.centralWidget)\n# self.gridLayout.setContentsMargins(11, 11, 11, 11)\nself.gridLayout.setSpacing(6)\nself.gridLayout.setObjectName("gridLayout")\n#</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="QSlider" indent="">
+        <Start>#H-Slide\nself.horizontalSlide = QtWidgets.QSlider(self.centralWidget)\nself.horizontalSlide.setOrientation(QtCore.Qt.Horizontal)\nself.horizontalSlide.setObjectName("horizontalSlide")\nself.horizontalLayout.addWidget(self.horizontalSlide)</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="Canvas" indent="">
+        <Start>#Canvas\nself.main_widget = QWidget()\ndc = MyDynamicMplCanvas(self.main_widget, width=5, height=4, dpi=100) #MyDynamicMplCanvas\nself.horizontalLayout1.addWidget(dc)\n#\nclass MyDynamicMplCanvas(MyMplCanvas):\n	def __init__(self, *args, **kwargs):\n		MyMplCanvas.__init__(self, *args, **kwargs)\n		timer = QtCore.QTimer(self)\n		timer.timeout.connect(self.update_figure)\n		timer.start(10000)\n#</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="Main_Frame" indent="">
+        <Start>import sys\nimport random\nimport time\nimport matplotlib\nmatplotlib.use("Qt5Agg")\nfrom PyQt5 import QtCore, QtGui, QtWidgets\nfrom PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget\nfrom matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas\nfrom matplotlib.figure import Figure\nfrom numpy import arange, sin, pi\n\nclass Ui_MainWindow(object):	\n	def setupUi(self, MainWindow):\n		MainWindow.setObjectName("MainWindow")\n		MainWindow.resize(519, 387)\n		self.centralWidget = QtWidgets.QWidget(MainWindow)\n		self.centralWidget.setObjectName("centralWidget")\n		MainWindow.setCentralWidget(self.centralWidget)\n####################################################################################\n\n\n####################################################################################\nif __name__ == "__main__":\n	app = QtWidgets.QApplication(sys.argv)\n	ex = Ui_MainWindow()\n	w = QtWidgets.QMainWindow()\n	ex.setupUi(w)\n	w.show()\n	sys.exit(app.exec_())\n####################################################################################</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="MessageBox" indent="">
+        <Start>def showDialog(self):\n	# MessageBox\n	QtWidgets.QMessageBox.information(self.bt1,'标题','消息对话框正文',QMessageBox.Yes | QMessageBox.No,QMessageBox.Yes)\n		#</Start>
+        <End></End>
       </Snippet>
     </Lang>
   </SurroundsWith>
