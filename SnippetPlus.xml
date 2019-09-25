@@ -361,7 +361,7 @@ $#     nid       cid      dofx      dofy      dofz     dofrx     dofry     dofrz
         <End></End>
       </Snippet>
       <Snippet surroundWith="QSplit" indent="">
-        <Start>#QSplit\nself.splitter = QtWidgets.QSplitter(orientation=QtCore.Qt.Horizontal)\nself.gL.addWidget(self.splitter,0,2)\n#</Start>
+        <Start>#QSplit\nself.splitter = QtWidgets.QSplitter(orientation=QtCore.Qt.Horizontal)\nself.gL.addWidget(self.splitter,2,1)\nself.splitter.setSizes([self.splitter.size().height() * 0.8, self.splitter.size().height() * 0.2])\n#</Start>
         <End></End>
       </Snippet>
       <Snippet surroundWith="QTree" indent="">
@@ -386,6 +386,14 @@ $#     nid       cid      dofx      dofy      dofz     dofrx     dofry     dofrz
       </Snippet>
       <Snippet surroundWith="QCanvas" indent="">
         <Start>#Canvas\nself.main_widget = QWidget()\ndc = MyDynamicMplCanvas(self.main_widget, width=5, height=4, dpi=100)\nself.horizontalLayout1.addWidget(dc)\n#\n</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="QTab" indent="">
+        <Start>		#QTab\n#QTab\nself.wdg1 = QtWidgets.QWidget()\nself.wdg2 = QtWidgets.QWidget()\nself.tabWidget = QtWidgets.QTabWidget()\nself.tabWidget.addTab(self.wdg1, 'Wdg 1')\nself.tabWidget.addTab(self.wdg2, 'Wdg 2')\nself.splitter.addWidget(self.tabWidget)\n#</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="QCheckbox" indent="">
+        <Start>#QCheckbox\nself.checkbox = QtWidgets.QCheckBox("Awesome?")\nself.checkbox.stateChanged.connect(self.clickBox)\nself.splitter.addWidget(self.checkbox)\n#\ndef clickBox(self, state):\n	if state == QtCore.Qt.Checked:\n		print('Checked')\n	else:\n		print('Unchecked')\n#</Start>
         <End></End>
       </Snippet>
     </Lang>
