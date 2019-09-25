@@ -348,16 +348,44 @@ $#     nid       cid      dofx      dofy      dofz     dofrx     dofry     dofrz
         <Start>#H-Slide\nself.horizontalSlide = QtWidgets.QSlider(self.centralWidget)\nself.horizontalSlide.setOrientation(QtCore.Qt.Horizontal)\nself.horizontalSlide.setObjectName("horizontalSlide")\nself.horizontalLayout.addWidget(self.horizontalSlide)</Start>
         <End></End>
       </Snippet>
-      <Snippet surroundWith="Canvas" indent="">
-        <Start>#Canvas\nself.main_widget = QWidget()\ndc = MyDynamicMplCanvas(self.main_widget, width=5, height=4, dpi=100) #MyDynamicMplCanvas\nself.horizontalLayout1.addWidget(dc)\n#\nclass MyDynamicMplCanvas(MyMplCanvas):\n	def __init__(self, *args, **kwargs):\n		MyMplCanvas.__init__(self, *args, **kwargs)\n		timer = QtCore.QTimer(self)\n		timer.timeout.connect(self.update_figure)\n		timer.start(10000)\n#</Start>
-        <End></End>
-      </Snippet>
       <Snippet surroundWith="Main_Frame" indent="">
         <Start>import sys\nimport random\nimport time\nimport matplotlib\nmatplotlib.use("Qt5Agg")\nfrom PyQt5 import QtCore, QtGui, QtWidgets\nfrom PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget\nfrom matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas\nfrom matplotlib.figure import Figure\nfrom numpy import arange, sin, pi\n\nclass Ui_MainWindow(object):	\n	def setupUi(self, MainWindow):\n		MainWindow.setObjectName("MainWindow")\n		MainWindow.resize(519, 387)\n		self.centralWidget = QtWidgets.QWidget(MainWindow)\n		self.centralWidget.setObjectName("centralWidget")\n		MainWindow.setCentralWidget(self.centralWidget)\n####################################################################################\n\n\n####################################################################################\nif __name__ == "__main__":\n	app = QtWidgets.QApplication(sys.argv)\n	ex = Ui_MainWindow()\n	w = QtWidgets.QMainWindow()\n	ex.setupUi(w)\n	w.show()\n	sys.exit(app.exec_())\n####################################################################################</Start>
         <End></End>
       </Snippet>
       <Snippet surroundWith="MessageBox" indent="">
         <Start>def showDialog(self):\n	# MessageBox\n	QtWidgets.QMessageBox.information(self.bt1,'标题','消息对话框正文',QMessageBox.Yes | QMessageBox.No,QMessageBox.Yes)\n		#</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="QFrame" indent="">
+        <Start>#QFrame\nself.center = QtWidgets.QFrame()\n# self.center.resize(100,100)\nself.center.setFrameShape(QtWidgets.QFrame.StyledPanel)\nself.gL1.addWidget(self.center,0,0,2,3)\n#</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="QSplit" indent="">
+        <Start>#QSplit\nself.splitter = QtWidgets.QSplitter(orientation=QtCore.Qt.Horizontal)\nself.gL.addWidget(self.splitter,0,2)\n#</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="QTree" indent="">
+        <Start>#QTree\nself.treewidget  = QtWidgets.QTreeWidget()\nself.treewidget.setHeaderLabels(['This','is','a','TreeWidgets!'])\nself.root = QtWidgets.QTreeWidgetItem(self.treewidget)\nself.child1 =  QtWidgets.QTreeWidgetItem(self.root)\nself.child1.setText(0,'child1')\nself.child1.setText(1,'name1')\nself.child2 = QtWidgets.QTreeWidgetItem(self.child1)\nself.child2.setText(0,'1231')\nself.gL1.addWidget(self.treewidget,2,1)\n#</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="Qlist" indent="">
+        <Start>#Qlist\nself.listwidget  =  QtWidgets.QListWidget()\nself.listwidget.addItems({"a":3,"b":4})\nself.gL1.addWidget(self.listwidget,2,0)\nself.listwidget.itemClicked.connect(self.itemclicked)\n#Define call function\ndef itemclicked(self,item):\n	print (item.text())\n#</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="StaticCanvas" indent="">
+        <Start>class MyMplCanvas(FigureCanvas):#画布基类\n	"""这是一个窗口部件，即QWidget（当然也是FigureCanvasAgg）"""\n	def __init__(self, parent=None, width=50, height=50, dpi=100):\n		fig = Figure(figsize=(width, height), dpi=dpi)\n		self.axes = fig.add_subplot(111)\n		# 每次plot()调用的时候，我们希望原来的坐标轴被清除(所以False)\n		self.compute_initial_figure()\n \n		#\n		FigureCanvas.__init__(self, fig)\n		self.setParent(parent)\n \n		FigureCanvas.setSizePolicy(self,\n									QSizePolicy.Expanding,\n									QSizePolicy.Expanding)\n		self.axes.set_xlabel('x')\n		self.axes.set_ylabel('y')\n		FigureCanvas.updateGeometry(self)\n \n	def compute_initial_figure(self):\n		pass\n \nclass MyStaticMplCanvas(MyMplCanvas):#单个画布\n	"""静态画布：一条正弦线"""\n	def compute_initial_figure(self):\n		t = arange(0.0, 3.0, 0.01)\n		s = sin(4*pi*t)\n		self.axes.plot(t, s)\n	def __init__(self, *args, **kwargs):\n		MyMplCanvas.__init__(self, *args, **kwargs)\n		timer = QtCore.QTimer(self)\n		timer.timeout.connect(self.update_figure)\n		timer.start(10000)\n#</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="ControlCanvas" indent="">
+        <Start>class MyMplCanvas(FigureCanvas):#画布基类\n	"""这是一个窗口部件，即QWidget（当然也是FigureCanvasAgg）"""\n	def __init__(self, parent=None, width=50, height=50, dpi=100):\n		fig = Figure(figsize=(width, height), dpi=dpi)\n		self.axes = fig.add_subplot(111)\n		# 每次plot()调用的时候，我们希望原来的坐标轴被清除(所以False)\n		self.compute_initial_figure()\n \n		#\n		FigureCanvas.__init__(self, fig)\n		self.setParent(parent)\n \n		FigureCanvas.setSizePolicy(self,\n									QSizePolicy.Expanding,\n									QSizePolicy.Expanding)\n		self.axes.set_xlabel('x')\n		self.axes.set_ylabel('y')\n		FigureCanvas.updateGeometry(self)\n \n	def compute_initial_figure(self):\n		pass\n \nclass MyControlMplCanvas(MyMplCanvas):#单个画布\n	"""动态画布：每秒自动更新，更换一条折线。"""\n	def __init__(self, *args, **kwargs):\n		MyMplCanvas.__init__(self, *args, **kwargs)\n		timer = QtCore.QTimer(self)\n		timer.timeout.connect(self.update_figure)\n		timer.start(1000)\n \n	def compute_initial_figure(self):\n		self.axes.plot([0, 0, 0, 0], [1, 2, 3, 4], 'r')\n \n	def update_figure(self,x):\n		# 构建4个随机整数，位于闭区间[0, 10]\n		t = arange(0.0, 3.0, 0.01)\n		s = sin(2*pi*t+x/100.*2*pi)\n		self.axes.cla()\n		self.axes.plot(df.time, df.price ,'r')\n		self.axes.set_xlabel('time')\n		self.axes.set_ylabel('pRICE')\n		self.draw()</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="DynamicCanvas" indent="">
+        <Start>#DynamicCanvas\nclass MyMplCanvas(FigureCanvas):#画布基类\n	"""这是一个窗口部件，即QWidget（当然也是FigureCanvasAgg）"""\n	def __init__(self, parent=None, width=50, height=50, dpi=100):\n		fig = Figure(figsize=(width, height), dpi=dpi)\n		self.axes = fig.add_subplot(111)\n		# 每次plot()调用的时候，我们希望原来的坐标轴被清除(所以False)\n		self.compute_initial_figure()\n \n		#\n		FigureCanvas.__init__(self, fig)\n		self.setParent(parent)\n \n		FigureCanvas.setSizePolicy(self,\n									QSizePolicy.Expanding,\n									QSizePolicy.Expanding)\n		self.axes.set_xlabel('x')\n		self.axes.set_ylabel('y')\n		FigureCanvas.updateGeometry(self)\n \n	def compute_initial_figure(self):\n		pass\n \nclass MyDynamicMplCanvas(MyMplCanvas):#单个画布\n	"""动态画布：每秒自动更新，更换一条折线。"""\n	def __init__(self, *args, **kwargs):\n		MyMplCanvas.__init__(self, *args, **kwargs)\n		timer = QtCore.QTimer(self)\n		timer.timeout.connect(self.update_figure)\n		timer.start(10000)\n \n	def compute_initial_figure(self):\n		self.axes.plot([0, 1, 2, 3], [1, 2, 0, 4], 'r')\n \n	def update_figure(self,stock_id=str(600848),cur_date=time.strftime("%Y-%m-%d",time.gmtime())):\n		# 构建4个随机整数，位于闭区间[0, 10]\n		df = ts.get_tick_data(stock_id,date=cur_date,src='tt')\n		self.axes.cla()\n		self.axes.plot(df.time, df.price ,'r')\n		self.axes.set_xlabel('time')\n		self.axes.set_ylabel('price')\n		self.draw()\n#</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="QCanvas" indent="">
+        <Start>#Canvas\nself.main_widget = QWidget()\ndc = MyDynamicMplCanvas(self.main_widget, width=5, height=4, dpi=100)\nself.horizontalLayout1.addWidget(dc)\n#\n</Start>
         <End></End>
       </Snippet>
     </Lang>
