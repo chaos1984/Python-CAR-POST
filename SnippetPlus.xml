@@ -357,7 +357,7 @@ $#     nid       cid      dofx      dofy      dofz     dofrx     dofry     dofrz
         <End></End>
       </Snippet>
       <Snippet surroundWith="QFrame" indent="">
-        <Start>#QFrame\nself.center = QtWidgets.QFrame()\n# self.center.resize(100,100)\nself.center.setFrameShape(QtWidgets.QFrame.StyledPanel)\nself.gL1.addWidget(self.center,0,0,2,3)\n#</Start>
+        <Start>#QFrame\nself.center = QtWidgets.QFrame()\n# self.center.resize(100,100)\nself.center.setFrameShape(QtWidgets.QFrame.StyledPanel)\nself.gL1.addWidget(self.center,0,0,2,2)\nself.framelayout = QtWidgets.QGridLayout() \nself.center.setLayout(self.framelayout)\n#</Start>
         <End></End>
       </Snippet>
       <Snippet surroundWith="QSplit" indent="">
@@ -389,11 +389,31 @@ $#     nid       cid      dofx      dofy      dofz     dofrx     dofry     dofrz
         <End></End>
       </Snippet>
       <Snippet surroundWith="QTab" indent="">
-        <Start>		#QTab\n#QTab\nself.wdg1 = QtWidgets.QWidget()\nself.wdg2 = QtWidgets.QWidget()\nself.tabWidget = QtWidgets.QTabWidget()\nself.tabWidget.addTab(self.wdg1, 'Wdg 1')\nself.tabWidget.addTab(self.wdg2, 'Wdg 2')\nself.splitter.addWidget(self.tabWidget)\n#</Start>
+        <Start>#QTab\nself.wdg1 = QtWidgets.QWidget()\nself.wdg2 = QtWidgets.QWidget()\n#\nself.tabWidget = QtWidgets.QTabWidget()\nself.splitter.addWidget(self.tabWidget)\n#\nself.tabWidget.addTab(self.wdg1, 'Wdg 1')\nself.wdg1_layout = QtWidgets.QVBoxLayout() \nself.wdg1.setLayout(self.wdg1_layout)\n#\nself.tabWidget.addTab(self.wdg2, 'Wdg 2')\nself.wdg2_layout = QtWidgets.QVBoxLayout() \nself.wdg2.setLayout(self.wdg2_layout)\nself.wdg2_pixMap =  QtGui.QPixmap('test_image1.png')\nself.wdg2_label = QtWidgets.QLabel()\nself.wdg2_label.setPixmap(self.wdg2_pixMap)\nself.wdg2_layout.addWidget(self.wdg2_label)\n#</Start>
         <End></End>
       </Snippet>
       <Snippet surroundWith="QCheckbox" indent="">
         <Start>#QCheckbox\nself.checkbox = QtWidgets.QCheckBox("Awesome?")\nself.checkbox.stateChanged.connect(self.clickBox)\nself.splitter.addWidget(self.checkbox)\n#\ndef clickBox(self, state):\n	if state == QtCore.Qt.Checked:\n		print('Checked')\n	else:\n		print('Unchecked')\n#</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="QGroup" indent="">
+        <Start>#QGroupBox\nself.echoGroup =  QtWidgets.QGroupBox('Echo')\nself.echoLayout = QtWidgets.QGridLayout()\nself.echoGroup.setLayout(self.echoLayout)\nself.echoLabel = QtWidgets.QLabel('Mode:')\nself.echoLayout.addWidget(self.echoLabel,0,0)\nself.gL.addWidget(self.echoGroup,0,2)\n#</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="QCombo" indent="">
+        <Start>#QCombox\nself.comboLayout = QtWidgets.QGridLayout()\nself.combobox2 = QtWidgets.QComboBox(minimumWidth=200)\nself.comboLayout.addWidget(QtWidgets.QLabel("增加单项，不带数据"))\nself.comboLayout.addWidget(self.combobox2)\nself.comboLayout.addItem(QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Expanding,QtWidgets.QSizePolicy.Minimum))\nitems_list=["C","C++","Java","Python","JavaScript","C#","Swift","go","Ruby","Lua","PHP"]\ndatas_list=[1972,1983,1995,1991,1992,2000,2014,2009,1995,1993,1995]\nfor i in range(len(items_list)):\n	self.combobox2.addItem(items_list[i],datas_list[i])\nself.combobox2.setCurrentIndex(-1)\nself.combobox2.activated.connect(self.on_combobox2_Activate)\nself.gL.addWidget(self.combobox2,1,2)\n##\ndef on_combobox2_Activate(self, index):\n	print(self.combobox2.currentText())\n	print(self.combobox2.currentData())\n#</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="QTable" indent="">
+        <Start>#QTable\nself.dataTable = QtWidgets.QTableWidget()\nself.dataTable.setRowCount(2)\nself.dataTable.setColumnCount(3)\nself.gL.addWidget(self.dataTable,2,2)\n#\n</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="QFileDir" indent="">
+        <Start>#QFileDir\nself.btn2 = QtWidgets.QPushButton("加载图片")\nself.echoLayout.addWidget(self.btn2)\nself.btn2.clicked.connect(self.filedirgetfile)\n#\ndef filedirgetfile(self):\n	self.filedir,_ = QtWidgets.QFileDialog.getOpenFileName(caption='打开文件',directory="D:\\",filter="CSV files(*.txt *.csv)")\n	print (self.filedir)\n#</Start>
+        <End></End>
+      </Snippet>
+      <Snippet surroundWith="QTableView" indent="">
+        <Start>#Canvas\nself.dataTable = QtWidgets.QTableView()\nself.gL.addWidget(self.dataTable,2,2)\n#\n</Start>
         <End></End>
       </Snippet>
     </Lang>
