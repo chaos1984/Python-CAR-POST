@@ -10,7 +10,7 @@ from matplotlib.figure import Figure
 import numpy as np
 from function import *
 import pandas as pd
-
+import tushare as ts
 class Ui_MainWindow(object):
 	def setupUi(self, MainWindow):
 		MainWindow.setObjectName("MainWindow")
@@ -157,6 +157,7 @@ class Ui_MainWindow(object):
 		self.gL.addWidget(self.combobox2,1,2)
 		#QTable
 		self.dataTable = QtWidgets.QTableWidget()
+		df = ts.realtime_boxoffice()
 		self.dataTable.setRowCount(1)
 		self.dataTable.setColumnCount(1)
 		self.gL.addWidget(self.dataTable,2,2)
@@ -187,8 +188,9 @@ class Ui_MainWindow(object):
 		print(self.combobox2.currentText())
 		print(self.combobox2.currentData())
 	def filedirgetfile(self):
-		self.filedir,_ = QtWidgets.QFileDialog.getOpenFileName(caption='打开文件',directory="C:\\Users\\yujin.wang\\Desktop\\New folder",filter="CSV files(*.txt *.csv)")
-		df = pd.read_csv(self.filedir)
+		# self.filedir,_ = QtWidgets.QFileDialog.getOpenFileName(caption='打开文件',directory="C:\\Users\\yujin.wang\\Desktop\\New folder",filter="CSV files(*.txt *.csv)")
+		# df = pd.read_csv(self.filedir)ts
+		df = ts.realtime_boxoffice()
 		self.dataTable.setRowCount(np.shape(df)[0])
 		self.dataTable.setColumnCount(np.shape(df)[1])
 		self.dataTable.setHorizontalHeaderLabels(df.columns)
@@ -201,13 +203,23 @@ class Ui_MainWindow(object):
 		for column in range(self.dataTable.columnCount()):
 			header = self.dataTable.horizontalHeaderItem(column)
 			self.headers.append(header.text())
-		dd = pd.DataFrame(columns = self.headers)
 		len1 = len(self.dataTable.horizontalHeader())
 		# print (len(self.dataTable.horizontalHeader()))
 		# print (self.dataTable.rowCount(),self.dataTable.columnCount())
+		data = []
 		for i in range(self.dataTable.rowCount()):
-				dd.append([self.dataTable.item(i,j).text() for j in range(len1)])
+			temp = []
+			for j in range(len1):
+				cell = self.dataTable.item(i,j)
+				if cell is not None and cell.text() != '':
+					temp.append(cell.text())
+				else:
+					temp.append(' ')
+			data.append(temp)
+		dd = pd.DataFrame(data,columns = self.headers)
+				# dd.append([self.dataTable.item(i,j).text() for j in range(len1)])
 		self.filedir,_ = QtWidgets.QFileDialog.getSaveFileName(caption='打开文件',directory="C:\\Users\\yujin.wang\\Desktop\\New folder",filter="CSV files(*.txt *.csv)")
+		print (dd)
 		dd.to_csv(self.filedir)
 		
 ####################################################################################
