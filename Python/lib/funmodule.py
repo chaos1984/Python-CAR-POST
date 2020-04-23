@@ -58,8 +58,9 @@ def norm_trans(*args):
 	'''This function is used to calculate the grid coordination along the norm direction
 	args[0] = vector;arges[1]=dist;args[2]=grid
 	position[[1,2,3],[3,4,5]....]'''
+	
 	try:
-		trnas_cor = [0,0,0]
+		trans_cor = [0,0,0]
 		if len(args) ==0:
 			print ('ERROR:norm_trans: No arguments are inputed, please check!')
 		elif len(args) == 3:
