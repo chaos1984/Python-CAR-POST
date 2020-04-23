@@ -13,7 +13,7 @@ def main():
 		wkdir = sys.argv[1]
 
 	except:
-		wkdir = r'Y:\cal\01_Comp\09_NVH\000_Anne\test\02_run_R10'
+		wkdir = r'Y:\cal\01_Comp\09_NVH\489_190227_ESR-049841_SGMW_CN202M_PAB_fatigue_YeYe\03_run'
 
 	#make image directory
 	imagedir = wkdir +'\\image'

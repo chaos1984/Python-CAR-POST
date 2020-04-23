@@ -9,11 +9,11 @@ from operator import itemgetter,attrgetter
 import datetime
 import sqlite3
 import getpass
-
-from lib.Copyright import *
-from lib.Infor import *
-from lib.DynaData import *
-from lib.Main_Plot import *
-from lib.pptreport import *
+# sys.path.append("\\lib")
+from Copyright import *
+from Infor import *
+from DynaData import *
+from Main_Plot import *
+from pptreport import *
 
 statement1()

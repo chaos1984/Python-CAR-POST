@@ -5,7 +5,7 @@ def statement1():
 	print ('\n\
 			###########################################\n\
 			#                                         #\n\
-			#        PYSTIFF 4 FEM POST V1.3          #\n\
+			#        PYSTIFF 4 FEM POST V2.3          #\n\
 			#        Author: YujinWang                #\n\
 			#        E-MAIL:chaos1984@163.com         #\n\
 			#               2016.XMAS                 #\n\

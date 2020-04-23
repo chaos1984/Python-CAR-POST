@@ -23,7 +23,7 @@ Author = getpass.getuser()
 A.CoverPageCreate(Title,Date,Author)
 
 #page2
-ReportContents= [['1.Introduction\n2.Simulation Result\n3.Conclusion\n',24]]
+ReportContents= [['1. DAB Assemble CAE model\n2. Cover, Emblem & Housing material\n3. Boundary condition\n4. Simulation case\n5. Result analysis\n6. Conclusion\n7. Appendix',24]]
 A.BlankPageCreate('Contents',Paragraphs=ReportContents)
 
 #page3
@@ -34,7 +34,7 @@ A.BlankPageCreate('Introduction',Paragraphs =paragraphs,Pictures=Pictures)
 #page4
 paragraphs = [["* Boundary Conditions are defined.",18],["* Connections between each part are also defined.",18],["* Density of each material can be adjusted to match the weight of each part.",18],["* Mass balance is used to simulate the weight of the module, located at its center of mass.",18]]
 TableValue =[[' Part','Material','E(MPa)','Dens(g/cm3)'],['Bracket','HC340','210000','7.85']]
-Tables = [[TableValue,Cm(15),Cm(13.8),Cm(3),Cm(17)]]
+Tables = [[TableValue,Cm(15),Cm(13.8),Cm(3),Cm(17),18]]
 Pictures = [[r'%s\image\Picture1.png' %(rundir),Cm(1.5),Cm(10),Cm(7),Cm(13.31)],[imagedir +'5.jpeg',Cm(20),Cm(8),Cm(5.5),Cm(8.3)]]
 A.BlankPageCreate('Introduction',Paragraphs =paragraphs,Tables=Tables,Pictures=Pictures)
 

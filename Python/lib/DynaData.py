@@ -31,6 +31,7 @@ class nodout_SMP(basic):
 	def simply(self):
 		self.data1 = []
 		self.data2 = []
+		flag_rot = 0
 		for line in open(self.src):
 			if ('time' in line):
 				timestep = float(line[105:116])
@@ -47,9 +48,11 @@ class nodout_SMP(basic):
 					string2.append(float(line[(11+i*12):(22+i*12)]))
 				self.data2.append(string2)
 		res1 = pd.DataFrame(self.data1,columns=['Xcor','Node','x-disp','y-disp','z-disp','x-vel','y-vel','z-vel','x-accl','y-accl','z-accl','xc','yc','zc'])
-		res2 = pd.DataFrame(self.data2,columns=['x-rot','y-rot','z-rot'])
-		res.merge(res1,res2,left_index=True,right_index=True)
-		return res
+		if  flag_rot == 1:
+			res2 = pd.DataFrame(self.data2,columns=['x-rot','y-rot','z-rot'])
+			return pd.merge(res1,res2,left_index=True,right_index=True)
+		else:
+			return res1
 
 class nodout_MPP(basic):
 
@@ -58,6 +61,7 @@ class nodout_MPP(basic):
 	def simply(self):
 		self.data1 = []
 		self.data2 = []
+		flag_rot = 0
 		for line in open(self.src):
 			if ('time' in line):
 				timestep = float(line[104:116])
@@ -70,13 +74,16 @@ class nodout_MPP(basic):
 				self.data1.append(string1)
 			elif (len(line)==119 and 'n' not in line):
 				string2 = []
+				flag_rote = 1
 				for i in range(3):
 					string2.append(float(line[(10+i*12):(22+i*12)]))
 				self.data2.append(string2)
 		res1 = pd.DataFrame(self.data1,columns=['Xcor','Node','x-disp','y-disp','z-disp','x-vel','y-vel','z-vel','x-accl','y-accl','z-accl','xc','yc','zc'])
-		res2 = pd.DataFrame(self.data2,columns=['x-rot','y-rot','z-rot'])
-		res.merge(res1,res2,left_index=True,right_index=True)
-		return res
+		if  flag_rot == 1:
+			res2 = pd.DataFrame(self.data2,columns=['x-rot','y-rot','z-rot'])
+			return pd.merge(res1,res2,left_index=True,right_index=True)
+		else:
+			return res1
 
 	class Rep4FRB(basic):
 		'''It is used to achieve the FRB results from nodal file'''
@@ -323,6 +330,34 @@ class Glstate(basic):
 				time_data.append(eval(line_data[-1]))
 
 		return pd.DataFrame(total_data,columns=index)
+
+class bndout(basic): 
+    @property
+    def  run(self):
+        time = []
+        total_data = []
+        time_data = []
+        index = ['time']
+        index_flag = 0
+        for line in open(self.src):
+                line_data = string_split(line[:-1], ' ')
+                if ' t=' in line :
+                    if len(time_data) > 1:
+                        total_data.append(time_data)
+                        index_flag = 1
+                    else:
+                        pass
+                    time_data = [float(line[line.index("=")+1:-1])]
+   
+                elif line.count('=')>1:
+                      for i,par in enumerate(line_data):
+                        if index_flag == 0 and i%2 == 0:
+                            index.append(par[:-1])
+                        elif i%2 != 0:
+                            time_data.append(float(par))
+        total_data.append(time_data)
+        # print (index)
+        return pd.DataFrame(total_data,columns=index)
 		
 @try_except
 def dynaMatCurvePlot(KeyFile,Pid,filepath,Scale):

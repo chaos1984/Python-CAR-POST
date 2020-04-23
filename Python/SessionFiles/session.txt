@@ -44,7 +44,7 @@ s[0]:fun act "max. v. Mises (Shell/Solid)"
 s[0]:sty fun ele all
 v[act]:fun fba ran dyn
 
-sta set fma
+sta set tim 0
 txt scr add 0.5 0 'Stress Contour@Max. force time'
 txt scr add 0.5 0.05 'Top view'
 vie cam dir top
@@ -94,6 +94,10 @@ s[0]:fun act "max. v. Mises (Shell/Solid)"
 s[0]:sty fun ele all
 
 sta set las
+$In case of the element strange deform
+sta set pre
+sta set pre
+$
 txt scr add 0.5 0 'Stress Contour@End time'
 txt scr add 0.5 0.05 'Top view'
 vie cam dir top
@@ -119,7 +123,7 @@ txt del all
 s[0]:fun act "max. pl. strain (Shell/Solid)"
 s[0]:sty fun ele all
 
-sta set las
+
 txt scr add 0.5 0 'Strain Contour@End time'
 txt scr add 0.5 0.05 'Top view'
 vie cam dir top

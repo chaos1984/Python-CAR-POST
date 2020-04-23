@@ -1,0 +1,378 @@
+$ **********************************************************************************
+$ * Window settings
+$ **********************************************************************************
+$ cleanup
+v[all]:xcm vie clo
+$
+$ Views
+$
+$$ View: "NL_LT"
+xcm vie new mod
+xcm vie ren "NL_LT"
+opt mod fon txt siz 6.000000
+col bac white
+col ove black
+$ UI-Mode
+v["NL_LT"]:xcm vie wor
+$ Mode
+v["NL_LT"]:xcm vie nor
+$ Frame
+v["NL_LT"]:xcm fra off
+$ keep on top state
+v["NL_LT"]:xcm vie kto off
+$ Position
+v["NL_LT"]:xcm pos 0 0
+$ Size
+v["NL_LT"]:xcm siz 564 632
+$
+$$ View: "NL_RT"
+xcm vie new mod
+xcm vie ren "NL_RT"
+opt mod fon txt siz 6.000000
+col bac white
+col ove black
+$ UI-Mode
+v["NL_RT"]:xcm vie wor
+$ Mode
+v["NL_RT"]:xcm vie nor
+$ Frame
+v["NL_RT"]:xcm fra off
+$ keep on top state
+v["NL_RT"]:xcm vie kto off
+$ Position
+v["NL_RT"]:xcm pos 570 0
+$ Size
+v["NL_RT"]:xcm siz 564 632
+$
+$$ View: "NL_HT"
+xcm vie new mod
+xcm vie ren "NL_HT"
+opt mod fon txt siz 6.000000
+col bac white
+col ove black
+$ UI-Mode
+v["NL_HT"]:xcm vie wor
+$ Mode
+v["NL_HT"]:xcm vie nor
+$ Frame
+v["NL_HT"]:xcm fra off
+$ keep on top state
+v["NL_HT"]:xcm vie kto off
+$ Position
+v["NL_HT"]:xcm pos 1140 0
+$ Size
+v["NL_HT"]:xcm siz 564 632
+$
+$ Set view arrangement mode 
+xcm vie arr hor
+$ Stacking order in workspace
+v["NL_HT"]:xcm pop
+v["NL_RT"]:xcm pop
+v["NL_LT"]:xcm pop
+$ Restore active view
+v["NL_HT"]:vie swi on
+$
+$ Main Window & Workspace
+$
+$ Mode
+v[0]:xcm vie nor
+$ Position
+v[0]:xcm pos 26 22
+$ Size
+xcm wor siz 1711 638
+$ **********************************************************************************
+$ * Create slots
+$ **********************************************************************************
+s[new="DAB Deploy\@NL_HT"]:set var str ins :__Slot ""
+s[new="DAB Deploy\@NL_RT"]:set var str ins :__Slot ""
+s[new="DAB Deploy\@NL_LT"]:set var str ins :__Slot ""
+s[all][std]:col tit 0.0000 0.0000 0.0000
+v[all]:opt mod fon txt siz 24.000000
+$ **********************************************************************************
+$ * LOAD D3PLOT
+$ **********************************************************************************
+set var str ins __InputFile1 'NL_HT\d3plot'
+set var str ins __InputFile2 'NL_RT\d3plot'
+set var str ins __InputFile3 'NL_LT\d3plot'
+
+$$ Slot: "DAB Deploy@NL_HT"
+s["DAB Deploy\@NL_HT"]:!opt ana tra
+dis sma off
+s["DAB Deploy\@NL_HT"]:!rea fil Dyna3d "{V__InputFile1}"  GEO=0:pid:all @@
+ DIS=0:1-42 @@
+ FUN=0:1-42:"max. pl. strain (Shell/Solid)" ADD=no
+s["DAB Deploy\@NL_HT"]:!sta ren cur "Set 0"
+
+$$ Slot: "DAB Deploy@NL_RT"
+s["DAB Deploy\@NL_RT"]:!opt ana tra
+dis sma off
+s["DAB Deploy\@NL_RT"]:!rea fil Dyna3d "{V__InputFile2}"  GEO=0:pid:all @@
+ DIS=0:1-42 @@
+ FUN=0:1-42:"max. pl. strain (Shell/Solid)" ADD=no
+s["DAB Deploy\@NL_RT"]:!sta ren cur "Set 0"
+
+$$ Slot: "DAB Deploy@LT-NL"
+s["DAB Deploy\@NL_LT"]:!opt ana tra
+dis sma off
+s["DAB Deploy\@NL_LT"]:!rea fil Dyna3d "{V__InputFile3}"  GEO=0:pid:all @@
+ DIS=0:1-42 @@
+ FUN=0:1-42:"max. pl. strain (Shell/Solid)" ADD=no
+s["DAB Deploy\@NL_LT"]:!sta ren cur "Set 0"
+$
+v[all]:era slo all
+v["NL_HT"]:add slo 0
+v["NL_RT"]:add slo 1
+v["NL_LT"]:add slo 2
+$ **********************************************************************************
+$ * VIEW ANGLE
+$ **********************************************************************************
+!vie cam pos xyz 2039.161128 -495.979645 1424.274639
+!vie cam ref xyz 991.205154 -361.932440 726.934011
+!vie cam upv xyz -0.553256 0.008040 0.832973
+!vie cam cli 727.941440 1803.828159
+!vie cam ors 1.000000
+!vie per off
+!vie per ang 30.000000
+vie cen
+vie sav "front"
+
+$
+!vie cam pos xyz 427.245115 -343.386289 384.230405
+!vie cam ref xyz 890.392272 -361.152117 671.546657
+!vie cam upv xyz 0.527279 0.004536 -0.849680
+!vie cam cli 236.574511 916.378117
+!vie cam ors 1.000000
+!vie per off
+!vie per ang 30.000000
+vie cen
+vie sav "bottom"
+
+!vie rce dyn
+!vie cam pos xyz 1022.636454 -7677.011367 789.041578
+!vie cam ref xyz 1022.636454 -148.526234 789.041578
+!vie cam upv xyz 0.000000 0.000000 1.000000
+!vie cam cli 1095.107544 19423.459431
+!vie cam ors 1.000000
+!vie per off
+!vie per ang 30.000000
+vie sav "side"
+v[all]:vie loa "front"
+
+
+v[all]:col pid 1.0000 1.0000 1.0000 1-99 
+v[all]:col mtt 0.25 1-99 
+v[all]:sty pid sho 1-99
+v[all]:sta fms on
+v[all]:sta fms tra set "time {PACTSTATETIME,9.5f}"
+col txt 0.0000 0.0000 0.0000
+$ **********************************************************************************
+$ * Legend color define
+$ **********************************************************************************
+xcm dia fba on
+fun fba cur res
+v[all]:fun fba col 10 0.5000 0.5000 0.5000 1.0000
+v[all]:fun fba col 0 0.0000 0.5000 1.0000
+v[all]:fun fba col 0 0.2500 0.4100 0.8800
+v[all]:fun fba col 1 0.1200 0.5600 1.0000
+v[all]:fun fba col 2 0.0000 1.0000 1.0000
+v[all]:fun fba col 3 0.0000 0.9800 0.6000
+v[all]:fun fba col 4 0.0000 1.0000 0.0000
+v[all]:fun fba col 5 0.4314 1.0000 0.3451
+v[all]:fun fba col 6 1.0000 1.0000 0.0000
+v[all]:fun fba col 7 1.0000 0.6500 0.0000
+v[all]:xcm dia fba off
+$ $ **********************************************************************************
+$ * AIRBAG DEPOLYMENT PROCESS ANIMATION
+$ **********************************************************************************
+v[all]:sta set 0
+v["NL_LT"]:txt scr add 0.5 0 'NL_LT'
+v["NL_RT"]:txt scr add 0.5 0 'NL_RT'
+v["NL_HT"]:txt scr add 0.5 0 'NL_HT'
+s[all]v[all]:era pid -1
+v[all]:vie cen
+xcm dia wri vid on
+opt iws on
+rec avi sta 'image\top_3.avi'
+ani fo1
+rec avi sto
+xcm dia wri vid off
+$ **********************************************************************************
+$ * COVER STRAIN CONTOUR
+$ **********************************************************************************
+v[all]:txt scr del all
+v[all]:era all
+v[all]:add pid 200-299
+v[all]:sty fun nod all
+v[all]:vie cen
+v["NL_LT"]:fun fba ran 0 &cov&
+v["NL_RT"]:fun fba ran 0 &cov&
+v["NL_HT"]:fun fba ran 0 &cov&
+v["NL_LT"]:txt scr add 0.5 0 'COVER@NL_LT'
+v["NL_RT"]:txt scr add 0.5 0 'COVER@NL_RT'
+v["NL_HT"]:txt scr add 0.5 0 'COVER@NL_HT'
+wri png 'image\cover_strain_3.png'
+*********COVER STRAIN CONTOUR ANIMATION*****
+v[all]:sta set 0
+v[all]:add pid 600-700
+v[all]:sty fun off 600-700
+v[all]:vie cen
+xcm dia wri vid on
+opt iws on
+rec avi sta 'image\Cover_3.avi'
+ani fo1
+rec avi sto
+xcm dia wri vid off
+v[all]:txt scr del all
+$ **********************************************************************************
+$ * EMBLEM STRAIN CONTOUR
+$ **********************************************************************************
+v[all]:txt scr del all
+v[all]:era all
+v[all]:add pid 400-499
+v[all]:vie cen
+v[all]:sty fun nod all
+v[all]:vie fo3 4000000-4999999
+v[all]:vie cen
+v["NL_LT"]:fun fba ran 0 &emb&
+v["NL_RT"]:fun fba ran 0 &emb&
+v["NL_HT"]:fun fba ran 0 &emb&
+v["NL_LT"]:txt scr add 0.5 0 'EMBLEM@NL_LT'
+v["NL_RT"]:txt scr add 0.5 0 'EMBLEM@NL_RT'
+v["NL_HT"]:txt scr add 0.5 0 'EMBLEM@NL_HT'
+v[all]:wri png 'image\emblem_strain_top_3.png'
+v[all]:vie loa "bottom"
+v[all]:vie cen
+v[all]:wri png 'image\emblem_strain_bottom_3.png'
+v[all]:vie fof
+*********emblem STRAIN CONTOUR ANIMATION*****
+v[all]:sta set 0
+v[all]:vie loa "top"
+v[all]:add pid 600-700
+v[all]:sty fun off 600-700
+v[all]:vie cen
+xcm dia wri vid on
+opt iws on
+rec avi sta 'image\Emblem_3.avi'
+ani fo1
+rec avi sto
+xcm dia wri vid off
+v[all]:txt scr del all
+$ **********************************************************************************
+$ * HOUSING STRAIN CONTOUR
+$ **********************************************************************************
+v[all]:txt scr del all
+v[all]:era all
+v[all]:add pid 300-399
+v[all]:sty fun nod all
+v[all]:vie cen
+v["NL_LT"]:fun fba ran 0 &hou&
+v["NL_RT"]:fun fba ran 0 &hou&
+v["NL_HT"]:fun fba ran 0 &hou&
+v["NL_LT"]:txt scr add 0.5 0 'HOUSING@NL_LT'
+v["NL_RT"]:txt scr add 0.5 0 'HOUSING@NL_RT'
+v["NL_HT"]:txt scr add 0.5 0 'HOUSING@NL_HT'
+v[all]:wri png 'image\housing_strain_bottom_3.png'
+v[all]:vie loa "top"
+v[all]:vie cen
+v[all]:wri png 'image\housing_strain_top_3.png'
+$ **********************************************************************************
+$ * AIRBAG DEPOLYMENT PROCESS RECORD（SIDE）
+$ **********************************************************************************
+v[all]:txt scr del all
+v["NL_LT"]:txt scr add 0.5 0 'NL_LT'
+v["NL_RT"]:txt scr add 0.5 0 'NL_RT'
+v["NL_HT"]:txt scr add 0.5 0 'NL_HT'
+v[all]:sta set 0
+v[all]:add pid all
+s[all]v[all]:era pid -1
+v[all]:sty fun off all
+v[all]:vie loa "side"
+v[all]:vie cen
+v[all]:crs geo on
+v[all]:crs cli on
+v[all]:crs swi on
+v[all]:crs pos dir 0 1 0
+v[all]:crs pos nod 1000000
+v[all]:crs typ eNL
+v[all]:xcm dia wri vid on
+v[all]:opt iws on
+v[all]:rec avi sta 'image\side_3.avi'
+v[all]:ani fo1
+v[all]:rec avi sto
+v[all]:xcm dia wri vid off
+v[all]:sta set 0
+v[all]:crs cli off
+v[all]:crs swi off
+$ **********************************************************************************
+$ * PART FIGURE OUTPUT
+$ **********************************************************************************
+opt mod fon txt siz 60
+v[1]:col pid res
+v[1]:sta fms off
+v[1]:col wor set 0.0000 0.0000 0.0000
+v[1]:txt scr del all
+v[1]:xcm vie max
+s[all]v[all]:era pid -1
+v[1]:wri png 'image\side.png'
+v[1]:vie loa "top"
+v[1]:era all
+v[1]:add pid 1-99
+v[1]:vie cen
+v[1]:txt scr add 0.5 0 'Cushion'
+v[1]:wri png 'image\cushion.png'
+v[1]:txt scr del all
+v[1]:era all
+v[1]:add pid 100-199
+v[1]:vie cen
+v[1]:txt scr add 0.5 0 'Inflator'
+v[1]:wri png 'image\inflator.png'
+v[1]:txt scr del all
+v[1]:era all
+v[1]:add pid 200-299
+v[1]:vie cen
+v[1]:txt scr add 0.5 0 'Cover'
+v[1]:wri png 'image\cover.png'
+v[1]:txt scr del all
+v[1]:era all
+v[1]:add pid 300-399
+v[1]:vie cen
+v[1]:txt scr add 0.5 0 'Housing'
+v[1]:wri png 'image\housing.png'
+v[1]:txt scr del all
+v[1]:era all
+v[1]:add pid 400-499
+v[1]:vie cen
+v[1]:txt scr add 0.5 0 'Emblem'
+v[1]:wri png 'image\emblem.png'
+v[1]:txt scr del all
+v[1]:era all
+v[1]:add pid 500-599
+v[1]:vie cen
+v[1]:txt scr add 0.5 0 'Omega spring'
+v[1]:wri png 'image\omegaspring.png'
+v[1]:txt scr del all
+v[1]:era all
+v[1]:add pid 600-699
+v[1]:vie cen
+v[1]:txt scr add 0.5 0 'Armature'
+v[1]:wri png 'image\armature.png'
+v[1]:txt scr del all
+v[1]:era all
+v[1]:add pid 700-799
+v[1]:vie cen
+v[1]:txt scr add 0.5 0 'Foam'
+v[1]:wri png 'image\foam.png'
+v[1]:txt scr del all
+v[1]:era all
+v[1]:add pid 800-899
+v[1]:vie cen
+v[1]:txt scr add 0.5 0 'Dumper'
+v[1]:wri png 'image\dumper.png'
+v[1]:txt scr del all
+v[1]:era all
+v[1]:add pid all
+v[1]:vie cen
+v[1]:txt scr add 0.5 0 'DAB assembly'
+v[1]:wri png 'image\assembly.png'
+v[1]:txt scr del all
+exit

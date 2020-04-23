@@ -8,13 +8,15 @@ try:
 except:
 	print "*"*40
 	print  "Default Debug Path"
-	wkdir = r'Y:\cal\01_Comp\04_SB\566_180611_ESR-039680_BKL_double_buckle_strength_Allen\02_run'
-	rundir  = r"C:\Users\yujin.wang\Desktop\LocalPy"
+	wkdir = r'Y:\cal\01_Comp\04_SB\596_181015_ESR-044411_FS11_bracket_strength_Allen\02_run\F1'
+	rundir  = r"Y:\doc\08_Personal\Yujin\0508\YokingPy"
 	pydir = r'python.exe'
 	print "*"*40
 
 os.chdir(wkdir)
 os.system("%s C:\\CAE\\scripts\\Python\\ASG_HPC_DYN_l2a.py" %(pydir))	
+time.sleep(10)
+
 rstfile = open(wkdir+'\\image'+'\\rst.txt','w')
 
 #Get the matdic
@@ -29,7 +31,9 @@ except :
 	sys.exit()
 
 #Extract binout files
-KeyFile = ReadKeys(wkdir )#Read more .KEY files
+KeyFile = DynaInfo(wkdir,'','key')#Read more .KEY files
+Includefiles = [wkdir+"\\"+i[0] for i in KeyFile.Pars([KeyFile.files[0][0]]).INCLUDE]
+KeyFile.Pars(Includefiles)
 #Get model information 
 Node = pd.DataFrame(KeyFile.NODE,columns=['node','x','y','z','tc','rc'])
 Elem = pd.DataFrame(KeyFile.ELEMENT_SOLID,columns=['elem','PartID','n1','n2','n3','n4','n5','n6','n7','n8'])
@@ -45,7 +49,6 @@ try:
 except:
 	print KeyFile.ELEMENT_DISCRETE
 	print KeyFile.DEFINE_COORDINATE_NODES
-	raw_input('ERROR:Load Spring are not found!')
 	sys.exit()
 	
 # Plot curve
@@ -56,6 +59,7 @@ try:
 		OriginNode1 = Node[Node['node']==Coord[0][1]].values.tolist()[0]
 		OriginNode2 = Node[Node['node']==Coord[1][1]].values.tolist()[0]
 		OriginNode  = [(float(OriginNode1[i+1]) + float(OriginNode2[i+1]))/2 for i in range(3)]
+
 		if LoadFlag :
 			print "Current analysis is single load."
 			figuremax = DeforcPlot(wkdir,1)
@@ -63,10 +67,10 @@ try:
 			print "Current analysis is two load."
 			figuremax = DeforcPlot(wkdir,2)
 	else:
-		print 'ERROR: No. Please check the number of Coordinate(load) is 1 or 2!'
+		print ("ERROR: No. Please check the number of Coordinate(load) is 1 or 2")
 	
 except:
-	raw_input('ERROR:Please check Deforce and Glstat files!')	
+	print ('Please check Deforce and Glstat files!')	
 	sys.exit()
 	
 rstfile.write('MaxForce %s\n' %(str(figuremax[0])))
@@ -78,6 +82,7 @@ SessionFile = wkdir +'\Session.txt'
 print "SessionFile:%s" %(SessionFile) 
 fout = open(SessionFile,'w')
 finp = open(r"%s\\SessionFiles\\session.txt" %(rundir),'r')
+print ("Copy and modify the session files")
 for line in finp.readlines():
 	if '$' not in line:
 		if 'crs pos' in line :
@@ -86,14 +91,11 @@ for line in finp.readlines():
 			fout.write("vie cam upv nod %s\n" %(Coord[0][1]))
 		elif  'rea' in line:
 			for i in MatID:
-				# print MatDic[int(i)],type(MatDic[int(i)])
 				rstfile.write("Mat " +MatDic[int(i)]+ "\n")
 			line = "s[0]:rea fil \"Automatic\" '%s\\d3plot' GEO=0:PartID:all DIS=0:all FUN=0:all:\"max. pl. strain (Shell/Solid)\" FUN=0:all:\"max. v. Mises (Shell/Solid)\" ADD=no " %(wkdir)
 			fout.write(line)
 		elif 'rec' in line or 'wri' in line:
 			line = line.replace('image',wkdir+'\image')
-			# if 'model.png' in line and LoadFlag is not True:
-				# line = line.replace('model','model2')
 			fout.write(line)
 		elif 'sta set tim' in line:
 			line = 'sta set tim %f\n' %(figuremax[1])
@@ -108,6 +110,6 @@ fout.close()
 try: 
  	os.system(r"StartA4_64_fbo.exe -b -s %s" %(SessionFile))
 except:
-	print 'ERROR:Please check the Animator directory!'
+	print ('ERROR:Please check the Animator directory!')
 
 rstfile.close()

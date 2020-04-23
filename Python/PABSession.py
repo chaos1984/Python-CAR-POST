@@ -19,7 +19,7 @@ fout = open(ScriptFile,'w')
 finp = open(r"%s\\SessionFiles\\script.tcl" %(rundir ),'r')
 #
 isFlag = 0
-for line in open(wkdir +'\\X\\eigout'):
+for line in open(wkdir +'\\eigv2\\eigout'):
 	if 'EIGENVALUE' in line:
 		isFlag = 1
 		continue
@@ -43,6 +43,9 @@ for line in finp.readlines():
 		fout.write(line)
 fout.close()
 try:
-	os.system("C:\\CAE\\HYPERWORKS\\2017.2\\hw\\bin\\win64\\hw.exe -b -tcl %s" %(ScriptFile))
+	if os.path.exists('C:\\CAE\\HyperWorks\\2017.2.3\\hw\\bin\\win64\\hw.exe'):
+		os.system("C:\\CAE\\HyperWorks\\2017.2.3\\hw\\bin\\win64\\hw.exe -b -tcl %s" %(ScriptFile))
+	else:
+		os.system("C:\\CAE\\HyperWorks\\2017\\hw\\bin\\win64\\hw.exe -b -tcl %s" %(ScriptFile))
 except:
 	print 'ERROR:Please check the HW directory!'

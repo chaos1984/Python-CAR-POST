@@ -116,7 +116,7 @@ class StiffPPT():
 		self.prs.slides.add_slide(self.EndPage)
 		print '#'*20+'\n'
 
-	def addTables(self,slide,Tables,FontSize= 18):
+	def addTables(self,slide,Tables):
 		# try:
 			print 'No. Tables:',len(Tables)
 			for i in range(len(Tables)):
@@ -128,11 +128,14 @@ class StiffPPT():
 					for k in range(cols):
 						MatTable.cell(j,k).fill.background()
 						# MatTable.fore_color.rgb = RGBColor(0x01, 0x23, 0x45)
-						elem_cell = MatTable.cell(j,kqa)
+						elem_cell = MatTable.cell(j,k)
 						elem_cell.fill.solid()
 						elem_cell.text_frame.paragraphs[0].text = Tables[i][0][j][k]
 						# item.space_before = Pt(1)
-						elem_cell.text_frame.paragraphs[0].font.size = Pt(FontSize)
+						try:
+							elem_cell.text_frame.paragraphs[0].font.size = Pt(Tables[i][5])
+						except:
+							pass
 						elem_cell.text_frame.auto_size = MSO_AUTO_SIZE.SHAPE_TO_FIT_TEXT
 
 						if j == 0:

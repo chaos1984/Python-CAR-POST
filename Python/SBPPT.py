@@ -27,9 +27,6 @@ for i in Files:
 			exec(cmd)
 MatName = list(set(MatName))
 
-
-	
-
 #############################################################################################
 muban_path = r'%s\SlideMaster\ALV_General Presentation 2017.pptx' %(rundir)
 A = StiffPPT(muban_path,wkdir)
