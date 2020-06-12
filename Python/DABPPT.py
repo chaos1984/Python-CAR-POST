@@ -93,7 +93,7 @@ Pictures = []
 file = wkdir+'cushion.png'
 # CushionPic = rundir+ r'\\image\\' + 'Cushion_fold_type.png'
 Pictures.append([file,Cm(2),Cm(10.5),Cm(6),Cm(12)])
-A.BlankPageCreate('Cushion',[['Diameter:%s\nNo. of Tether: %s\nNo. of Vent: %s\nWrapper:%s\nDifussor:%s\nFold type:%s\nFabric Mat.:%s' %(df.Diam[row],df.Teth[row],df.Vent[row],df.Wrapper[row],df.Difu[row],df.Foldtype[row],df.Cushion[row]),24]],Pictures=Pictures)
+A.BlankPageCreate('Cushion',[['Diameter:%s mm\nNo. of Tether: %s\nNo. of Vent: %s\nWrapper: %s\nDiffuser: %s\nFold type: %s\nFabric Mat.: %s' %(df.Diam[row],df.Teth[row],df.Vent[row],df.Wrapper[row],df.Difu[row],df.Foldtype[row],df.Cushion[row]),24]],Pictures=Pictures)
 
 #Page5
 try:
